@@ -4,6 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+해당 폴더 내부에 `node_modules` 파일이 없을 경우 아래의 명령어를 실행하면 됨:
+
+### `npm install`
+
 In the project directory, you can run:
 
 ### `npm start`
