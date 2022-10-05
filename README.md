@@ -72,3 +72,17 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# Firebase 설정
+
+### token.json 설정하기
+1. Firebase 프로젝트 메인화면 상단에 있는 앱 추가하기 버튼을 누른다.
+<img src="./readme_image/webapp.png">
+
+2. 웹앱 페이지 하단에 있는 토큰을 복사한다.
+<img src="./readme_image/webtoken.png" style="width: 70%">
+
+3. `src/token.json` 에 토큰을 아래와 같이 복사한다.
+<img src="./readme_image/token.png">
+
+4. 위의 안내된 절차대로 react app을 시작하면 된다.
