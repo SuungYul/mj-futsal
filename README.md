@@ -75,6 +75,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 # Firebase 설정
 
+### 절대로 토큰 내용을 github에 올리지 마세요
+-  `git update-index --assume-unchanged <filename>` 을 통해서 git의 해당 파일의 업데이트 트래킹을 멈출 수 있습니다.
+
 ### token.json 설정하기
 1. Firebase 프로젝트 메인화면 상단에 있는 앱 추가하기 버튼을 누른다.
 <img src="./readme_image/webapp.png">
