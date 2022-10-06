@@ -40,12 +40,6 @@ function addData(collection, document, data){
       });
 }
 
-/**
- * 파이어베이스 스토리지에 데이터를 조회하는 함수
- * @param {string} collection Firestore에 저장된 collection 이름
- * @param {string} document Firestore에 위치한 document 이름
- * @param {ForFirebase} type 조회할 문서의 데이터 타입 
- */
 function getData(collection, document, type){
     db.collection(collection)
       .doc(document)
