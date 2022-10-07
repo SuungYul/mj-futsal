@@ -1,6 +1,5 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-import {User} from "./data.js";
 
 const firebaseConfig = require("./token.json");
 
