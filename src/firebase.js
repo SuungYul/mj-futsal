@@ -1,6 +1,5 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-import {User} from "./data.js";
 
 const firebaseConfig = require("./token.json");
 
@@ -13,7 +12,7 @@ const db = firebase.firestore();
  * @param {string} collection Firestore에 저장된 collection 이름
  *  
  */
-export function testFunction(collection){
+function testFunction(collection){
     db.collection(collection).get().then((querySnapshot) => {
         querySnapshot.forEach((doc)=> {
             console.log(`${doc.id} => ${doc.data()}`);
@@ -28,8 +27,8 @@ export function testFunction(collection){
  * @param {ForFirebase} data collection에 추가할 데이터
  */
 function addData(collection, document, data){
-    console.log(data);
-    db.collection(collection).doc(document)
+    db.collection(collection)
+      .doc(document)
       .withConverter(data.getConvertor)
       .set(data)
       .then((docRef)=>{
@@ -39,3 +38,24 @@ function addData(collection, document, data){
         console.log(`실패\n${error}`)
       });
 }
+
+function getData(collection, document, type){
+    db.collection(collection)
+      .doc(document)
+      .withConverter(type.getConvertor)
+      .get()
+      .then((doc) => {
+        if(doc.exists){
+            let data = doc.data();
+            console.log(data);
+        }
+        else {
+            console.log(`문서를 찾을 수 없음`);
+        }
+      })
+      .catch((error) => {
+        console.log(`문서를 가져오는데 에러가 있었습니다.\n${error}`);
+      })
+};
+
+export {testFunction, addData, getData};

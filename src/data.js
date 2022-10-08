@@ -14,8 +14,20 @@
         this.toFirestore = (obj) => { return this.getObject; };
         this.fromFirestore = (snapshot, options) => {
             const args = snapshot.data(options);
-            return new this.constructor(args);
+            return this.buildObject(args);
         };
+    }
+
+    /**
+     * buildObject({...}) 형태의 클래스 생성자
+     * @param {object} args 해당 클래스를 생성하기 위한 변수를 가진 {키: 값} 쌍의 오브젝트 
+     * @returns {ForFirebase}
+     */
+    buildObject(args){
+        console.log(args);
+        let result = new this.constructor();
+        for(let key in args) result[key] = args[key];
+        return result;
     }
 
     get getConvertor(){
