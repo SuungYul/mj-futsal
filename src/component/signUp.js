@@ -30,6 +30,7 @@ function signUp(e){ //회원가입 버튼 누를 시 유저 객체 생성하고 
     addData("userList","user", user) 
     firebase.auth().createUserWithEmailAndPassword(signUpEmail, signUpPassword)
         .then((userCredential) => {
+            alert("회원가입 성공!")
             console.log(userCredential)
             const user = userCredential.user;
         })
