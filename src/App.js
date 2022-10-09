@@ -11,9 +11,9 @@ function App() {
   return (
     <div className="App">
     <Routes>
-      <Route path="/" element={<Login/>} />
-      <Route path="/component.signUp" element={<Sign/>} />
-      <Route path="/component/main.main" element={<Main/>} />
+      <Route path="/" element={<Main/>} />
+      <Route path="/signUp" element={<Sign/>} />
+      <Route path="/login" element={<Login/>} />
     </Routes>
     </div>
   );

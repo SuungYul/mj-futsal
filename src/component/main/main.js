@@ -1,10 +1,11 @@
 import LookUp from "./lookUp"
+import LoginBtn from "./loginBtn";
 import Logout from "./logout"
 import firebase from "firebase/app";
-import {useNavigate} from "react-router-dom"
+import {useNavigate, Routes, Route, Link} from "react-router-dom"
 import "firebase/auth";
 import { useState, useEffect } from "react";
-const Main = () =>{ 
+const Main = (loginState) =>{ 
     const navigate = useNavigate();
     const [init, setInit] = useState(false); //로그인 상태 
     const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태를 관리
@@ -15,14 +16,27 @@ const Main = () =>{
                 }
                 else{
                     setIsLoggedIn(false);
+                    console.log(isLoggedIn)
                 }
-                setInit(true)
+                setInit(true);
+                
             }) 
-    }, []);
+    }, [isLoggedIn]);
     return (
         <>
-        {init ? <div>
-                <Logout/>
+        {console.log(isLoggedIn)}
+        {init ? 
+            <div>
+                {
+                isLoggedIn === false?
+                    (<Routes>
+                        <Route path="/" element={<LoginBtn/>} />
+                    </Routes>)
+                    :
+                    (<Routes>
+                        <Route path="/" element={<Logout/>} />
+                    </Routes>)
+                }       
                 <LookUp/>
             </div> : 
             "Initializing..." }
