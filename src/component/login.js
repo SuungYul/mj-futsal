@@ -27,7 +27,7 @@ const Login = () =>{
             });
     }
     return <form>
-    <h1>로그인</h1>
+    <h1>로그인</h1> 
     <div className="login">
     <div className="input">
         <div> email : <input type="email" id="signInEmail" /> </div>
