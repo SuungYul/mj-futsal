@@ -14,7 +14,7 @@ const Sign = () =>{
     <div> 소속팀<input type="text" id="userTeam" /> </div>
     <div> 전화번호<input type="tel" id="telNum" /> </div>
     <button type="submit" id="signUpButton" onClick ={signUp} >회원가입 하기</button>
-    <Link to="/component.login">로그인 하러가기</Link>
+    <Link to="/">로그인 하러가기</Link>
     </form>;
   
 }
@@ -30,6 +30,7 @@ function signUp(e){ //회원가입 버튼 누를 시 유저 객체 생성하고 
     addData("userList","user", user) 
     firebase.auth().createUserWithEmailAndPassword(signUpEmail, signUpPassword)
         .then((userCredential) => {
+            alert("회원가입 성공!")
             console.log(userCredential)
             const user = userCredential.user;
         })
