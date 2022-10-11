@@ -28,13 +28,18 @@ function signUp(e){ //회원가입 버튼 누를 시 유저 객체 생성하고 
     const signUpEmail = document.getElementById('signUpEmail').value;
     const signUpPassword = document.getElementById('signUpPassword').value;
     const userID = document.getElementById('userID').value;
-    let user = new User(signUpEmail, signUpPassword, userName, userTeam, telNum, userID, 0, 0);
-    addData("userList",userID, user);
+    let newUser = new User(signUpEmail, signUpPassword, userName, userTeam, telNum, userID, 0, 0);
     firebase.auth().createUserWithEmailAndPassword(signUpEmail, signUpPassword)
         .then((userCredential) => {
-            alert("회원가입 성공!")
             console.log(userCredential)
-            const user = userCredential.user;
+            const user = userCredential.user; 
+            user.updateProfile({
+                displayName: newUser.userName //유저 displayName set
+                
+            })
+            addData("userList",user.uid, newUser); 
+            console.log(user);
+            alert("회원가입 성공!")
         })
         .catch((error) => {
             console.log('error')
