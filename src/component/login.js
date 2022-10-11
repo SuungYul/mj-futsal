@@ -18,7 +18,7 @@ const Login = () =>{
                 console.log(userCredential)
                 const user = userCredential.user;
                 console.log("메인 이동");
-                navigate("/component/main.main");
+                navigate("/");
             })
             .catch((error) => { //로그인 실패 시, 실패 메세지 
                 console.log('로그인 실패')
@@ -37,7 +37,7 @@ const Login = () =>{
     <br></br>
     {/* <button onClick={() => }>회원가입 하러가기</button> */}
     </div>
-    <Link to="/component.signUp">회원가입 하기</Link> 
+    <Link to="/signUp">회원가입 하기</Link> 
     </form>;
     
 }

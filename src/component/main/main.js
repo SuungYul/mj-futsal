@@ -2,7 +2,7 @@ import LookUp from "./lookUp"
 import Login from "./main_login"
 import Reserve from '../../reservation/reserve'
 import firebase from "firebase/app";
-import {useNavigate} from "react-router-dom"
+import {useNavigate, Routes, Route, Link} from "react-router-dom"
 import "firebase/auth";
 import { useState, useEffect } from "react";
 
