@@ -1,8 +1,5 @@
 import {useNavigate} from "react-router-dom"
 
-// const btn_style = {
-//     float : right
-// }
 
 const MyPageBtn = () =>{
     const navigate = useNavigate();

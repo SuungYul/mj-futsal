@@ -3,6 +3,10 @@ import {User} from "../data"
 import {getData} from "../firebase"
 import firebase from "firebase/app"
 import "firebase/auth"
+
+
+
+
 const MyPage = () => {
     const user = firebase.auth().currentUser;
     console.log(user);
@@ -14,7 +18,7 @@ const MyPage = () => {
             <div>
                 <p>개인정보</p>
                     <ul>
-                        <li id="name">이름: </li>
+                        <li id="name1">이름: <label for="name1"></label> </li> 
                     </ul>
                 <p>비매너온도</p>
                 <p>풋살장 이용횟수</p>
