@@ -25,6 +25,7 @@ const Main = () =>{
         <>
         {<div>
                 <Login/>
+                <myPageBtn/>
                 <LookUp/>
                 
                 {/* <Reserve/> */}
