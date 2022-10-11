@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
+import { ForFirebase } from "./data";
 
 const firebaseConfig = require("./token.json");
 
@@ -19,6 +20,9 @@ function testFunction(collection){
         });
     });
 }
+// function countUser(){
+//   db.collection(userList).
+// }
 
 /** 
  * 파이어베이스 스토리지에 데이터를 추가하는 함수

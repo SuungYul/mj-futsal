@@ -5,31 +5,29 @@ import firebase from "firebase/app";
 import {useNavigate, Routes, Route, Link} from "react-router-dom"
 import "firebase/auth";
 import { useState, useEffect } from "react";
-const Main = (loginState) =>{ 
+import TestBtn from "./testBtn";
+const Main = () =>{ 
     const navigate = useNavigate();
     const [init, setInit] = useState(false); //로그인 상태 
     const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태를 관리
     useEffect( () => {firebase.auth().onAuthStateChanged((user) => {
                 if (user) { //로그인 되어 있을 경우
                     setIsLoggedIn(true);
-                    console.log(isLoggedIn);
                 }
                 else{
                     setIsLoggedIn(false);
-                    console.log(isLoggedIn)
                 }
                 setInit(true);
-                
+                console.log(isLoggedIn);
             }) 
     }, [isLoggedIn]);
     return (
         <>
-        {console.log(isLoggedIn)}
         {init ? 
             <div>
                 {
-                isLoggedIn === false?
-                    (<Routes>
+                isLoggedIn === false?  //로그인 상태시 로그아웃, 로그아웃 상태시 로그인 버튼 띄움
+                    (<Routes> 
                         <Route path="/" element={<LoginBtn/>} />
                     </Routes>)
                     :
@@ -38,6 +36,7 @@ const Main = (loginState) =>{
                     </Routes>)
                 }       
                 <LookUp/>
+                <TestBtn/>
             </div> : 
             "Initializing..." }
         </>);
