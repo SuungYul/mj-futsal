@@ -1,24 +1,32 @@
-import { render, renderHook } from "@testing-library/react"
-import {User} from "../data"
-import {getData} from "../firebase"
+
 import firebase from "firebase/app"
 import "firebase/auth"
-
-
+import { useState } from "react"
 
 
 const MyPage = () => {
+    // 
     const user = firebase.auth().currentUser;
-    console.log(user);
-    const userInfo = getData("userList",user.uid , "string");
-    //console.log(userInfo);
+    const [username,setUsername] = useState(); //이름
+    const [useremail,setUseremail] = useState(); //이메일
+    const [userstuid,setUserstuid] = useState();
+      firebase.firestore().collection("userList").doc(user.uid).get().then((snapshot) => {
+        console.log(snapshot.data())
+        setUsername(snapshot.data().name)
+        setUseremail(snapshot.data().id)
+        setUserstuid(snapshot.data().userID)
+      })
+
     return (
+
         <div>
             <h1>마이페이지</h1>
             <div>
                 <p>개인정보</p>
                     <ul>
-                        <li id="name1">이름: <label for="name1"></label> </li> 
+                        <li id="name1">이름: <label>{username}</label> </li> 
+                        <li id="email">이메일: <label>{useremail}</label> </li>
+                        <li id="email">학번: <label>{userstuid}</label> </li> 
                     </ul>
                 <p>비매너온도</p>
                 <p>풋살장 이용횟수</p>

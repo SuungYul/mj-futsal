@@ -63,5 +63,5 @@ function getData(collection, document, type){
       })
 
 };
-
+export const authService = firebase.auth();
 export {testFunction, addData, getData};

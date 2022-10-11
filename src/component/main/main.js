@@ -8,7 +8,7 @@ import {useNavigate, Routes, Route, Link} from "react-router-dom"
 import "firebase/auth";
 import { useState, useEffect } from "react";
 // import TestBtn from "./testBtn";
-const Main = () =>{ 
+const Main = ({userObj}) =>{ 
     const navigate = useNavigate();
     const [init, setInit] = useState(false); //로그인 상태 
     const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태를 관리
@@ -23,6 +23,7 @@ const Main = () =>{
                 console.log(isLoggedIn);
             }) 
     }, []);
+    console.log(userObj);
     return (
         <>
         {init ? 
