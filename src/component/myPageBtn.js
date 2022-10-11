@@ -1,11 +1,17 @@
 import {useNavigate} from "react-router-dom"
 
-const myPageBtn = () =>{
+// const btn_style = {
+//     float : right
+// }
+
+const MyPageBtn = () =>{
     const navigate = useNavigate();
     const tomyPage = () =>{
         navigate("myPage");
     }
-    return <button onClick={tomyPage}>마이페이지</button>
+    return <button 
+                style={{float : "right"}}
+                onClick={tomyPage}>마이페이지</button>
 }
 
-export default myPageBtn
+export default MyPageBtn

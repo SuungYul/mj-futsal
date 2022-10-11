@@ -5,6 +5,7 @@ import Login from "./component/login.js"
 import Sign from "./component/signUp.js"
 import Main from "./component/main/main"
 import Reserve from "./reservation/reserve";
+import MyPage from "./component/myPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/signUp" element={<Sign/>} />
       <Route path="/" element={<Main/>} />
       <Route path="/reserve" element={<Reserve/>}/>
+      <Route path="/mypage" element={<MyPage/>}/>
     </Routes>
     </div>
   );
