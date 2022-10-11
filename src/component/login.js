@@ -20,7 +20,7 @@ const Login = () =>{
                 navigate("/");
             })
             .catch((error) => { //로그인 실패 시, 실패 메세지 
-                console.log('로그인 실패')
+                alert('로그인 실패');
                 const errorCode = error.code;
                 const errorMessage = error.message;
             });
