@@ -1,9 +1,10 @@
-
 import firebase from "firebase/app"
 import "firebase/auth"
 import { useState } from "react"
 import {useNavigate} from "react-router-dom"
 import { withdraw_user } from "./signUp"
+import {getData} from "../database/firebase.js"
+
 const MyPage = () => {
     const navigate = useNavigate();
     const tomain = () =>{
@@ -15,23 +16,19 @@ const MyPage = () => {
 
     const [username,setUsername] = useState(); //이름
     const [useremail,setUseremail] = useState(); //이메일
-    const [userstuid,setUserstuid] = useState();
-    const [userbadpt,setUserbadpt] = useState();
-    const [userplaycnt,setUserplaycnt] = useState();
-    firebase.firestore().collection("userList").doc(user.uid).get().then((snapshot) => {
-        console.log(snapshot.data())
-        setUsername(snapshot.data().name)
-        setUseremail(snapshot.data().id)
-        setUserstuid(snapshot.data().userID)
-        setUserbadpt(snapshot.data().badPoint)
-        setUserplaycnt(snapshot.data().playCount)
+    const [userstuid,setUserstuid] = useState(); //학번
+    const [userbadpt,setUserbadpt] = useState(); //비매너 점수
+    const [userplaycnt,setUserplaycnt] = useState(); //풋살장 이용횟수
+    const userPromise = getData("userList",user.uid,"string");
+
+    userPromise.then( (doc) => {
+        setUsername(doc.name)
+        setUseremail(doc.id)
+        setUserstuid(doc.userID)
+        setUserbadpt(doc.badPoint)
+        setUserplaycnt(doc.playCount)
     })
     
-
-
-
-
-
     let badPoing_grade = "😄";
 
     if(userbadpt>20){
