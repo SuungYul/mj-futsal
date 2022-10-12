@@ -1,8 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import {addData} from"../firebase.js"
+import {addData} from"../database/firebase.js"
 import { Link, Route, Routes } from "react-router-dom";
-import { User } from "../data";
+import { User } from "../database/data";
 
 //회원가입 컴포넌트
 const Sign = () =>{ 

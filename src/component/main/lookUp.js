@@ -1,4 +1,4 @@
-import {getData} from "../../firebase.js"
+import {getData} from "../../database/firebase.js"
 import "./lookUp.css"
 const LookUp = () =>{ 
     
