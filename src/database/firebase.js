@@ -70,5 +70,14 @@ function getData(collection, document, type){
   })
 };
 
+function deleteData(collection,document){
+  console.log("해치웠나?")
+  db.collection(collection).doc(document).delete().then(() => {
+    console.log("Document successfully deleted!");
+  }).catch((error) => {
+    console.error("Error removing document: ", error);
+  });
+}
+
 export const authService = firebase.auth();
-export {testFunction, addData, getData};
+export {testFunction, addData, getData, deleteData};

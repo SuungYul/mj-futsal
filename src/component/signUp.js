@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
+import "firebase/firestore";
 import "firebase/auth";
-import {addData} from"../database/firebase.js"
+import {addData, deleteData} from"../database/firebase.js"
 import { Link, Route, Routes } from "react-router-dom";
 import { User } from "../database/data";
 
@@ -48,3 +49,27 @@ function signUp(e){ //회원가입 버튼 누를 시 유저 객체 생성하고 
             const errorMessage = error.message;
         });
 }
+
+
+function withdraw_user (){
+    const user = firebase.auth().currentUser;
+    const db = firebase.firestore();
+    if(user){
+        if(window.confirm("회원탈퇴 하시겠습니까?")){
+            // console.log("해치웠나??????????????????????????????????????????????????????????????????????????????????????????????")
+            deleteData("userlist",user.uid);
+            user.delete().then(function() { // 아이디는 삭제됐는데 DB는 삭제안됨
+				// DB회원정보 삭제
+				console.log("해치웠나??????????")
+                // deleteData("userlist",user.uid);
+			})
+            .catch((error) => {
+                alert("에러 발생", error)
+            });
+        }
+        else{
+            alert("회원탈퇴 취소")
+        }
+    }
+}
+export {withdraw_user}
