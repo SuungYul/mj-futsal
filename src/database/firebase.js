@@ -47,7 +47,16 @@ function addData(collection, document, data){
  * 파이어베이스 스토리지에 데이터를 조회하는 함수
  * @param {string} collection Firestore에 저장된 collection 이름
  * @param {string} document Firestore에 위치한 document 이름
- * @param {ForFirebase} data collection에 추가할 데이터
+ * @param {ForFirebase} type collection에 추가할 데이터
+ * 
+ * 사용예
+ * getData("collecion", "document", new User())
+ * .then((result) => {
+ *   result로 하는 무언가
+ * })
+ * .catch((error) => {
+ *   error 핸들링
+ * })
  */
 function getData(collection, document, type){
   return new Promise((resolve, reject) =>{
@@ -70,5 +79,34 @@ function getData(collection, document, type){
   })
 };
 
+/** 
+ * 파이어베이스 스토리지에 데이터를 삭제하는 함수
+ * @param {string} collection Firestore에 저장된 collection 이름
+ * @param {string} document Firestore에 위치한 document 이름
+ * 
+ * 사용예
+ * deleteData("collecion", "document")
+ * .then((result) => {
+ *   result로 하는 무언가
+ * })
+ * .catch((error) => {
+ *   error 핸들링
+ * })
+ */
+ function deleteData(collection, document){
+  return new Promise((resolve, reject) =>{
+    db.collection(collection)
+      .doc(document)
+      .delete()
+      .then(() => {
+        resolve(true);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+  })
+};
+
+
 export const authService = firebase.auth();
-export {testFunction, addData, getData};
+export {testFunction, addData, getData, deleteData};
