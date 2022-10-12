@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-import {User} from "./data.js";
+import { ForFirebase } from "./data";
 
 const firebaseConfig = require("./token.json");
 
@@ -20,6 +20,9 @@ function testFunction(collection){
         });
     });
 }
+// function countUser(){
+//   db.collection(userList).
+// }
 
 /** 
  * 파이어베이스 스토리지에 데이터를 추가하는 함수
@@ -40,12 +43,6 @@ function addData(collection, document, data){
       });
 }
 
-/**
- * 파이어베이스 스토리지에 데이터를 조회하는 함수
- * @param {string} collection Firestore에 저장된 collection 이름
- * @param {string} document Firestore에 위치한 document 이름
- * @param {ForFirebase} type 조회할 문서의 데이터 타입 
- */
 function getData(collection, document, type){
     db.collection(collection)
       .doc(document)
@@ -55,6 +52,7 @@ function getData(collection, document, type){
         if(doc.exists){
             let data = doc.data();
             console.log(data);
+            return data;
         }
         else {
             console.log(`문서를 찾을 수 없음`);
@@ -63,6 +61,7 @@ function getData(collection, document, type){
       .catch((error) => {
         console.log(`문서를 가져오는데 에러가 있었습니다.\n${error}`);
       })
-};
 
+};
+export const authService = firebase.auth();
 export {testFunction, addData, getData};
