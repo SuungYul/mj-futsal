@@ -3,8 +3,9 @@ import "firebase/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./login.css"
-
 //로그인 컴포넌트
+
+
 const Login = () =>{
     const navigate = useNavigate();
     const signIn = e => {  //로그인 확인 시 파이어 베이스 프로젝트에 등록되있는 유저 확인용 로그인 기능 구현
@@ -26,16 +27,19 @@ const Login = () =>{
             });
     }
     return <form>
-    <h1>로그인</h1>
+    <h1>로그인</h1> 
     <div className="login">
     <div className="input">
         <div> email : <input type="email" id="signInEmail" /> </div>
         <div> password : <input type="password" id="signInPassword" /> </div>
     </div>
     <button type="submit" id="signInButton" onClick ={signIn}>로그인 하기</button>
+    <br></br>
+    {/* <button onClick={() => }>회원가입 하러가기</button> */}
     </div>
     <Link to="/signUp">회원가입 하기</Link> 
     </form>;
-  
+    
 }
+
 export default Login

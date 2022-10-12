@@ -52,6 +52,7 @@ function getData(collection, document, type){
         if(doc.exists){
             let data = doc.data();
             console.log(data);
+            return data;
         }
         else {
             console.log(`문서를 찾을 수 없음`);
@@ -60,6 +61,7 @@ function getData(collection, document, type){
       .catch((error) => {
         console.log(`문서를 가져오는데 에러가 있었습니다.\n${error}`);
       })
-};
 
+};
+export const authService = firebase.auth();
 export {testFunction, addData, getData};

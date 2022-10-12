@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import {addData} from"../firebase.js"
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { User } from "../data";
 
 //회원가입 컴포넌트
@@ -43,6 +43,7 @@ function signUp(e){ //회원가입 버튼 누를 시 유저 객체 생성하고 
         })
         .catch((error) => {
             console.log('error')
+            alert('Error')
             const errorCode = error.code;
             const errorMessage = error.message;
         });

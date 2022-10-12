@@ -1,12 +1,14 @@
 import LookUp from "./lookUp"
-import LoginBtn from "./loginBtn";
-import Logout from "./logout"
+import LoginBtn from "./loginBtn"
+import Logout from  "./logout"
+import Reserve from '../../reservation/reserve'
+import MyPageBtn from "../myPageBtn"
 import firebase from "firebase/app";
 import {useNavigate, Routes, Route, Link} from "react-router-dom"
 import "firebase/auth";
 import { useState, useEffect } from "react";
-import TestBtn from "./testBtn";
-const Main = () =>{ 
+// import TestBtn from "./testBtn";
+const Main = ({userObj}) =>{ 
     const navigate = useNavigate();
     const [init, setInit] = useState(false); //로그인 상태 
     const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태를 관리
@@ -20,23 +22,30 @@ const Main = () =>{
                 setInit(true);
                 console.log(isLoggedIn);
             }) 
-    }, [isLoggedIn]);
+    }, []);
+    console.log(userObj);
     return (
         <>
         {init ? 
             <div>
                 {
                 isLoggedIn === false?  //로그인 상태시 로그아웃, 로그아웃 상태시 로그인 버튼 띄움
-                    (<Routes> 
-                        <Route path="/" element={<LoginBtn/>} />
-                    </Routes>)
+                    // (<Routes> 
+                    //     <Route path="/" element={<LoginBtn/>} />
+                    // </Routes>)
+                    <LoginBtn/>
                     :
-                    (<Routes>
-                        <Route path="/" element={<Logout/>} />
-                    </Routes>)
+                    // (<Routes>
+                    //     <Route path="/" element={<Logout/>} />
+                    //     <Route path="/mypag" element={}/>
+                    // </Routes>)
+                    <>
+                    <Logout/>
+                    <MyPageBtn/>
+                    </>
                 }       
                 <LookUp/>
-                <TestBtn/>
+                {/* <TestBtn/> */}
             </div> : 
             "Initializing..." }
         </>);
