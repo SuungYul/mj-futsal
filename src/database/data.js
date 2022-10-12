@@ -8,9 +8,18 @@
  *  ForFirebase의 속성을 제외한 오브젝트 내부의 있는 property를 가져옴
  */
  class ForFirebase{
+    //getObject에서 무시할 속성의 이름과 타입
+    ignoreProperty;
+    ignoreType;
+    
+    //ForFirebase 기본속성
     toFirestore;
     fromFirestore;
+
     constructor(){
+        this.ignoreKeyword = new Array("ignoreKeyword", "ignoreType", "toFirestore", "fromFirestore");
+        this.ignoreType = new Array("function");
+
         this.toFirestore = (obj) => { return this.getObject; };
         this.fromFirestore = (snapshot, options) => {
             const args = snapshot.data(options);
@@ -24,10 +33,28 @@
      * @returns {ForFirebase}
      */
     buildObject(args){
-        console.log(args);
         let result = new this.constructor();
-        for(let key in args) result[key] = args[key];
+        for(const [key, value] of Object.entries(args)){
+            result[key] = value;
+        } 
         return result;
+    }
+
+    //디버그용 출력을 위한 toString
+    toString(){
+        let result = `===${typeof this}===\n`;
+        for(const [key, value] of Object.entries(this)){
+            if(this.checkIgnore(key)) continue;
+            if(this.checkIgnore(value)) continue;
+
+            result += `${key}: ${value}\n`;
+        } 
+
+        return result;
+    }
+
+    checkIgnore(key){
+        return this.ignoreKeyword.includes(key) || this.ignoreType.includes(key);
     }
 
     get getConvertor(){
@@ -40,10 +67,13 @@
 
     get getObject(){
         let result = {};
-        for(let key in this){
-            if(key === "toFirestore" || key === "fromFirestore") continue;
-            result[key] = this[key];
+        for(const [key, value] of Object.entries(this)){
+            if(this.checkIgnore(key)) continue;
+            if(this.checkIgnore(value)) continue;
+            
+            result[key] = value;
         }
+
         return result;
     }
 };
