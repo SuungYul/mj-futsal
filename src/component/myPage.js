@@ -2,21 +2,22 @@
 import firebase from "firebase/app"
 import "firebase/auth"
 import { useState } from "react"
+import {getData} from "../database/firebase.js"
 
 
 const MyPage = () => {
     // 
     const user = firebase.auth().currentUser;
+    console.log()
     const [username,setUsername] = useState(); //이름
     const [useremail,setUseremail] = useState(); //이메일
     const [userstuid,setUserstuid] = useState();
-      firebase.firestore().collection("userList").doc(user.uid).get().then((snapshot) => {
-        console.log(snapshot.data())
-        setUsername(snapshot.data().name)
-        setUseremail(snapshot.data().id)
-        setUserstuid(snapshot.data().userID)
-      })
-
+    const userPromise = getData("userList",user.uid,"string");
+    userPromise.then( (doc) => {
+        setUsername(doc.name)
+        setUseremail(doc.id)
+        setUserstuid(doc.userID)
+    })
     return (
 
         <div>
