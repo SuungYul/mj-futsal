@@ -5,13 +5,16 @@ import { useState } from "react"
 
 
 const MyPage = () => {
-    // 
+    
+
+
     const user = firebase.auth().currentUser;
+
     const [username,setUsername] = useState(); //이름
     const [useremail,setUseremail] = useState(); //이메일
     const [userstuid,setUserstuid] = useState();
       firebase.firestore().collection("userList").doc(user.uid).get().then((snapshot) => {
-        console.log(snapshot.data())
+        //console.log(snapshot.data())
         setUsername(snapshot.data().name)
         setUseremail(snapshot.data().id)
         setUserstuid(snapshot.data().userID)

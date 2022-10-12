@@ -1,8 +1,10 @@
 .art_team{
     display: block;
+    float: right;
+    padding-right: 200px;
 }
 
 .art_indi{
     display: none;
-    float: right;
+    
 }
