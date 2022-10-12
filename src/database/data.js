@@ -33,7 +33,6 @@
      * @returns {ForFirebase}
      */
     buildObject(args){
-        console.log(args);
         let result = new this.constructor();
         for(const [key, value] of Object.entries(args)){
             result[key] = value;
