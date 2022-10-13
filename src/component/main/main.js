@@ -30,22 +30,14 @@ const Main = ({props}) =>{
             <div>
                 {
                 isLoggedIn === false?  //로그인 상태시 로그아웃, 로그아웃 상태시 로그인 버튼 띄움
-                    // (<Routes> 
-                    //     <Route path="/" element={<LoginBtn/>} />
-                    // </Routes>)
                     <LoginBtn/>
                     :
-                    // (<Routes>
-                    //     <Route path="/" element={<Logout/>} />
-                    //     <Route path="/mypag" element={}/>
-                    // </Routes>)
                     <>
                     <Logout/>
                     <MyPageBtn/>
                     </>
                 }       
                 <LookUp/>
-                {/* <TestBtn/> */}
             </div> : 
             "Initializing..." }
         </>);

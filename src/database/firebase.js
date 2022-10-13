@@ -30,7 +30,7 @@ function testFunction(collection){
  * @param {string} document Firestore에 위치한 document 이름
  * @param {ForFirebase} data collection에 추가할 데이터
  */
-function addData(collection, document, data){
+function addData(collection, document, data){ 
     db.collection(collection)
       .doc(document)
       .withConverter(data.getConvertor)
@@ -42,6 +42,36 @@ function addData(collection, document, data){
         console.log(`실패\n${error}`)
       });
 }
+function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 업데이트
+  db.collection(collection)
+  .doc(document)
+  .withConverter(updateObj)
+  .update(updateObj)
+  .then(() =>{
+    console.log("성공적으로 업데이트 하였습니다.")
+  })
+  .catch((error) => {
+    console.error("Error updating document: ", error);
+  })
+}
+
+async function checkDocConflict(collection, document){ //컬렉션의 문서명이 원래 있는지 체크
+  return db.collection(collection)
+      .doc(document)
+      .get()
+      .then((doc) => {
+        if(doc.exists){
+            return true;
+        }
+        else {
+          return false;
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+      })
+ }
+
 
 /** 
  * 파이어베이스 스토리지에 데이터를 조회하는 함수
@@ -109,4 +139,4 @@ function getData(collection, document, type){
 
 
 export const authService = firebase.auth();
-export {testFunction, addData, getData, deleteData};
+export {testFunction, addData, getData, deleteData, fieldUpdate, checkDocConflict};

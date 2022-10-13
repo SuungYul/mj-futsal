@@ -9,6 +9,8 @@ import Reserve from "./reservation/reserve";
 import MyPage from "./component/myPage";
 import firebase from "firebase";
 import "firebase/auth"
+import CreateTeam from "./component/team/createTeam";
+import ApplyTeam from "./component/team/applyTeam";
 
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
       <Route path="/" element={<Main/>} />
       <Route path="/reserve" element={isLoggedIn?<Reserve/> : <Login/>} />
       <Route path="/mypage" element={isLoggedIn?<MyPage/> : <Login/>} />
+      <Route path="/applyTeam" element={isLoggedIn?<ApplyTeam/> : <Login/>} />
+      <Route path="/createTeam" element={isLoggedIn?<CreateTeam/> : <Login/>} />
     </Routes>
     : "Initializing..."
     }

@@ -4,6 +4,9 @@ import { useState } from "react"
 import {useNavigate} from "react-router-dom"
 import { withdraw_user } from "./signUp"
 import {getData} from "../database/firebase.js"
+import ApplyTeam from "./team/applyTeam"
+import CreateTeamBtn from "./team/createTeamBtn"
+import ApplyTeamBtn from "./team/applyTeamBtn"
 
 const MyPage = () => {
     const navigate = useNavigate();
@@ -19,6 +22,7 @@ const MyPage = () => {
     const [userstuid,setUserstuid] = useState(); //학번
     const [userbadpt,setUserbadpt] = useState(); //비매너 점수
     const [userplaycnt,setUserplaycnt] = useState(); //풋살장 이용횟수
+    const [userTeam,setUserTeam] = useState(); //풋살장 이용횟수
     const userPromise = getData("userList",user.uid,"string");
 
     userPromise.then( (doc) => {
@@ -27,6 +31,7 @@ const MyPage = () => {
         setUserstuid(doc.userID)
         setUserbadpt(doc.badPoint)
         setUserplaycnt(doc.playCount)
+        setUserTeam(doc.team)
     })
     
     let badPoing_grade = "😄";
@@ -45,16 +50,18 @@ const MyPage = () => {
     }
 
     return (
-
         <div>
             <button onClick={tomain}>메인으로</button>
             <h1>마이페이지</h1>
+            <CreateTeamBtn/> |  
+            <ApplyTeamBtn/>
             <div>
                 <p>개인정보</p>
                     <ul>
                         <li id="name1">이름: <label>{username}</label> </li> 
                         <li id="email">이메일: <label>{useremail}</label> </li>
-                        <li id="email">학번: <label>{userstuid}</label> </li> 
+                        <li id="stuID">학번: <label>{userstuid}</label> </li> 
+                        <li id="team">팀: <label>{userTeam}</label> </li> 
                     </ul>
                 <p>비매너온도 : <label>{badPoing_grade}</label></p>
 
