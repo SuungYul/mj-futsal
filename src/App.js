@@ -1,45 +1,29 @@
-import React from "react"
-import "./App.css"
-import { Routes, Route, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Login from "./component/login.js"
-import Sign from "./component/signUp.js"
-import Main from "./component/main/main"
-import Reserve from "./reservation/reserve";
+import "firebase/auth";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Login from "./component/login.js";
+import Main from "./component/main/Main";
 import MyPage from "./component/myPage";
-import firebase from "firebase";
-import "firebase/auth"
-import CreateTeam from "./component/team/createTeam";
+import Sign from "./component/signUp.js";
 import ApplyTeam from "./component/team/applyTeam";
-import LookUpComponent from './component/main/look-up';
+import CreateTeam from "./component/team/createTeam";
+import Header from "./Header";
+import Reserve from "./reservation/reserve";
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [init, setInit] = useState(false)
-  useEffect(firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-    setInit(true);
-  }), [])
+const App = () => {
   return (
     <div className="App">
-    
-    {init? 
-    <Routes>
-      <Route path="/login" element={<Login/>} />
-      <Route path="/signUp" element={<Sign/>} />
-      <Route path="/" element={<Main/>} />
-      <Route path="/look-up" element={<LookUpComponent/>} />
-      <Route path="/reserve" element={isLoggedIn?<Reserve/> : <Login/>} />
-      <Route path="/my-page" element={isLoggedIn?<MyPage/> : <Login/>} />
-      <Route path="/apply-team" element={isLoggedIn?<ApplyTeam/> : <Login/>} />
-      <Route path="/create-team" element={isLoggedIn?<CreateTeam/> : <Login/>} />
-    </Routes>
-    : "Initializing..."
-    }
+      <Header />
+      <Routes>
+        <Route path="/login" element={<Login/>} />
+        <Route path="/signUp" element={<Sign/>} />
+        <Route path="/" element={<Main/>} />
+        <Route path="/reserve" element={<Reserve />} />
+        <Route path="/my-page" element={<MyPage />} />
+        <Route path="/apply-team" element={<ApplyTeam />} />
+        <Route path="/create-team" element={<CreateTeam />} />
+      </Routes>
     </div>
   );
 }
