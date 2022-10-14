@@ -5,7 +5,7 @@ import "firebase/auth";
 const CreateTeamBtn = () =>{
     const navigate = useNavigate();
     const toCreateTeam = () =>{
-        navigate("/createTeam");
+        navigate("/create-team");
     }
     return <button onClick={toCreateTeam}>팀 개설</button>
 }

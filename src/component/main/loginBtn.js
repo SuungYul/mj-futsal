@@ -6,7 +6,7 @@ const LoginBtn = () =>{
     const toLogin = () =>{
         navigate("login");
     }
-    return <button onClick={toLogin}>로그인하기</button>
+    return <button style={{float: "right"}} onClick={toLogin}>로그인하기</button>
 }
 
 export default LoginBtn

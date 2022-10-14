@@ -1,5 +1,5 @@
 import React from 'react';
-import "./lookUp.css";
+import "./Main.css";
 
 const week = ['일','월','화','수','목','금','토'];
 
