@@ -27,19 +27,21 @@ const Login = () =>{
             });
     }
     return <form>
-    <h1>로그인</h1> 
-    <div className="login">
-    <div className="input">
-        <div> email : <input type="email" id="signInEmail" /> </div>
-        <div> password : <input type="password" id="signInPassword" /> </div>
+    <div className="whole">
+        <div className="login">
+            <h1 id="title">로그인</h1> 
+                <div className="login_input">
+                    <h3>E-mail</h3>
+                    <input type="email" id="signInEmail" placeholder="Email"/>
+                    <h3>Password</h3>
+                    <input type="password" id="signInPassword" placeholder="Password"/>
+                    <button type="submit" id="signInButton" onClick ={signIn}>로그인</button>
+                    <hr></hr>
+                    <button id="firstButton"><Link to="/signUp">회원가입</Link></button>
+                    {/* <button onClick={() => }>회원가입 하러가기</button> */}
+                </div> 
+        </div>
     </div>
-    <button type="submit" id="signInButton" onClick ={signIn}>로그인 하기</button>
-    <br></br>
-    {/* <button onClick={() => }>회원가입 하러가기</button> */}
-    </div>
-    <Link to="/signUp">회원가입 하기</Link> 
-    </form>;
-    
+        </form>;
 }
-
 export default Login

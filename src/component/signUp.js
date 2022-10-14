@@ -7,16 +7,23 @@ import { User } from "../data";
 //회원가입 컴포넌트
 const Sign = () =>{ 
     return <form>
-    <h1>회원가입</h1>
-    <div> 이메일: <input type="email" id="signUpEmail" /> </div>
-    <div> 비밀번호 : <input type="password" id="signUpPassword" /> </div>
-    <div> 이름<input type="text" id="userName" /> </div>
-    <div> 소속팀<input type="text" id="userTeam" /> </div>
-    <div> 전화번호<input type="tel" id="telNum" /> </div>
-    <div> 학번 <input type="text" id="userID" /></div>
-    <button type="submit" id="signUpButton" onClick ={signUp} >회원가입 하기</button>
-    <Link to="/login">로그인 하러가기</Link>
+    <div className="whole">
+        <div className="signup">
+            <h1 id="title">회원가입</h1>
+            <div className="signup_input">
+                <h3>Email</h3><input type="email" id="signUpEmail" placeholder="Email"/>
+                <h3>Password</h3><input type="password" id="signUpPassword" placeholder="Password"/> 
+                <h3>이름</h3> <input type="text" id="userName" placeholder="이름"/>
+                <h3>소속팀</h3><input type="text" id="userTeam" placeholder="소속팀"/>
+                <h3>전화번호</h3><input type="tel" id="telNum" placeholder="전화번호"/>
+                <h3>학번</h3> <input type="text" id="userID" placeholder="학번"/>
+            </div>
+            <button type="submit" id="signUpButton" onClick ={signUp} >회원가입 하기</button>
+            <button id="gologinbutton"><Link to="/login">로그인 하러가기</Link></button>
+        </div>
+    </div>
     </form>;
+    
   
 }
 export default Sign
