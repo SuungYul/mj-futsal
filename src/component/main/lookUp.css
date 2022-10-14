@@ -20,7 +20,10 @@
     
 }
 
-.weekContainer > button:focus{
+/* .weekContainer > button:active{
+    background-color: chartreuse;
+} */
+.day0:active{
     background-color: chartreuse;
 }
 /* 마우스 올렸을 때 색 변경 */
@@ -29,11 +32,15 @@
     /* border:  1px lightgray; */
 }
 
-.sat{
+#active{
+    background-color: chartreuse;
+}
+
+#sat{
     color: blue;
 }
 
-.sun{
+#sun{
     color: red;
 }
 

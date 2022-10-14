@@ -11,7 +11,7 @@ import firebase from "firebase";
 import "firebase/auth"
 import CreateTeam from "./component/team/createTeam";
 import ApplyTeam from "./component/team/applyTeam";
-
+import LookUpComponent from './component/main/look-up';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,10 +32,11 @@ function App() {
       <Route path="/login" element={<Login/>} />
       <Route path="/signUp" element={<Sign/>} />
       <Route path="/" element={<Main/>} />
+      <Route path="/look-up" element={<LookUpComponent/>} />
       <Route path="/reserve" element={isLoggedIn?<Reserve/> : <Login/>} />
-      <Route path="/mypage" element={isLoggedIn?<MyPage/> : <Login/>} />
-      <Route path="/applyTeam" element={isLoggedIn?<ApplyTeam/> : <Login/>} />
-      <Route path="/createTeam" element={isLoggedIn?<CreateTeam/> : <Login/>} />
+      <Route path="/my-page" element={isLoggedIn?<MyPage/> : <Login/>} />
+      <Route path="/apply-team" element={isLoggedIn?<ApplyTeam/> : <Login/>} />
+      <Route path="/create-team" element={isLoggedIn?<CreateTeam/> : <Login/>} />
     </Routes>
     : "Initializing..."
     }
