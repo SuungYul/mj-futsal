@@ -1,22 +1,26 @@
 import firebase from "firebase/app"
 import "firebase/auth"
-import { useState } from "react"
-import {useNavigate} from "react-router-dom"
+import { useEffect, useState } from "react"
+import {Navigate, useNavigate} from "react-router-dom"
 import { withdraw_user } from "./signUp"
 import {getData} from "../database/firebase.js"
 import ApplyTeam from "./team/applyTeam"
 import CreateTeamBtn from "./team/createTeamBtn"
 import ApplyTeamBtn from "./team/applyTeamBtn"
+import { get } from "jquery"
+
 
 const MyPage = () => {
     const navigate = useNavigate();
     const tomain = () =>{
         navigate("/");
     }
+    // const [user, setUser ] = useState();
+    // setUser(firebase.auth().onAuthStateChanged())
 
-
+    
+    
     const user = firebase.auth().currentUser;
-
     const [username,setUsername] = useState(); //이름
     const [useremail,setUseremail] = useState(); //이메일
     const [userstuid,setUserstuid] = useState(); //학번
@@ -33,6 +37,7 @@ const MyPage = () => {
         setUserplaycnt(doc.playCount)
         setUserTeam(doc.team)
     })
+    
     
     let badPoing_grade = "😄";
 
@@ -83,3 +88,4 @@ const MyPage = () => {
     )
 }
 export default MyPage
+
