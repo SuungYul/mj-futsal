@@ -57,6 +57,7 @@
 }
 
 #ToMainBtn{
+    padding: 10px;
     float: left;
     background: none;
     cursor: pointer;

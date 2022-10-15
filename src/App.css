@@ -11,3 +11,9 @@ h1{
   float: left;
   
 }
+
+#head_div{
+  /* padding: 10px; */
+  /* border-bottom: solid 1px lightgray; */
+  height: 50px;
+}

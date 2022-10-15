@@ -54,6 +54,38 @@ function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 
     console.error("Error updating document: ", error);
   })
 }
+/** 
+ * 파이어베이스 스토리지에 데이터를 추가하는 함수
+ * @param {string} collection Firestore에 저장된 collection 이름
+ * @param {string} key Firestore에 위치한 document의 key값
+ * @param {string} filter value 의 조건 비교 문자열만 가능("==", ">", "<")
+ */
+
+function getFilteredDocs(collection, key, filter, value ){
+  db.collection(collection).where(key, filter, value)
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc);
+            //console.log(doc.id, " => ", doc.data());
+        });
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+}
+
+async function getDocs(collection){
+  return db.collection(collection)
+    .get()
+    .then((querySnapshot) => {
+        return querySnapshot.docs;
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+}
 
 async function checkDocConflict(collection, document){ //컬렉션의 문서명이 원래 있는지 체크
   return db.collection(collection)
@@ -139,4 +171,4 @@ function getData(collection, document, type){
 
 
 export const authService = firebase.auth();
-export {testFunction, addData, getData, deleteData, fieldUpdate, checkDocConflict};
+export {testFunction, addData, getData, deleteData, fieldUpdate, checkDocConflict, getFilteredDocs, getDocs};

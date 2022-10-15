@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./reserve.css"
 const Reserve = () => {
-    const navigate = useNavigate();
-    const tomain = () => {
-        navigate("/");
-    }
     const [isTeam, teamCheck] = useState([]);
     const clickRB = (e) => {
         teamCheck(e.target.value)
@@ -13,8 +8,6 @@ const Reserve = () => {
 
     return (
         <div>
-            <button onClick={tomain}>메인으로</button>
-
             <h1>풋살장 예약 신청</h1>
             {/* 현재 예약 정보는 예약 DB에서 긁어와야됨 */}
             <div> 현재 예약 정보 </div>

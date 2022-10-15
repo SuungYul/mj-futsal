@@ -31,7 +31,6 @@ export default Sign
 function signUp(e){ //회원가입 버튼 누를 시 유저 객체 생성하고 데이터 베이스에 저장 및 파이어베이스 프로젝트에 유저등록
     e.preventDefault();
     const userName = document.getElementById('userName').value;
-    //const userTeam = document.getElementById('userTeam').value;
     const telNum = document.getElementById('telNum').value;
     const signUpEmail = document.getElementById('signUpEmail').value;
     const signUpPassword = document.getElementById('signUpPassword').value;

@@ -1,76 +1,51 @@
-import firebase from "firebase/app"
 import "firebase/auth"
-import { useEffect, useState } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { withdraw_user } from "./signUp"
-import { getData } from "../database/firebase.js"
-import ApplyTeam from "./team/applyTeam"
 import CreateTeamBtn from "./team/createTeamBtn"
 import ApplyTeamBtn from "./team/applyTeamBtn"
-import { get } from "jquery"
-import User from "../database/User"
 import "./myPage.css"
 
-const MyPage = () => {
+const MyPage = ({ userInfo }) => {
     const navigate = useNavigate();
     const tomain = () => {
         navigate("/");
     }
-    // const [user, setUser ] = useState();
-    // setUser(firebase.auth().onAuthStateChanged())
-
-
-
-    // const user = firebase.auth().currentUser;
-    const [username, setUsername] = useState(); //이름
-    const [useremail, setUseremail] = useState(); //이메일
-    const [userstuid, setUserstuid] = useState(); //학번
-    const [userbadpt, setUserbadpt] = useState(); //비매너 점수
-    const [userplaycnt, setUserplaycnt] = useState(); //풋살장 이용횟수
-    const [userTeam, setUserTeam] = useState(); //풋살장 이용횟수
-    const userPromise = getData("userList", User(), "string");
-
-    userPromise.then((doc) => {
-        setUsername(doc.name)
-        setUseremail(doc.id)
-        setUserstuid(doc.userID)
-        setUserbadpt(doc.badPoint)
-        setUserplaycnt(doc.playCount)
-        setUserTeam(doc.team)
-    })
-
-
     let badPoing_grade = "😄";
-
-    if (userbadpt > 20) {
-        badPoing_grade = "🙂";
-        if (userbadpt > 40) {
-            badPoing_grade = "😐";
-            if (userbadpt > 60) {
+    useEffect(() => {
+        const userbadpt = userInfo.badPoint;
+        switch (userbadpt) {
+            case userbadpt > 20:
+                badPoing_grade = "🙂";
+                break;
+            case userbadpt > 40:
+                badPoing_grade = "😐";
+                break;
+            case userbadpt > 60:
                 badPoing_grade = "😨";
-                if (userbadpt > 80) {
-                    badPoing_grade = "🤬";
-                }
-            }
+                break;
+            case userbadpt > 80:
+                badPoing_grade = "🤬";
+                break;
         }
-    }
+    }, [])
 
     return (
         <div id="top_div">
-            <h1>마이페이지</h1>
+            <div id="h1_div"><h1>마이페이지</h1></div>
             <div>
                 <CreateTeamBtn /> |
                 <ApplyTeamBtn />
                 <p>개인정보</p>
                 <ul>
-                    <li id="name1">이름: <label>{username}</label> </li>
-                    <li id="email">이메일: <label>{useremail}</label> </li>
-                    <li id="stuID">학번: <label>{userstuid}</label> </li>
-                    <li id="team">팀: <label>{userTeam}</label> </li>
+                    <li id="name1">이름: <label>{userInfo.name}</label> </li>
+                    <li id="email">이메일: <label>{userInfo.id}</label> </li>
+                    <li id="stuID">학번: <label>{userInfo.userID}</label> </li>
+                    <li id="team">팀: <label>{userInfo.team}</label> </li>
                 </ul>
                 <p>비매너온도 : <label>{badPoing_grade}</label></p>
 
-                <p>풋살장 이용횟수 : <label>{userplaycnt}회</label></p>
+                <p>풋살장 이용횟수 : <label>{userInfo.playCount}회</label></p>
             </div>
             <div>
                 <p>현재 신청내역</p>
