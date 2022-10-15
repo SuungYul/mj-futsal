@@ -4,3 +4,10 @@ a{
   text-decoration: none;
   color:black;
 }
+
+h1{
+  justify-content: center;
+  text-align: center;
+  float: left;
+  
+}

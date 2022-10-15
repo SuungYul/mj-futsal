@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import LoginBtn from "./component/main/loginBtn";
 import Logout from "./component/main/logout";
+import ToMainBtn from "./component/main/ToMainBtn";
 import MyPageBtn from "./component/myPageBtn";
 
 function Header() {
@@ -17,7 +18,7 @@ function Header() {
     }
   }), [])
   return (
-    <>
+    <> <ToMainBtn/>
     {
       isLoggedIn ? <><Logout /><MyPageBtn /></> : <LoginBtn />
     }

@@ -1,36 +1,36 @@
 import firebase from "firebase/app"
 import "firebase/auth"
 import { useEffect, useState } from "react"
-import {Navigate, useNavigate} from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import { withdraw_user } from "./signUp"
-import {getData} from "../database/firebase.js"
+import { getData } from "../database/firebase.js"
 import ApplyTeam from "./team/applyTeam"
 import CreateTeamBtn from "./team/createTeamBtn"
 import ApplyTeamBtn from "./team/applyTeamBtn"
 import { get } from "jquery"
 import User from "../database/User"
-
+import "./myPage.css"
 
 const MyPage = () => {
     const navigate = useNavigate();
-    const tomain = () =>{
+    const tomain = () => {
         navigate("/");
     }
     // const [user, setUser ] = useState();
     // setUser(firebase.auth().onAuthStateChanged())
 
-    
-    
-    // const user = firebase.auth().currentUser;
-    const [username,setUsername] = useState(); //이름
-    const [useremail,setUseremail] = useState(); //이메일
-    const [userstuid,setUserstuid] = useState(); //학번
-    const [userbadpt,setUserbadpt] = useState(); //비매너 점수
-    const [userplaycnt,setUserplaycnt] = useState(); //풋살장 이용횟수
-    const [userTeam,setUserTeam] = useState(); //풋살장 이용횟수
-    const userPromise = getData("userList",User(),"string");
 
-    userPromise.then( (doc) => {
+
+    // const user = firebase.auth().currentUser;
+    const [username, setUsername] = useState(); //이름
+    const [useremail, setUseremail] = useState(); //이메일
+    const [userstuid, setUserstuid] = useState(); //학번
+    const [userbadpt, setUserbadpt] = useState(); //비매너 점수
+    const [userplaycnt, setUserplaycnt] = useState(); //풋살장 이용횟수
+    const [userTeam, setUserTeam] = useState(); //풋살장 이용횟수
+    const userPromise = getData("userList", User(), "string");
+
+    userPromise.then((doc) => {
         setUsername(doc.name)
         setUseremail(doc.id)
         setUserstuid(doc.userID)
@@ -38,37 +38,36 @@ const MyPage = () => {
         setUserplaycnt(doc.playCount)
         setUserTeam(doc.team)
     })
-    
-    
+
+
     let badPoing_grade = "😄";
 
-    if(userbadpt>20){
+    if (userbadpt > 20) {
         badPoing_grade = "🙂";
-        if(userbadpt>40){
+        if (userbadpt > 40) {
             badPoing_grade = "😐";
-            if(userbadpt>60){
+            if (userbadpt > 60) {
                 badPoing_grade = "😨";
-                if(userbadpt>80){
-                    badPoing_grade ="🤬";
+                if (userbadpt > 80) {
+                    badPoing_grade = "🤬";
                 }
             }
         }
     }
 
     return (
-        <div>
-            <button onClick={tomain}>메인으로</button>
+        <div id="top_div">
             <h1>마이페이지</h1>
-            <CreateTeamBtn/> |  
-            <ApplyTeamBtn/>
             <div>
+                <CreateTeamBtn /> |
+                <ApplyTeamBtn />
                 <p>개인정보</p>
-                    <ul>
-                        <li id="name1">이름: <label>{username}</label> </li> 
-                        <li id="email">이메일: <label>{useremail}</label> </li>
-                        <li id="stuID">학번: <label>{userstuid}</label> </li> 
-                        <li id="team">팀: <label>{userTeam}</label> </li> 
-                    </ul>
+                <ul>
+                    <li id="name1">이름: <label>{username}</label> </li>
+                    <li id="email">이메일: <label>{useremail}</label> </li>
+                    <li id="stuID">학번: <label>{userstuid}</label> </li>
+                    <li id="team">팀: <label>{userTeam}</label> </li>
+                </ul>
                 <p>비매너온도 : <label>{badPoing_grade}</label></p>
 
                 <p>풋살장 이용횟수 : <label>{userplaycnt}회</label></p>
@@ -80,7 +79,7 @@ const MyPage = () => {
             <div>
                 <p>과거 신청내역</p>
             </div>
-            <button onClick={()=>{
+            <button onClick={() => {
                 withdraw_user();
                 alert("회원탈퇴가 되었습니다");
                 tomain();
