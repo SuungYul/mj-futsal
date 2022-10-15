@@ -114,6 +114,8 @@ function playCountIncrement(collection, user){
       userRef.update({
         playcount: firebase.firestore.FieldValue.increment(1)
       });
+
+      resolve(true);
   });
 };
 
@@ -125,6 +127,8 @@ function playCountDecrement(collection, user){
       userRef.update({
         playcount: firebase.firestore.FieldValue.increment(-1)
       });
+
+      resolve(true);
   });
 };
 
