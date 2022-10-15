@@ -1,9 +1,9 @@
 import "firebase/auth"
 import { useEffect } from "react"
 import {useNavigate} from "react-router-dom"
-import { withdraw_user } from "./signUp"
-import CreateTeamBtn from "./team/createTeamBtn"
-import ApplyTeamBtn from "./team/applyTeamBtn"
+import { withdraw_user } from "../signUp/signUp"
+import CreateTeamBtn from "../button/createTeamBtn"
+import ApplyTeamBtn from "../button/applyTeamBtn"
 
 const MyPage = ({userInfo}) => {
     const navigate = useNavigate();

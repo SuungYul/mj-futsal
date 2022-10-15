@@ -3,9 +3,9 @@ import firebase from "firebase";
 import "firebase/auth";
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import LoginBtn from "./component/main/loginBtn";
-import Logout from "./component/main/logout";
-import MyPageBtn from "./component/myPageBtn";
+import LoginBtn from "./component/button/loginBtn";
+import Logout from "./component/login/logout";
+import MyPageBtn from "./component/button/myPageBtn";
 
 function Header(isLoggedIn) {
   return (
