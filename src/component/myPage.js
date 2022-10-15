@@ -8,6 +8,7 @@ import ApplyTeam from "./team/applyTeam"
 import CreateTeamBtn from "./team/createTeamBtn"
 import ApplyTeamBtn from "./team/applyTeamBtn"
 import { get } from "jquery"
+import User from "../database/User"
 
 
 const MyPage = () => {
@@ -20,14 +21,14 @@ const MyPage = () => {
 
     
     
-    const user = firebase.auth().currentUser;
+    // const user = firebase.auth().currentUser;
     const [username,setUsername] = useState(); //이름
     const [useremail,setUseremail] = useState(); //이메일
     const [userstuid,setUserstuid] = useState(); //학번
     const [userbadpt,setUserbadpt] = useState(); //비매너 점수
     const [userplaycnt,setUserplaycnt] = useState(); //풋살장 이용횟수
     const [userTeam,setUserTeam] = useState(); //풋살장 이용횟수
-    const userPromise = getData("userList",user.uid,"string");
+    const userPromise = getData("userList",User(),"string");
 
     userPromise.then( (doc) => {
         setUsername(doc.name)

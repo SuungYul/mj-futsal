@@ -2,12 +2,12 @@ import firebase from "firebase/app";
 import {useNavigate} from "react-router-dom"
 import "firebase/auth";
 import { addData, getData, checkDocConflict,fieldUpdate } from "../../database/firebase";
-import { User } from "../../database/data";
+import User from "../../database/User";
 import { useState, useEffect } from "react";
 
 const CreateTeam = () =>{ //팀 개설 컴포넌트
-    const user = firebase.auth().currentUser; //유저 정보 미리 받아와서 필요한 정보 컴포넌트내에 저장
-    const userPromise = getData("userList",user.uid, "string");
+    // const user = firebase.auth().currentUser; //유저 정보 미리 받아와서 필요한 정보 컴포넌트내에 저장
+    const userPromise = getData("userList",User(), "string");
     const [userName,setUserName] = useState(); 
     const [userStuId,setUserStuId] = useState(); 
     const [userBadpt,setUserBadpt] = useState(); 
@@ -44,7 +44,7 @@ const CreateTeam = () =>{ //팀 개설 컴포넌트
                     leader:userName +"("+userStuId+")",
                     member:[]
                 }); 
-               fieldUpdate("userList", user.uid, {team:TeamName}); //팀 개설자의 DB에 팀 반영
+               fieldUpdate("userList", User(), {team:TeamName}); //팀 개설자의 DB에 팀 반영
                fieldUpdate("teamList", TeamName,{member:firebase.firestore.FieldValue.arrayUnion(userName+"("+userStuId+")")});//팀 DB에 개설자 Member로 추가
             } 
         } )
