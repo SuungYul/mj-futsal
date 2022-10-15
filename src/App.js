@@ -1,19 +1,19 @@
-import React from "react"
-import "./App.css"
-import { Routes, Route, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Login from "./component/login.js"
-import Sign from "./component/signUp.js"
-import Main from "./component/main/main"
-import Reserve from "./reservation/reserve";
-import MyPage from "./component/myPage";
 import firebase from "firebase";
-import "firebase/auth"
-import CreateTeam from "./component/team/createTeam";
+import "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { getData, getDocs } from "./database/firebase";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Login from "./component/login.js";
+import Main from "./component/main/Main";
+import MyPage from "./component/myPage";
+import Sign from "./component/signUp.js";
 import ApplyTeam from "./component/team/applyTeam";
-import {getData, getDocs} from "./database/firebase.js"
+import CreateTeam from "./component/team/createTeam";
+import Header from "./Header";
+import Reserve from "./reservation/reserve";
 
-function App() {
+const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태
   const [init, setInit] = useState(false)     //인증 응답 상태
   const [userInfo, setUserInfo] =useState();  //유저 정보
@@ -28,7 +28,6 @@ function App() {
           setUserInfo(doc);
           console.log("유저 정보 세팅 완료");
       })
-      console.log(teamPromise);
       teamPromise.then( (docs) =>{
           const teamNames = docs.map((doc) =>{ //docs 순회하며 name값 추출
             return doc = doc.id;
@@ -42,22 +41,22 @@ function App() {
     }
     setInit(true);
 })}, [])
+  
   return (
+    init&&userInfo&&teamList!=[]? // 인증상태, 유저DB, 팀 리스트 모두 받아와야 렌더링(시작시, 새로고침시 가져옴)
     <div className="App">
-    {init&&userInfo&&teamList!=[]?  //인증상태, 유저DB, 팀 리스트 모두 받아와야 렌더링 시작
-    <Routes>
-      {console.log(teamList)}
-      <Route path="/login" element={<Login/>} />
-      <Route path="/signUp" element={<Sign/>} />
-      <Route path="/" element={<Main userInfo={userInfo} />} />
-      <Route path="/reserve" element={isLoggedIn?<Reserve /> : <Login/>} />
-      <Route path="/mypage" element={isLoggedIn?<MyPage userInfo={userInfo} /> : <Login/>} />
-      <Route path="/applyTeam" element={isLoggedIn?<ApplyTeam teamList={teamList}/> : <Login/>} />
-      <Route path="/createTeam" element={isLoggedIn?<CreateTeam userInfo={userInfo} /> : <Login/>} />
-    </Routes>
-    : "Initializing..."
-    }
+      <Header isLoggedIn={isLoggedIn}/>
+      <Routes>
+        <Route path="/login" element={<Login/>} />
+        <Route path="/signUp" element={<Sign/>} />
+        <Route path="/" element={<Main userInfo={userInfo} />} />
+        <Route path="/reserve" element={<Reserve />} />
+        <Route path="/my-page" element={<MyPage userInfo={userInfo}/> } />
+        <Route path="/apply-team" element={<ApplyTeam teamList={teamList} userInfo={userInfo}/>} />
+        <Route path="/create-team" element={<CreateTeam userInfo={userInfo} />} />
+      </Routes>
     </div>
+    :"Initializing..."
   );
 }
 

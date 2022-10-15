@@ -5,7 +5,7 @@ import "firebase/auth";
 const ApplyTeamBtn = () =>{
     const navigate = useNavigate();
     const toApplyTeam = () =>{
-        navigate("/applyTeam");
+        navigate("/apply-team");
     }
     return <button onClick={toApplyTeam}>팀 신청</button>
 }

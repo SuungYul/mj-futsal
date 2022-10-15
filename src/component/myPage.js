@@ -1,5 +1,5 @@
 import "firebase/auth"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import {useNavigate} from "react-router-dom"
 import { withdraw_user } from "./signUp"
 import CreateTeamBtn from "./team/createTeamBtn"
@@ -11,8 +11,8 @@ const MyPage = ({userInfo}) => {
         navigate("/");
     }
     let badPoing_grade = "😄";
-    const userbadpt = userInfo.badPoint;
     useEffect( () =>{
+        const userbadpt = userInfo.badPoint;
         switch(userbadpt){
             case userbadpt>20:
                 badPoing_grade = "🙂";

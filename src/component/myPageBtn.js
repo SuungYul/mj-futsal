@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom"
 const MyPageBtn = () =>{
     const navigate = useNavigate();
     const tomyPage = () =>{
-        navigate("myPage");
+        navigate("my-page");
     }
     return <button 
                 style={{float : "right"}}
