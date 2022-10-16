@@ -3,17 +3,17 @@ import firebase from "firebase";
 import "firebase/auth";
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import LoginBtn from "./component/main/loginBtn";
-import Logout from "./component/main/logout";
-import MyPageBtn from "./component/myPageBtn";
-
-function Header(isLoggedIn) {
+import LoginBtn from "./component/button/loginBtn";
+import Logout from "./component/login/logout";
+import MyPageBtn from "./component/button/myPageBtn";
+import ToMainBtn from "./component/main/ToMainBtn";
+function Header(prop) {
   return (
-    <>
+    <div id="head_div"> <ToMainBtn/>
     {
-      isLoggedIn ? <><Logout /><MyPageBtn /></> : <LoginBtn />
+      prop.isLoggedIn ? <><Logout /><MyPageBtn /></> : <LoginBtn />
     }
-    </>
+    </div>
   );
 }
 

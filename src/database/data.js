@@ -1,3 +1,6 @@
+import { toHaveDisplayValue } from "@testing-library/jest-dom/dist/matchers";
+import { forwardRef } from "react";
+
 /**
  * 파이어베이스를 위한 클래스
  * 
@@ -84,17 +87,60 @@
  * 임시적으로 User 클래스를 작성함
  */
 class User extends ForFirebase{
-    constructor(id, pw, name, team, phoneNumber, userID, playCount, badPoint){
+    constructor(id, pw, name, team, userID, playCount, badPoint){
         super();
         this.id = id;
         this.pw = pw;
         this.name = name;
         this.team = team;
-        this.phoneNumber = phoneNumber;
         this.userID = userID;
         this.playCount = playCount;
         this.badPoint = badPoint;
     }
 };
 
-export {ForFirebase, User};
+class Team extends ForFirebase{
+    constructor(id, pw, name, owner, clubCategory){
+        super();
+        this.id = id;
+        this.pw = pw;
+        this.name = name;
+        this.owner = owner;
+        // this.users = users;
+        this.clubCategory = clubCategory
+        // this.users = new Arrays();
+    }
+};
+
+class PlayTeam extends ForFirebase{
+    constructor(id, teamInfo){
+        super();
+        this.id = id;
+        this.teamInfo = teamInfo
+        this.PlayUsers = new Array();
+    }
+};
+
+class Timeblock extends ForFirebase{
+    constructor(id, startTime, endTime){
+        super();
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+
+        this.candTeams = new Array();
+    }
+};
+
+class AccountTimeblock extends ForFirebase{
+    constructor(id, startTime, endTime, playTeam){
+        super();
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+
+        this.playTeam = playTeam;
+    }
+}
+
+export {ForFirebase, User, Team, PlayTeam, Timeblock, AccountTimeblock};

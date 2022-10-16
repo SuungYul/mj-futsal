@@ -1,8 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import { addData, getData, checkDocConflict,fieldUpdate } from "../../database/firebase";
+import User from "../../database/User";
 import { useState, useEffect } from "react";
-import ToMain from "../ToMain";
 
 const CreateTeam = ({userInfo}) =>{ //팀 개설 컴포넌트(유저 DB를 부모 컴포넌트에서 받아옴)
     const user = firebase.auth().currentUser; //유저 정보 미리 받아와서 필요한 정보 컴포넌트내에 저장
@@ -37,7 +37,6 @@ const CreateTeam = ({userInfo}) =>{ //팀 개설 컴포넌트(유저 DB를 부�
     
     }
     return <form>
-        <ToMain/>
         <div> 팀 이름 <input type="text" id="teamName" maxLength="20"/></div>
         <button type="submit" id="teamName" onClick ={createTeam} >팀 신청하기</button>
     </form>

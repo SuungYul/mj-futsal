@@ -9,4 +9,4 @@ const LoginBtn = () =>{
     return <button style={{float: "right"}} onClick={toLogin}>로그인하기</button>
 }
 
-export default LoginBtn
+export default LoginBtn 

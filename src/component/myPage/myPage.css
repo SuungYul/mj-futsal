@@ -1,0 +1,15 @@
+#top_div {
+    float: left;
+}
+
+h1 {
+    display: block;
+    text-align: center;
+    align-self: center;
+}
+
+#h1_div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

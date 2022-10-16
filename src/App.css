@@ -4,3 +4,16 @@ a{
   text-decoration: none;
   color:black;
 }
+
+h1{
+  justify-content: center;
+  text-align: center;
+  float: left;
+  
+}
+
+#head_div{
+  /* padding: 10px; */
+  /* border-bottom: solid 1px lightgray; */
+  height: 50px;
+}
