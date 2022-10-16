@@ -43,18 +43,17 @@ const App = () => {
     setInit(true);
 })}, [])
   return (
-    init&&userInfo&&teamList!=[]? // 인증상태, 유저DB, 팀 리스트 모두 받아와야 렌더링(시작시, 새로고침시 가져옴)
-                                  // 미로그인 시 계속 응답 대기상태인 오류 있음 코드 수정 예정
-    <div className="App">
-      <Header isLoggedIn={isLoggedIn}/>
+    init? // 인증상태가 확정 될 시 렌더링 시작    ,정보가 필요한 컴포넌트는 정보가 불러와지면 렌더링
+    <div className="App"> 
+      <Header isLoggedIn={isLoggedIn}/>  
       <Routes>
         <Route path="/login" element={<Login/>} />
         <Route path="/signUp" element={<Sign/>} />
-        <Route path="/" element={<Main userInfo={userInfo} />} />
+        <Route path="/" element={userInfo&&<Main userInfo={userInfo} />} />
         <Route path="/reserve" element={<Reserve />} />
-        <Route path="/my-page" element={<MyPage userInfo={userInfo}/> } />
-        <Route path="/apply-team" element={<ApplyTeam teamList={teamList} userInfo={userInfo}/>} />
-        <Route path="/create-team" element={<CreateTeam userInfo={userInfo} />} />
+        <Route path="/my-page" element={userInfo&&<MyPage userInfo={userInfo}/> } />
+        <Route path="/apply-team" element={userInfo&&teamList&&<ApplyTeam teamList={teamList} userInfo={userInfo}/>} />
+        <Route path="/create-team" element={userInfo&&<CreateTeam userInfo={userInfo} />} />
       </Routes>
     </div>
     :"Initializing..."

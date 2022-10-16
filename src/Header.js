@@ -7,11 +7,11 @@ import LoginBtn from "./component/button/loginBtn";
 import Logout from "./component/login/logout";
 import MyPageBtn from "./component/button/myPageBtn";
 
-function Header(isLoggedIn) {
+function Header(prop) {
   return (
     <>
     {
-      isLoggedIn ? <><Logout /><MyPageBtn /></> : <LoginBtn />
+      prop.isLoggedIn ? <><Logout /><MyPageBtn /></> : <LoginBtn />
     }
     </>
   );
