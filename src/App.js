@@ -43,7 +43,7 @@ const App = () => {
 })}, [])
   
   return (
-    init&&userInfo&&teamList!=[]? // 인증상태, 유저DB, 팀 리스트 모두 받아와야 렌더링(시작시, 새로고침시 가져옴)
+    init&&userInfo&&teamList!==[]? // 인증상태, 유저DB, 팀 리스트 모두 받아와야 렌더링(시작시, 새로고침시 가져옴)
     <div className="App">
       <Header isLoggedIn={isLoggedIn}/>
       <Routes>
@@ -57,7 +57,8 @@ const App = () => {
       </Routes>
     </div>
     :"Initializing..."
-  );
+    
+);
 }
 
 export default App;
