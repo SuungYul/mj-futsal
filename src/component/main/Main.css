@@ -51,9 +51,13 @@
 #timeTable{
     padding: 50px;
     display: grid;
-    grid-template-rows: repeat(4,100px);
-    grid-template-columns: 300px;
+    /* grid-template-rows: repeat(100px); */
+    /* grid-template-columns: 300px; */
     width: 30%
+}
+
+.reInfo{
+    height: 50px;
 }
 
 #ToMainBtn{
