@@ -1,16 +1,15 @@
 #container{
-    width:500px;
+    width: 800px;
     border: solid 1px black;
+    outline: none;
+    border-radius: 30px;
+    margin: 0 auto;
+    margin-top: 100px;
 }
 
 #title{
-    font-size: 40px;
+    font-size: 20px;
     text-align: center;
-}
-
-#container{
-    float: left;
-    margin: 50px;
 }
 
 .weekContainer > div > button {
@@ -18,9 +17,11 @@
     justify-content: center;
     text-align: center;
     border: none;
+    width: 40px;
     font-weight: bold;
     background: none;
     cursor: pointer;
+    margin-top: 130px;
 }
 
 /* 마우스 올렸을 때 색 변경 */

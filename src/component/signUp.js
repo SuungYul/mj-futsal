@@ -4,11 +4,11 @@ import "firebase/auth";
 import {addData, deleteData} from"../database/firebase.js"
 import { Link, Route, Routes } from "react-router-dom";
 import { User } from "../database/data";
+import "./signUp.css"
 
 //회원가입 컴포넌트
 const Sign = () =>{ 
     return <form>
-    <div className="whole">
         <div className="signup">
             <h1 id="title">회원가입</h1>
             <div className="signup_input">
@@ -22,7 +22,6 @@ const Sign = () =>{
             <button type="submit" id="signUpButton" onClick ={signUp} >회원가입 하기</button>
             <button id="gologinbutton"><Link to="/login">로그인 하러가기</Link></button>
         </div>
-    </div>
     </form>;
     
   

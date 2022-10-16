@@ -58,7 +58,7 @@ export default class Main extends React.Component {
             buttons.push(this.getButton(i, this.startDate + i));
         }   
         return  <div id = "container">
-            <h2 id="title">풋살장 예약 현황 조회</h2>
+            <h2 id="title">풋살장 예약 현황</h2>
             <div className="weekContainer">
                 {buttons}
             </div>

@@ -7,6 +7,7 @@ import {getData} from "../database/firebase.js"
 import ApplyTeam from "./team/applyTeam"
 import CreateTeamBtn from "./team/createTeamBtn"
 import ApplyTeamBtn from "./team/applyTeamBtn"
+import "./myPage.css"
 
 const MyPage = () => {
     const navigate = useNavigate();
@@ -50,35 +51,55 @@ const MyPage = () => {
     }
 
     return (
-        <div>
-            <button onClick={tomain}>메인으로</button>
-            <h1>마이페이지</h1>
-            <CreateTeamBtn/> |  
-            <ApplyTeamBtn/>
-            <div>
-                <p>개인정보</p>
-                    <ul>
-                        <li id="name1">이름: <label>{username}</label> </li> 
-                        <li id="email">이메일: <label>{useremail}</label> </li>
-                        <li id="stuID">학번: <label>{userstuid}</label> </li> 
-                        <li id="team">팀: <label>{userTeam}</label> </li> 
-                    </ul>
-                <p>비매너온도 : <label>{badPoing_grade}</label></p>
+        <div className="MyPage">
+            <div className="frame">
+                <h2 id="title">My Page</h2>
+                <CreateTeamBtn/>   
+                <ApplyTeamBtn/>
+                <table >
+                    <tr>
+                        <th id="name1">이름</th>
+                        <td><label>{username}</label></td>
+                    </tr>
+                    <tr>
+                        <th id="email">Email</th>
+                        <td><label>{useremail}</label></td>
+                    </tr>
+                    <tr>
+                        <th id="stuID">학번</th>
+                        <td><label>{userstuid}</label></td>
+                    </tr>
+                    <tr>
+                        <th id="team">Your Team</th>
+                        <td><label>{userTeam}</label></td>
+                    </tr>
+                    <tr>
+                        <th>비매너온도</th>
+                        <td><label>{badPoing_grade}</label></td>
+                    </tr>
+                    <tr>
+                        <th>풋살장 이용횟수</th>
+                        <td><label>{userplaycnt}회</label></td>
+                    </tr>
+                    <tr>
+                        <th>현재 신청내역</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>과거 신청내역</th>
+                        <td></td>
+                    </tr>
+                </table>
 
-                <p>풋살장 이용횟수 : <label>{userplaycnt}회</label></p>
+                <div><button id="tomainbutton" onClick={tomain}>메인으로</button></div>
+                <div>
+                    <button id="quitbutton" onClick={()=>{
+                        withdraw_user();
+                        alert("회원탈퇴가 되었습니다");
+                        tomain();
+                    }}>회원탈퇴</button>
+                </div>
             </div>
-            <div>
-                <p>현재 신청내역</p>
-                {/* 신청 DB만들면 구축 */}
-            </div>
-            <div>
-                <p>과거 신청내역</p>
-            </div>
-            <button onClick={()=>{
-                withdraw_user();
-                alert("회원탈퇴가 되었습니다");
-                tomain();
-            }}>회원탈퇴</button>
         </div>
     )
 }
