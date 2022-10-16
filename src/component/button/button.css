@@ -1,0 +1,44 @@
+#loginbutton{
+    width: 200px;
+    height: 60px;
+    outline: none;
+    border-radius: 30px;
+    border: 1px solid lightgray;
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    letter-spacing: 1.2px;
+    transition: 0.25s;
+    margin-right: 10px;
+
+}
+#loginbutton:hover{
+    color: black;
+    transform: scale(1.2);
+    cursor: pointer;
+    transition: 0.25s;
+}
+#logoutbutton{
+    width: 200px;
+    height: 60px;
+    outline: none;
+    border-radius: 30px;
+    border: 1px solid lightgray;
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    letter-spacing: 1.2px;
+    transition: 0.25s;
+    margin-right: 10px;
+
+}
+#logoutbutton:hover{
+    color: black;
+    transform: scale(1.2);
+    cursor: pointer;
+    transition: 0.25s;
+}

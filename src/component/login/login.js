@@ -27,10 +27,10 @@ const Login = () =>{
             });
     }
     return <form>
-    <div className="whole">
         <div className="login">
-            <h1 id="title">로그인</h1> 
+            <h1 id="title">로그인</h1>
                 <div className="login_input">
+
                     <h3>E-mail</h3>
                     <input type="email" id="signInEmail" placeholder="Email"/>
                     <h3>Password</h3>
@@ -41,7 +41,6 @@ const Login = () =>{
                     {/* <button onClick={() => }>회원가입 하러가기</button> */}
                 </div> 
         </div>
-    </div>
         </form>;
 }
 export default Login
