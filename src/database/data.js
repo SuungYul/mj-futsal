@@ -87,13 +87,12 @@ import { forwardRef } from "react";
  * 임시적으로 User 클래스를 작성함
  */
 class User extends ForFirebase{
-    constructor(id, pw, name, team, phoneNumber, userID, playCount, badPoint){
+    constructor(id, pw, name, team, userID, playCount, badPoint){
         super();
         this.id = id;
         this.pw = pw;
         this.name = name;
         this.team = team;
-        this.phoneNumber = phoneNumber;
         this.userID = userID;
         this.playCount = playCount;
         this.badPoint = badPoint;
