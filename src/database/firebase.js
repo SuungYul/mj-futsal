@@ -169,6 +169,31 @@ function getData(collection, document, type){
   })
 };
 
+function playCountIncrement(collection, user){
+  return new Promise((resolve, reject) => {
+      let userRef = db.collection(collection).doc(user);
+
+      userRef.update({
+        playcount: firebase.firestore.FieldValue.increment(1)
+      });
+
+      resolve(true);
+  });
+};
+
+
+function playCountDecrement(collection, user){
+  return new Promise((resolve, reject) => {
+      let userRef = db.collection(collection).doc(user);
+
+      userRef.update({
+        playcount: firebase.firestore.FieldValue.increment(-1)
+      });
+
+      resolve(true);
+  });
+};
+
 
 export const authService = firebase.auth();
-export {testFunction, addData, getData, deleteData, fieldUpdate, checkDocConflict, getFilteredDocs, getDocs};
+export {testFunction, addData, getData, deleteData, playCountIncrement, playCountDecrement, getDocs, fieldUpdate, checkDocConflict};
