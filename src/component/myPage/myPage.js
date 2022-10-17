@@ -1,11 +1,14 @@
 import "firebase/auth"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {useNavigate} from "react-router-dom"
 import { withdraw_user } from "../signUp/signUp"
 import CreateTeamBtn from "../button/createTeamBtn"
 import ApplyTeamBtn from "../button/applyTeamBtn"
 import "./myPage.css"
+import ManageTeamBtn from "../button/manageTeamBtn"
+import { getData } from "../../database/firebase"
 const MyPage = ({ userInfo }) => {
+    const [isLeader, setIsLeader] = useState(false);
     const navigate = useNavigate();
     const tomain = () => {
         navigate("/");
@@ -28,13 +31,25 @@ const MyPage = ({ userInfo }) => {
                 break;
         }
     }, [])
+    useEffect( () =>{
+        if(userInfo.team != ""){
+            getData("teamList", userInfo.team, "string").then( (teamInfo) =>{
+                const leaderKey = teamInfo.leader.substr(teamInfo.leader.indexOf(')')+1);
+                if(userInfo.userKey === leaderKey){
+                    setIsLeader(true);
+                }
+            
+            })
+        }
+    }, [])
 
     return (
         <div id="top_div">
             <div id="h1_div"><h1>마이페이지</h1></div>
             <div>
                 <CreateTeamBtn /> |
-                <ApplyTeamBtn />
+                <ApplyTeamBtn /> |
+                {isLeader&&<ManageTeamBtn/>}
                 <p>개인정보</p>
                 <ul>
                     <li id="name1">이름: <label>{userInfo.name}</label> </li>

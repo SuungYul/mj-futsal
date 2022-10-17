@@ -1,13 +1,14 @@
 import firebase from "firebase/app";
 import {useNavigate} from "react-router-dom"
 import "firebase/auth";
+import ManageTeam from "../team/manageTeam";
 
-const CreateTeamBtn = () =>{
+const ManageTeamBtn = () =>{
     const navigate = useNavigate();
     const toCreateTeam = () =>{
-        navigate("/create-team");
+        navigate("/manage-team");
     }
-    return <button onClick={toCreateTeam}>팀 개설</button>
+    return <button onClick={toCreateTeam}>팀 관리</button>
 }
 
-export default CreateTeamBtn
+export default ManageTeamBtn

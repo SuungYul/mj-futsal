@@ -12,6 +12,7 @@ import ApplyTeam from "./component/team/applyTeam";
 import CreateTeam from "./component/team/createTeam";
 import Header from "./Header";
 import Reserve from "./component/reservation/reserve";
+import ManageTeam from "./component/team/manageTeam";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태
@@ -54,6 +55,7 @@ const App = () => {
         <Route path="/my-page" element={userInfo&&<MyPage userInfo={userInfo}/> } />
         <Route path="/apply-team" element={userInfo&&teamList&&<ApplyTeam teamList={teamList} userInfo={userInfo}/>} />
         <Route path="/create-team" element={userInfo&&<CreateTeam userInfo={userInfo} />} />
+        <Route path="/manage-team" element={userInfo&&<ManageTeam userInfo={userInfo} />} />
       </Routes>
     </div>
     :"Initializing..."

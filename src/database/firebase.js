@@ -185,7 +185,6 @@ function playCountIncrement(collection, user){
 function playCountDecrement(collection, user){
   return new Promise((resolve, reject) => {
       let userRef = db.collection(collection).doc(user);
-
       userRef.update({
         playcount: firebase.firestore.FieldValue.increment(-1)
       });
@@ -196,4 +195,5 @@ function playCountDecrement(collection, user){
 
 
 export const authService = firebase.auth();
-export {testFunction, addData, getData, deleteData, playCountIncrement, playCountDecrement, getDocs, fieldUpdate, checkDocConflict};
+export {testFunction, addData, getData, deleteData, playCountIncrement, 
+  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict};
