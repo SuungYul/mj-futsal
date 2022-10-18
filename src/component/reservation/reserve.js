@@ -1,17 +1,22 @@
 import React, { useState } from "react";
+import { ReserveInfo } from "../../database/ReserveInfo";
 
 import "./reserve.css"
-const Reserve = () => {
+const Reserve = (props) => {
     const [isTeam, teamCheck] = useState([]);
     const clickRB = (e) => {
         teamCheck(e.target.value)
     }
+    // const reInfo = new ReserveInfo();
 
     return (
         <div>
             <h1>풋살장 예약 신청</h1>
             {/* 현재 예약 정보는 예약 DB에서 긁어와야됨 */}
             <div> 현재 예약 정보 </div>
+            <div>
+                {props.day} | {props.time}
+            </div>
             <div>
                 <input type="checkbox" id="match" name="match"></input>
                 <label for="match">(선택) 매칭</label>
