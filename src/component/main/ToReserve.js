@@ -6,8 +6,6 @@ const ToReserve = () => {
     const navi =() => {
         navigate("/reserve");
     }
-    return (
-        <button onClick={navi}>신청</button>
-    )
+    return navi()
 }
 export default ToReserve

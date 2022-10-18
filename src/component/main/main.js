@@ -2,10 +2,9 @@ import React from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import "./Main.css";
 import ToReserve from './ToReserve';
-import TimeTable from '../../database/TimeTable';
 import { getData } from '../../database/firebase';
 import { Timeblock } from '../../database/data';
-
+import { ReserveInfo } from '../../database/ReserveInfo';
 
 const week = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -13,7 +12,12 @@ function isleapYear(year) {
     return new Date(year, 1, 29) === 29;
 }
 
-export default class Main extends React.Component {
+export default function(props) {
+    const navigate = useNavigate();
+    return <Main {...props} navigate={navigate}/>;
+}
+
+export class Main extends React.Component {
     constructor(prop) {
         super(prop);
         this.isLoggedIn = prop.isLoggedIn;
@@ -22,6 +26,7 @@ export default class Main extends React.Component {
         this.startDate = this.now.getDate();
         this.today = this.now.getDay();
         this.index = 0;
+        this.reinfo = new ReserveInfo();
         if (isleapYear(this.now.getFullYear()))
             this.maxMonthDay = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
         else {
@@ -45,6 +50,7 @@ export default class Main extends React.Component {
         else {
             this.index = this.dateOfMonth - this.startDate;
         }
+        this.reinfo.setDay(this.index + this.today);
         this.forceUpdate();
     }
 
@@ -109,37 +115,80 @@ export default class Main extends React.Component {
     //     ]
     // }
 
-    getTimeTableFromDB() {
-        return (this.isSat(this.today + this.index) || this.isSun(this.today + this.index)) ?
-            [
-                { time: "10:00 ~ 10:50", isReserved: !(this.isLoggedIn) },
-                { time: '11:00 ~ 11:50', isReserved: !(this.isLoggedIn) },
-                { time: '12:00 ~ 12:50', isReserved: !(this.isLoggedIn) },
-                { time: '13:00 ~ 13:50', isReserved: !(this.isLoggedIn) },
-                { time: '14:00 ~ 14:50', isReserved: !(this.isLoggedIn) },
-                { time: '15:00 ~ 15:50', isReserved: !(this.isLoggedIn) },
-                { time: '16:00 ~ 16:50', isReserved: !(this.isLoggedIn) },
-                { time: '17:00 ~ 17:50', isReserved: !(this.isLoggedIn) },
-                { time: '18:00 ~ 18:50', isReserved: !(this.isLoggedIn) },
-                { time: '19:00 ~ 19:50', isReserved: !(this.isLoggedIn) },
+    // getTimeTableFromDB() {
+    //     return (this.isSat(this.today + this.index) || this.isSun(this.today + this.index)) ?
+    //         [
+    //             { time: "10:00 ~ 10:50", isReserved: !(this.isLoggedIn) },
+    //             { time: '11:00 ~ 11:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '12:00 ~ 12:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '13:00 ~ 13:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '14:00 ~ 14:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '15:00 ~ 15:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '16:00 ~ 16:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '17:00 ~ 17:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '18:00 ~ 18:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '19:00 ~ 19:50', isReserved: !(this.isLoggedIn) },
 
-            ]
-            :
-            [
-                { time: '17:00 ~ 17:50', isReserved: !(this.isLoggedIn) },
-                { time: '18:00 ~ 18:50', isReserved: !(this.isLoggedIn) },
-                { time: '19:00 ~ 19:50', isReserved: !(this.isLoggedIn) },
-                { time: '20:00 ~ 20:50', isReserved: !(this.isLoggedIn) },
-            ]
+    //         ]
+    //         :
+    //         [
+    //             { time: '17:00 ~ 17:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '18:00 ~ 18:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '19:00 ~ 19:50', isReserved: !(this.isLoggedIn) },
+    //             { time: '20:00 ~ 20:50', isReserved: !(this.isLoggedIn) },
+    //         ]
 
-    }
+    // }
     // 위에 getTimeTableFromDB 함수에서 받은 정보로 TimeTable을 작성한다
     getTimeTable() {
         const result = [];
-        let timeTables = this.getTimeTableFromDB();
-        timeTables.forEach((time, i) => {
-            result.push(<div key={"tableTable" + i} className="reInfo">{time.time} {time.isReserved ? '' : <ToReserve />}</div>);
-        });
+        const {navigate} = this.props;
+        // let timeTables = this.getTimeTableFromDB();
+        // timeTables.forEach((time, i) => {
+        // result.push(<div key={"tableTable" + i} className="reInfo">{time.time} {time.isReserved ? '' : <ToReserve />}</div>);
+        // });
+        // 주말 TimeTable
+        if (this.isSat(this.today + this.index) || this.isSun(this.today + this.index)) {
+            for (let time = 10; time < 20; time++) {
+                if (this.isLoggedIn) {
+                    result.push(<div className="reInfo">
+                        {time + ":00 ~ " + time + ":50"}
+                        <button className="reBtn" onClick={() => {
+                            this.reinfo.setTime(time)
+                            navigate("/reserve")
+                        }}>신청</button>
+                    </div>)
+                }
+                else{
+                    result.push(<div className="reInfo">
+                        {time + ":00 ~ " + time + ":50"}
+                    </div>)
+                }
+            }
+        }
+        else{ // 평일 TimeTable
+            for (let time = 17; time < 21; time++) {
+                if (this.isLoggedIn) {
+                    result.push(<div className="reInfo">
+                        {time + ":00 ~ " + time + ":50"}
+                        <button className="reBtn" value={time} onClick={() => {
+                            this.reinfo.setTime(time)
+                            navigate("/reserve")
+                        }}>신청</button>
+                    </div>)
+                }
+                else{
+                    result.push(<div className="reInfo">
+                        {time + ":00 ~ " + time + ":50"}
+                    </div>)
+                }
+            }
+        }
+
+
+
+
+
         return <div id="timeTable">{result}</div>
     }
 
