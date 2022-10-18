@@ -14,7 +14,7 @@ const Sign = () =>{
         const signUpEmail = document.getElementById('signUpEmail').value;
         const signUpPassword = document.getElementById('signUpPassword').value;
         const userID = document.getElementById('userID').value;
-        let newUser = new User(signUpEmail, signUpPassword, userName, "", userID, 0, 0);
+        let newUser = new User(signUpEmail, signUpPassword, userName, "", userID, 0, 0, null);
         firebase.auth().createUserWithEmailAndPassword(signUpEmail, signUpPassword)
             .then((userCredential) => {
                 console.log(userCredential)
@@ -23,6 +23,7 @@ const Sign = () =>{
                     displayName: newUser.userName //유저 displayName set
                     
                 })
+                newUser.userKey = user.uid;
                 addData("userList",user.uid, newUser); 
                 console.log(user);
                 alert("회원가입 성공!")

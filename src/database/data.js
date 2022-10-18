@@ -87,7 +87,7 @@ import { forwardRef } from "react";
  * 임시적으로 User 클래스를 작성함
  */
 class User extends ForFirebase{
-    constructor(id, pw, name, team, userID, playCount, badPoint){
+    constructor(id, pw, name, team, userID, playCount, badPoint, userKey){
         super();
         this.id = id;
         this.pw = pw;
@@ -96,6 +96,7 @@ class User extends ForFirebase{
         this.userID = userID;
         this.playCount = playCount;
         this.badPoint = badPoint;
+        this.userKey = userKey;
     }
 };
 
@@ -113,34 +114,28 @@ class Team extends ForFirebase{
 };
 
 class PlayTeam extends ForFirebase{
-    constructor(id, teamInfo){
+    constructor(id, teamInfo, day, timeSlotID){
         super();
         this.id = id;
-        this.teamInfo = teamInfo
-        this.PlayUsers = new Array();
+        this.teamInfo = teamInfo;
+        this.day = day;
+        this.timeSlotID = timeSlotID;
+    }
+
+    get hasTeam(){
+        return this.teamInfo != -1? this.teamInfo: null;
+        
     }
 };
 
-class Timeblock extends ForFirebase{
+
+class TimeSlot extends ForFirebase{
     constructor(id, startTime, endTime){
         super();
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-
-        this.candTeams = new Array();
     }
 };
 
-class AccountTimeblock extends ForFirebase{
-    constructor(id, startTime, endTime, playTeam){
-        super();
-        this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
-
-        this.playTeam = playTeam;
-    }
-}
-
-export {ForFirebase, User, Team, PlayTeam, Timeblock, AccountTimeblock};
+export {ForFirebase, User, Team, PlayTeam, TimeSlot};
