@@ -43,7 +43,7 @@ const ManageTeam = ({userInfo}) => {
             <ul> 
             {
             waitingArray.map((waiting, index) => {
-                return <li key={index}>{waiting} <button onClick={(e) =>{
+                return <li key={index}>{waiting.sub} <button onClick={(e) =>{
                     accept(waiting);
                 }} value={waiting} key={"1"+index}>수락</button>
                        <button onClick={(e) =>{

@@ -3,7 +3,7 @@ import "firebase/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./login.css"
-//로그인 컴포넌트
+//로그인 컴포넌트a
 
 
 const Login = () =>{
