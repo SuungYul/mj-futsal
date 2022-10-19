@@ -114,34 +114,28 @@ class Team extends ForFirebase{
 };
 
 class PlayTeam extends ForFirebase{
-    constructor(id, teamInfo){
+    constructor(id, teamInfo, day, timeSlotID){
         super();
         this.id = id;
-        this.teamInfo = teamInfo
-        this.PlayUsers = new Array();
+        this.teamInfo = teamInfo;
+        this.day = day;
+        this.timeSlotID = timeSlotID;
+    }
+
+    get hasTeam(){
+        return this.teamInfo != -1? this.teamInfo: null;
+        
     }
 };
 
-class Timeblock extends ForFirebase{
+
+class TimeSlot extends ForFirebase{
     constructor(id, startTime, endTime){
         super();
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-
-        this.candTeams = new Array();
     }
 };
 
-class AccountTimeblock extends ForFirebase{
-    constructor(id, startTime, endTime, playTeam){
-        super();
-        this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
-
-        this.playTeam = playTeam;
-    }
-}
-
-export {ForFirebase, User, Team, PlayTeam, Timeblock, AccountTimeblock};
+export {ForFirebase, User, Team, PlayTeam, TimeSlot};

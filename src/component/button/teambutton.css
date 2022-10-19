@@ -1,0 +1,47 @@
+#createbutton{
+    width: 200px;
+    height: 60px;
+    outline: none;
+    border-radius: 30px;
+    border: 1px solid lightgray;
+    color: black;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    letter-spacing: 1.2px;
+    transition: 0.25s;
+    margin-left: 317px;
+    margin-right: 27px;
+}
+#createbutton:hover{
+    color: black;
+    transform: scale(1.2);
+    cursor: pointer;
+    transition: 0.25s;
+}
+#applybutton{
+    width: 200px;
+    height: 60px;
+    outline: none;
+    border-radius: 30px;
+    border: 1px solid lightgray;
+    color: black;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    margin-top: 100px;
+    letter-spacing: 1.2px;
+    transition: 0.25s;
+
+    margin-left: 27px;
+
+}
+#applybutton:hover{
+    color: black;
+    transform: scale(1.2);
+    cursor: pointer;
+    transition: 0.25s;
+}

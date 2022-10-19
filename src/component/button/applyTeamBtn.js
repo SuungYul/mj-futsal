@@ -7,7 +7,7 @@ const ApplyTeamBtn = () =>{
     const toApplyTeam = () =>{
         navigate("/apply-team");
     }
-    return <button onClick={toApplyTeam}>팀 신청</button>
+    return <button id="applybutton" onClick={toApplyTeam}>팀 신청</button>
 }
 
 export default ApplyTeamBtn
