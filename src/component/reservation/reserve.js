@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { ReserveInfo } from "../../database/ReserveInfo";
 
 import "./reserve.css"
 const Reserve = (props) => {
+    const {reserveInfo} = useLocation();
+    //reserveInfo&&console.log(reserveInfo);
     const [isTeam, teamCheck] = useState([]);
     const clickRB = (e) => {
         teamCheck(e.target.value)
@@ -19,7 +22,7 @@ const Reserve = (props) => {
             </div>
             <div>
                 <input type="checkbox" id="match" name="match"></input>
-                <label for="match">(선택) 매칭</label>
+                <label htmlFor="match">(선택) 매칭</label>
                 <br />
                 <input
                     type="radio"
@@ -29,7 +32,7 @@ const Reserve = (props) => {
                     checked={isTeam === "0"}
                     onChange={clickRB}>
                 </input>
-                <label for="individual">개인</label> |
+                <label htmlFor="individual">개인</label> |
                 <input
                     type="radio"
                     id="ck_team"
@@ -38,7 +41,7 @@ const Reserve = (props) => {
                     checked={isTeam === "1"}
                     onChange={clickRB}>
                 </input>
-                <label for="team">팀</label>
+                <label htmlFor="team">팀</label>
             </div>
             <div>
                 <article className={(isTeam === "1") ? "art_team" : "art_indi"}>

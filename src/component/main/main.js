@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Main.css";
-import ReserveInfo from '../../database/ReserveInfo';
+import { ReserveInfo } from '../../database/ReserveInfo'; 
 
 const week = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -103,8 +103,10 @@ export class Main extends React.Component {
                     result.push(<div key={"time" + time} className="reInfo">
                         {time + ":00 ~ " + time + ":50"}
                         <button className="reBtn" value={time} onClick={() => {
-                            this.reinfo.setTime(time)
-                            navigate("/reserve")
+                            console.log(this.reinfo);
+                            this.reinfo.setTime(time);
+                            this.reinfo.setDay(this.dateOfMonth);
+                            navigate("/reserve", { reserveInfo: this.reinfo });
                         }}>신청</button>
                     </div>)
                 }
