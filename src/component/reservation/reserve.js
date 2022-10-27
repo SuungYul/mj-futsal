@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import firebase from "firebase/app"
+import "firebase/auth"
 import { useLocation } from "react-router-dom";
+import { getData } from "../../database/firebase";
 import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
+import ReserveTeamList from "./reserveTeamList";
 
-const Reserve = (props) => {
-    const { reserveInfo } = useLocation();
-    //reserveInfo&&console.log(reserveInfo);
+const Reserve = ({ userInfo, teamInfo }) => {
+    console.log(userInfo)
+    console.log(teamInfo)
+    const reserveInfo = useLocation();
     const [isTeam, teamCheck] = useState(false);
     const [radio_click, setRadio] = useState(true);
     const clickRB = (e) => {
         if (e.target.id === "team") {
             teamCheck(true)
         }
-        else{
+        else {
             teamCheck(false)
         }
     }
-    // const reInfo = new ReserveInfo();
     const radioActive = (event) => {
         if (event.target.id === "play_other") {
             setRadio(false)
@@ -28,14 +32,19 @@ const Reserve = (props) => {
         }
         // setRadio()
     }
+    const result = []
+    
     return (
         <div id="top_div">
             <div className="frame">
                 <h1>풋살장 예약 신청</h1>
                 {/* 현재 예약 정보는 예약 DB에서 긁어와야됨 */}
                 <div> 현재 예약 정보 </div>
+
+                {reserveInfo.state.date}일 {reserveInfo.state.time}시
+
                 <div>
-                    {props.day} | {props.time}
+                    {/* {props.day} | {props.time} */}
                 </div>
                 <div>
                     <input
@@ -75,7 +84,7 @@ const Reserve = (props) => {
                         disabled={radio_click && !isTeam}
                         onChange={clickRB}
                         checked={isTeam}
-                        
+
                     >
                     </input>
                     <label htmlFor="team">팀</label>
@@ -85,8 +94,10 @@ const Reserve = (props) => {
                 <article className={(isTeam === true) ? "art_team" : "art_indi"}>
                     <h2>팀 명단 작성</h2>
                     {/* 팀 DB 구현되면 작성 */}
+                    <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo}/>
                 </article>
             </div>
+            
         </div>
     );
 }
