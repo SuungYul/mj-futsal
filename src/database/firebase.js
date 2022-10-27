@@ -193,7 +193,31 @@ function playCountDecrement(collection, user){
   });
 };
 
+function badPointIncrement(collection, user, point){
+  return new Promise((resolve, reject) => {
+      let userRef = db.collection(collection).doc(user);
+
+      userRef.update({
+        badPoint: firebase.firestore.FieldValue.increment(point)
+      });
+
+      resolve(true);
+  });
+};
+
+
+function badPointDecrement(collection, user, point){
+  return new Promise((resolve, reject) => {
+      let userRef = db.collection(collection).doc(user);
+      userRef.update({
+        badPoint: firebase.firestore.FieldValue.increment(-1*point)
+      });
+
+      resolve(true);
+  });
+};
+
 
 export const authService = firebase.auth();
-export {testFunction, addData, getData, deleteData, playCountIncrement, 
+export {testFunction, addData, getData, deleteData, playCountIncrement, badPointIncrement, badPointDecrement,
   getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict};
