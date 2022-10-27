@@ -1,10 +1,28 @@
 .art_team{
-    display: block;
+    display: inline;
     float: right;
-    padding-right: 200px;
+    /* padding-right: 200px; */
 }
 
 .art_indi{
     display: none;
-    
 }
+
+.frame{
+    width: 50%;
+    height: 750px;
+    background-color: white;
+    outline: none;
+    border-radius: 30px;
+    /* margin-left: 50px; */
+    /* margin-right: -1000px; */
+    /* margin: 0 auto; */
+}
+
+#top_div {
+    margin-right: -5000px;
+    display: inline;
+    width: 700px;
+}
+
+
