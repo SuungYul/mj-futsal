@@ -24,28 +24,28 @@ body{
 */
 .login{
     width: 600px;
-    height: 770px;
+    height: 830px;
     background-color: white;
     border-radius: 30px;
     outline: none;
     margin: 0 auto;
     flex-direction: column;
     display: flex;
-    margin-top: 80px;
-    margin-bottom: 80px;
     margin-left: 650px;
 }
-#title{
+#title_2{
+    display : flex;
+    justify-content : center;
+    align-items : center;
     color: black;
+    font-size: 40px;
     text-align: center;
     letter-spacing: 1.5px;
 }
 /* 입력 칸들을 담는 박스 */
 .login_input{
     width: 400px;
-    height: 700px;
-    background-color: white;
-    margin-top: 100px;
+    height: 550px;
     margin-bottom: 50px;
     margin-left: 100px;
 }
