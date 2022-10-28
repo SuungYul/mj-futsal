@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ReserveInfo } from "../../database/ReserveInfo";
+import { PlayTeam } from "../../database/data"
+import { addData } from "../../database/firebase"
 import "./reserve.css"
 
 const OptionProvider = React.createContext();
@@ -99,7 +101,19 @@ class Reserve extends CustomComponent{
 
     reserveAction(){
         console.log("예약 시작");
-        console.log(this.state);
+        //DB에 작성
+
+        const playTeam = new PlayTeam(
+            this.state.userInfo.userKey,
+            this.state.userInfo.team,
+            this.day = "now",
+            this.timeSlotID = 0
+        )
+        
+        //예약슬롯에 집어넣기
+        //addData("reserveList", "temp", playTeam);
+        
+
         console.log("예약 완료");
         return;
     }
