@@ -86,7 +86,13 @@ export class Main extends React.Component {
                         {time + ":00 ~ " + time + ":50"}
                         <button className="reBtn" onClick={() => {
                             this.reinfo.setTime(time)
-                            navigate("/reserve")
+                            this.reinfo.setDay(this.dateOfMonth);
+                            navigate("/reserve",  {state: {
+                                time: this.reinfo.time,
+                                date : this.reinfo.day 
+                           
+                               },
+                             });
                         }}>신청</button>
                     </div>)
                 }
@@ -103,10 +109,16 @@ export class Main extends React.Component {
                     result.push(<div key={"time" + time} className="reInfo">
                         {time + ":00 ~ " + time + ":50"}
                         <button className="reBtn" value={time} onClick={() => {
-                            console.log(this.reinfo);
+                            
                             this.reinfo.setTime(time);
                             this.reinfo.setDay(this.dateOfMonth);
-                            navigate("/reserve", { reserveInfo: this.reinfo });
+                            console.log(this.reinfo.time);
+                            navigate("/reserve",  {state: {
+                               time: this.reinfo.time,
+                               date : this.reinfo.day 
+                          
+                              },
+                            });
                         }}>신청</button>
                     </div>)
                 }
@@ -138,4 +150,3 @@ export class Main extends React.Component {
         </div>;
     }
 }
-
