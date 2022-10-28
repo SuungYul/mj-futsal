@@ -51,7 +51,7 @@ const App = () => {
         <Route path="/login" element={<Login/>} />
         <Route path="/signUp" element={<Sign/>} />
         <Route path="/" element={<Main isLoggedIn={isLoggedIn} />}/>
-        <Route path="/reserve" element={<Reserve />} />
+        <Route path="/reserve" element={<Reserve userInfo={userInfo}/>} />
         <Route path="/my-page" element={userInfo&&<MyPage userInfo={userInfo}/> } />
         <Route path="/apply-team" element={userInfo&&teamList&&<ApplyTeam teamList={teamList} userInfo={userInfo}/>} />
         <Route path="/create-team" element={userInfo&&<CreateTeam userInfo={userInfo} />} />

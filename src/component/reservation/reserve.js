@@ -3,7 +3,172 @@ import { useLocation } from "react-router-dom";
 import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
 
-const Reserve = (props) => {
+const OptionProvider = React.createContext();
+
+class CustomComponent extends React.Component{
+    constructor(props){
+        super(props);
+        //비어있는 액션
+        this.handleAction = () => {};
+        if("action" in this.props) this.handleAction = this.props.action.bind(this);
+    }
+
+    getProperty(key){
+        if(key in this.props) return this.props[key];
+        return null;
+    }
+}
+
+class Button extends CustomComponent{
+    constructor(props){
+        super(props);
+    }
+    
+    render(){
+        return(
+            <button id={this.getProperty("id")} onClick={this.handleAction}>
+                {this.getProperty("name")}
+            </button>
+        )
+    }
+}
+
+class CustomRadio extends CustomComponent{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            selectName: this.getProperty("selectName"),
+            selectList: this.getProperty("selectList"),
+            selectValue: this.getProperty("selectValue")
+        };
+
+        this.action = () => {};
+        if("action" in this.props) this.action = this.props.action.bind(this);
+
+        this.handleAction = (e) => { 
+            this.action();
+            this.defaultAction(e); };
+    }
+
+    defaultAction(e){
+        this.setState({
+            selectValue: e.target.value
+        });
+    }
+
+    render(){
+        return this.state.selectList.map((value, i) => (
+            <React.Fragment key={i}>
+                <input
+                    id={value}
+                    value={value}
+                    name={this.getProperty("name")}
+                    type="radio"
+                    checked={this.state.selectValue === value}
+                    onChange={this.handleAction} />
+                    {this.getProperty("selectName")[i]}
+            </React.Fragment>
+        ));
+    }
+}
+
+class ConditionRadio extends CustomRadio{
+    constructor(props){
+        super(props);
+
+        this.condition = () => { return true; };
+        if("condition" in this.props) this.condition = this.props.condition.bind(this);
+    }
+
+    defaultAction(e){
+        if(this.condition()) super.defaultAction(e);
+    }
+}
+
+class Reserve extends CustomComponent{
+    constructor(props){
+        super(props);
+        //예약을 위한 구체적인 정보
+        this.state = {
+            userInfo: props.userInfo,
+            withOther: false,
+            isTeam: false
+        }
+    }
+
+    reserveAction(){
+        console.log("예약 시작");
+        console.log(this.state);
+        console.log("예약 완료");
+        return;
+    }
+
+    render(){
+        return (
+            <OptionProvider.Provider value={this.information}>
+            <div id="top_div">
+                <div className="frame">
+                    <div id="title_3"><h1>풋살장 예약 신청</h1></div>
+                    {/* 현재 예약 정보는 예약 DB에서 긁어와야됨 */}
+                    <div className="subframe_2">
+                        <div className="step"><h1>STEP 1</h1></div>
+                        <div class="jb-division-line"></div>
+                        <h3 className="choicebox">선택 1</h3>
+                        <br />
+                        <div className="choice">
+                            <CustomRadio 
+                                selectName={["다른 팀과 같이 찰래요", "우리끼리만 찰래요"]}
+                                selectList={["play_other", "play_team"]} 
+                                selectValue={"play_other"}
+                                action={()=>{ 
+                                    console.log(CustomRadio.selectValue);
+                                    if(this.state.withOther === false){
+                                        this.setState({ withOther: true });
+                                        return;
+                                    }
+                                    this.setState({ withOther: false });
+                                }}
+                            />
+                        <br />
+                        </div>
+                        <h3 className="choicebox">선택 2</h3>
+                        <br />
+                        <div className="choice">
+                            <CustomRadio
+                                selectName={["개인", "팀"]}
+                                selectList={["indv", "team"]} 
+                                selectValue={"indv"}
+                                action={()=>{ 
+                                    if(this.state.isTeam === false){
+                                        this.setState({ isTeam: true });
+                                        return;
+                                    }
+                                    this.setState({ isTeam: false });
+                                }}
+                            />
+                        </div>
+                        
+                        <div className="step"><h1>STEP 2</h1></div>
+                        <div class="jb-division-line"></div>
+                        <div className="teamlist">
+                        <article className={(this.state.isTeam === true) ? "art_team" : "art_indi"}>
+                            <h2>팀 명단 작성</h2>
+                            {/* 팀 DB 구현되면 작성 */}
+                        </article>
+                    </div>   
+                    </div>
+                    < Button name={"예약"} action={()=>{this.reserveAction()}} />
+                </div>
+                
+            </div>
+            </OptionProvider.Provider>
+        );
+    }
+
+}
+
+const TReserve = (props) => {
     const { reserveInfo } = useLocation();
     //reserveInfo&&console.log(reserveInfo);
     const [isTeam, teamCheck] = useState(false);
@@ -97,8 +262,9 @@ const Reserve = (props) => {
                         {/* 팀 DB 구현되면 작성 */}
                     </article>
                     </div>   
+                    
                 </div>
-                
+                < Button name={"헉"} />
             </div>
             
         </div>
