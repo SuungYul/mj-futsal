@@ -103,4 +103,3 @@ const Reserve = ({ userInfo, teamInfo }) => {
 }
 
 export default Reserve
-

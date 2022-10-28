@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Main.css";
-import { ReserveInfo } from '../../database/ReserveInfo'; 
+import { ReserveInfo } from '../../database/ReserveInfo';
+import MyReserve from './MyReserve';
 
 const week = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -18,6 +19,7 @@ export class Main extends React.Component {
     constructor(props) {
         super(props);
         this.isLoggedIn = props.isLoggedIn;
+        this.userInfo = props.userInfo;
         this.now = new Date();
         this.dateOfMonth = this.now.getDate();
         this.startDate = this.now.getDate();
@@ -87,12 +89,13 @@ export class Main extends React.Component {
                         <button className="reBtn" onClick={() => {
                             this.reinfo.setTime(time)
                             this.reinfo.setDay(this.dateOfMonth);
-                            navigate("/reserve",  {state: {
-                                time: this.reinfo.time,
-                                date : this.reinfo.day 
-                           
-                               },
-                             });
+                            navigate("/reserve", {
+                                state: {
+                                    time: this.reinfo.time,
+                                    date: this.reinfo.day
+
+                                },
+                            });
                         }}>신청</button>
                     </div>)
                 }
@@ -109,15 +112,16 @@ export class Main extends React.Component {
                     result.push(<div key={"time" + time} className="reInfo">
                         {time + ":00 ~ " + time + ":50"}
                         <button className="reBtn" value={time} onClick={() => {
-                            
+
                             this.reinfo.setTime(time);
                             this.reinfo.setDay(this.dateOfMonth);
                             console.log(this.reinfo.time);
-                            navigate("/reserve",  {state: {
-                               time: this.reinfo.time,
-                               date : this.reinfo.day 
-                          
-                              },
+                            navigate("/reserve", {
+                                state: {
+                                    time: this.reinfo.time,
+                                    date: this.reinfo.day
+
+                                },
                             });
                         }}>신청</button>
                     </div>)
@@ -141,12 +145,17 @@ export class Main extends React.Component {
             }
             buttons.push(this.getButton(i, j));
         }
-        return <div id="container">
-            <h2 id="title">풋살장 예약 현황</h2>
-            <div className="weekContainer">
-                {buttons}
+        return (
+            <div>
+                <div id="container">
+                    <h2 id="reservetitle">풋살장 예약 현황</h2>
+                    <div className="weekContainer">
+                        {buttons}
+                    </div>
+                    {this.getTimeTable()}
+                </div>
+                {this.isLoggedIn ? <MyReserve userInfo={this.userInfo} isLoggedIn={this.isLoggedIn}/> : ""}
             </div>
-            {this.getTimeTable()}
-        </div>;
+        )
     }
 }

@@ -5,7 +5,7 @@ import { getData, getDocs } from "./database/firebase";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Login from "./component/login/login.js";
-import Main from "./component/main/Main";
+import Main from "./component/main/Main.js";
 import MyPage from "./component/myPage/myPage";
 import Sign from "./component/signUp/signUp.js";
 import ApplyTeam from "./component/team/applyTeam";
@@ -13,6 +13,7 @@ import CreateTeam from "./component/team/createTeam";
 import Header from "./Header";
 import Reserve from "./component/reservation/reserve";
 import ManageTeam from "./component/team/manageTeam";
+import MyReserve from "./component/main/MyReserve";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태
@@ -29,8 +30,8 @@ const App = () => {
         setIsLoggedIn(true);
         userPromise.then((doc) => { //유저 정보 가져오기
           const teamInfoPromise = getData("teamList", doc.team, "string");
-          teamInfoPromise.then((team) =>{
-              setTeamInfo(team);
+          teamInfoPromise.then((team) => {
+            setTeamInfo(team);
           })
           setUserInfo(doc);
           console.log("유저 정보 세팅 완료");
@@ -57,8 +58,8 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<Sign />} />
-          <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
-          <Route path="/reserve" element={userInfo && teamInfo && <Reserve userInfo={userInfo} teamInfo={teamInfo} />} />
+          <Route path="/" element={(!isLoggedIn||userInfo) && <Main isLoggedIn={isLoggedIn} userInfo={userInfo}/>} />
+          <Route path="/reserve" element={<Reserve userInfo={userInfo} />} />
           <Route path="/my-page" element={userInfo && <MyPage userInfo={userInfo} />} />
           <Route path="/apply-team" element={userInfo && teamList && <ApplyTeam teamList={teamList} userInfo={userInfo} />} />
           <Route path="/create-team" element={userInfo && <CreateTeam userInfo={userInfo} />} />

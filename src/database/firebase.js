@@ -76,6 +76,11 @@ function getFilteredDocs(collection, key, filter, value ){
     });
 }
 
+function getFindDocs(collection, key, filter, value ){
+  return db.collection(collection).where(key, filter, value).get()
+
+}
+
 async function getDocs(collection){
   return db.collection(collection)
     .get()
@@ -193,7 +198,31 @@ function playCountDecrement(collection, user){
   });
 };
 
+function badPointIncrement(collection, user, point){
+  return new Promise((resolve, reject) => {
+      let userRef = db.collection(collection).doc(user);
+
+      userRef.update({
+        badPoint: firebase.firestore.FieldValue.increment(point)
+      });
+
+      resolve(true);
+  });
+};
+
+
+function badPointDecrement(collection, user, point){
+  return new Promise((resolve, reject) => {
+      let userRef = db.collection(collection).doc(user);
+      userRef.update({
+        badPoint: firebase.firestore.FieldValue.increment(-1*point)
+      });
+
+      resolve(true);
+  });
+};
+
 
 export const authService = firebase.auth();
-export {testFunction, addData, getData, deleteData, playCountIncrement, 
-  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict};
+export {testFunction, addData, getData, deleteData, playCountIncrement, badPointIncrement, badPointDecrement,
+  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, getFindDocs};
