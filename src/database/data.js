@@ -101,25 +101,24 @@ class User extends ForFirebase{
 };
 
 class Team extends ForFirebase{
-    constructor(id, pw, name, owner, clubCategory){
+    constructor(leader, member, teamName){
         super();
-        this.id = id;
-        this.pw = pw;
-        this.name = name;
-        this.owner = owner;
-        // this.users = users;
-        this.clubCategory = clubCategory
-        // this.users = new Arrays();
+        this.leader = leader;
+        this.member = member;
+        this.teamName = teamName;
     }
 };
 
 class PlayTeam extends ForFirebase{
-    constructor(id, teamInfo, day, timeSlotID){
+    constructor(id, teamInfo, day, timeSlotID, applicant, order, playCount){
         super();
         this.id = id;
         this.teamInfo = teamInfo;
         this.day = day;
         this.timeSlotID = timeSlotID;
+        this.applicant = applicant;
+        this.order = order
+        this.playCount = playCount;
     }
 
     get hasTeam(){
