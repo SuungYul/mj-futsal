@@ -10,7 +10,7 @@ import "./myPage.css"
 import ManageTeamBtn from "../button/manageTeamBtn"
 import { getData } from "../../database/firebase"
 const MyPage = ({ userInfo }) => {
-    const [isLeader, setIsLeader] = useState(false);
+    const [isLeader, setIsLeader] = useState();
     const navigate = useNavigate();
     const tomain = () => {
         navigate("/");
@@ -36,16 +36,16 @@ const MyPage = ({ userInfo }) => {
         setUserTeam(doc.team)
     })
 
-    let badPoing_grade = "😄";
+    let badPoint_grade = "😄";
 
     if (userbadpt > 20) {
-        badPoing_grade = "🙂";
+        badPoint_grade = "🙂";
         if (userbadpt > 40) {
-            badPoing_grade = "😐";
+            badPoint_grade = "😐";
             if (userbadpt > 60) {
-                badPoing_grade = "😨";
+                badPoint_grade = "😨";
                 if (userbadpt > 80) {
-                    badPoing_grade = "🤬";
+                    badPoint_grade = "🤬";
                 }
             }
         }
@@ -66,9 +66,9 @@ const MyPage = ({ userInfo }) => {
         <div className="MyPage">
             <div className="frame">
                 <h2 id="title">My Page</h2>
-                <CreateTeamBtn />
-                <ApplyTeamBtn />
-                {isLeader && <ManageTeamBtn />}
+                <div>
+                    {isLeader ? <ManageTeamBtn /> : <><CreateTeamBtn /> <ApplyTeamBtn /></>}
+                </div>
                 <table >
                     <tr>
                         <th id="name1">이름</th>
@@ -88,7 +88,7 @@ const MyPage = ({ userInfo }) => {
                     </tr>
                     <tr>
                         <th>비매너온도</th>
-                        <td><label>{badPoing_grade}</label></td>
+                        <td><label>{badPoint_grade}</label></td>
                     </tr>
                     <tr>
                         <th>풋살장 이용횟수</th>
@@ -102,16 +102,16 @@ const MyPage = ({ userInfo }) => {
                         <th>과거 신청내역</th>
                         <td></td>
                     </tr>
-                    
+
                 </table>
                 <div><button id="tomainbutton" onClick={tomain}>메인으로</button></div>
-                    <div>
-                        <button id="quitbutton" onClick={() => {
-                            withdraw_user();
-                            alert("회원탈퇴가 되었습니다");
-                            tomain();
-                        }}>회원탈퇴</button>
-                    </div>
+                <div>
+                    <button id="quitbutton" onClick={() => {
+                        withdraw_user();
+                        alert("회원탈퇴가 되었습니다");
+                        tomain();
+                    }}>회원탈퇴</button>
+                </div>
             </div>
         </div>
     )
