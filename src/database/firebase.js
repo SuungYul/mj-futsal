@@ -61,15 +61,17 @@ function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 
  * @param {string} filter value 의 조건 비교 문자열만 가능("==", ">", "<")
  */
 
+
 function getFilteredDocs(collection, key, filter, value ){
-  db.collection(collection).where(key, filter, value)
+    return db.collection(collection).where(key, filter, value)
     .get()
     .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc);
-            //console.log(doc.id, " => ", doc.data());
-        });
+      console.log(querySnapshot);
+        // return querySnapshot.forEach((doc) => {
+        //     // doc.data() is never undefined for query doc snapshots
+        //     console.log(doc);
+        //     //console.log(doc.id, " => ", doc.data());
+        // });
     })
     .catch((error) => {
         console.log("Error getting documents: ", error);

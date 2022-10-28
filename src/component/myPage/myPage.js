@@ -9,7 +9,7 @@ import ApplyTeamBtn from "../button/applyTeamBtn"
 import "./myPage.css"
 import ManageTeamBtn from "../button/manageTeamBtn"
 import { getData } from "../../database/firebase"
-const MyPage = ({ userInfo }) => {
+const MyPage = ({ userInfo, teamInfo }) => {
     const [isLeader, setIsLeader] = useState();
     const [init, setInit] = useState(false)     //인증 응답 상태
     const navigate = useNavigate();
@@ -43,19 +43,16 @@ const MyPage = ({ userInfo }) => {
         }
     }
     useEffect(() => {
-        if (userInfo.team != "") {
-            getData("teamList", userInfo.team, "string").then((teamInfo) => {
-                const leaderKey = teamInfo.leader.substr(teamInfo.leader.indexOf(')') + 1);
-                if (userInfo.userKey === leaderKey) {
-                    setIsLeader(true);
-                    
-                }
-                setInit(true)
-            })
-        }
+        console.log("teamInfo", teamInfo);
+        if (userInfo.team != "" && userInfo.team != "waiting...") {
+            const leaderKey = teamInfo.leader.substr(teamInfo.leader.indexOf(')') + 1);
+            if (userInfo.userKey === leaderKey) {
+                setIsLeader(true);    
+            }
+         }
         else{
-            setInit(true)
         }
+        setInit(true)
     }, [])
 
     return (
