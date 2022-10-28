@@ -18,25 +18,33 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태
   const [init, setInit] = useState(false)     //인증 응답 상태
   const [userInfo, setUserInfo] =useState();  //유저 정보
+  const [teamInfo, setTeamInfo] = useState(); //소속된 팀 정보
   const [teamList, setTeamList] = useState([]); //팀 리스트
   useEffect( () =>{
     firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       const userPromise = getData("userList",user.uid,"string");
-      const teamPromise = getDocs("teamList");
+      const teamListPromise = getDocs("teamList");
       setIsLoggedIn(true);
       userPromise.then( (doc) =>{ //유저 정보 가져오기
           setUserInfo(doc);
           console.log("유저 정보 세팅 완료");
-      })
-      teamPromise.then( (docs) =>{
+          const teamInfoPromise = getData("teamList", doc.team, "string");
+          teamInfoPromise.then( (team) =>{
+            console.log(team);
+            setTeamInfo(team);
+            console.log("팀 정보 세팅 완료"); 
+      });
+    })
+
+      teamListPromise.then( (docs) =>{
           console.log(docs);
           const teamNames = docs.map((doc) =>{ //docs 순회하며 name값 추출
             return doc = doc.id;
           })
           //console.log(teamNames);
           setTeamList(teamNames);
-          console.log("팀 리스트 세팅 완료");
+          console.log("팀 리스트 세팅 완료"); 
       })
     } else {
       setIsLoggedIn(false);
@@ -51,7 +59,7 @@ const App = () => {
         <Route path="/login" element={<Login/>} />
         <Route path="/signUp" element={<Sign/>} />
         <Route path="/" element={<Main isLoggedIn={isLoggedIn} />}/>
-        <Route path="/reserve" element={<Reserve />} />
+        <Route path="/reserve" element={<Reserve  />} />
         <Route path="/my-page" element={userInfo&&<MyPage userInfo={userInfo}/> } />
         <Route path="/apply-team" element={userInfo&&teamList&&<ApplyTeam teamList={teamList} userInfo={userInfo}/>} />
         <Route path="/create-team" element={userInfo&&<CreateTeam userInfo={userInfo} />} />

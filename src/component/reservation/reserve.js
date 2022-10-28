@@ -3,8 +3,10 @@ import { useLocation } from "react-router-dom";
 import { ReserveInfo } from "../../database/ReserveInfo";
 
 import "./reserve.css"
-const Reserve = (props) => {
+const Reserve = ({teamInfo}) => {
+
     const {reserveInfo} = useLocation();
+    
     //reserveInfo&&console.log(reserveInfo);
     const [isTeam, teamCheck] = useState([]);
     const clickRB = (e) => {
@@ -18,7 +20,7 @@ const Reserve = (props) => {
             {/* 현재 예약 정보는 예약 DB에서 긁어와야됨 */}
             <div> 현재 예약 정보 </div>
             <div>
-                {props.day} | {props.time}
+                {console.log(reserveInfo)}{ reserveInfo.day} | {reserveInfo.time}
             </div>
             <div>
                 <input type="checkbox" id="match" name="match"></input>
