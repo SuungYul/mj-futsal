@@ -95,3 +95,15 @@
     font-size: 30px;
     text-align: center;
 }
+/*시간대 신청 버튼 */
+.reBtn{
+    width: 60px;
+    height: 30px;
+    font-size: 15px;
+}
+#temp{
+    background-color: pink;
+}
+.reInfo {
+    border: 1px solid black;
+}
