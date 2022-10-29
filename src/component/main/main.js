@@ -17,7 +17,7 @@ export default function (props) {
 
 export class Main extends React.Component {
     constructor(props) {
-        const totalReservePromise = getDocs("playTeamList");
+        const totalReservePromise = getDocs("reserveList");
         console.log("추가");
         totalReservePromise.then((querySnapshot) => {  //모든 playTeamList DB 가져오기 
             querySnapshot.forEach((doc) => {
