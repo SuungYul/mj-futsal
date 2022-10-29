@@ -14,11 +14,9 @@ export class ReserveInfo extends ForFirebase {
     }
     setDay(d) {
         this.day = d;
-        console.log(this.day);
     }
     setTime(t) {
         this.time = t
-        console.log(this.time);
     }
 
 }

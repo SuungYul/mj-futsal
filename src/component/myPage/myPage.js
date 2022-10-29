@@ -167,7 +167,7 @@ const MyPage = ({ userInfo, teamInfo }) => {
                         </tr>
                         <tr>
                             <th>현재 신청내역</th>
-                            <td></td>
+                            <td><CancelReserve userInfo={userInfo} teamInfo={teamInfo}/></td>
                         </tr>
                         <tr>
                             <th rowspan="3">과거 신청내역</th>
@@ -192,7 +192,6 @@ const MyPage = ({ userInfo, teamInfo }) => {
                     <div>
                         <button id="quitbutton" onClick={() => {
                             withdraw_user();
-                            alert("회원탈퇴가 되었습니다");
                             tomain();
                         }}>회원탈퇴</button>
                     </div>

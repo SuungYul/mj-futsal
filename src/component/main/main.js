@@ -20,7 +20,6 @@ export class Main extends React.Component {
     constructor(props) {
         super(props);
         const totalReservePromise = getDocs("reserveList");
-        console.log("추가");
         totalReservePromise.then((querySnapshot) => {  //모든 playTeamList DB 가져오기 
             querySnapshot.forEach((doc) => {
                 this.state.totalReserve.push(doc.data());
@@ -48,7 +47,7 @@ export class Main extends React.Component {
 
     }
 
-    componentDidUpdate() {
+    componentDidMount= () => {
         this.button.current.click()
     }
 
@@ -68,7 +67,6 @@ export class Main extends React.Component {
         else {
             this.index = this.dateOfMonth - this.startDate;
         }
-        console.log("dateOfMonth", this.dateOfMonth);
         this.reinfo.setDay(this.index + this.today);
         this.forceUpdate();
     }
@@ -88,7 +86,7 @@ export class Main extends React.Component {
         const selected = this.dateOfMonth === dateOfWeek ? 'selected' : '';
         return (
             <div key={"date" + day}>
-                <button ref={selected === 'selected' ? this.button : ""} className={"day" + dateOfWeek + " " + selected} onClick={() => this.onClicked(dateOfWeek)}>
+                <button ref={selected === 'selected' ? this.button : null} className={"day" + dateOfWeek + " " + selected} onClick={() => this.onClicked(dateOfWeek)}>
                     <p>{dateOfWeek}</p>
                     <span id={this.calDay(day)}>{week[(this.today + day) % 7]}</span>
                 </button>
@@ -101,15 +99,14 @@ export class Main extends React.Component {
 
         if (this.isSat(this.today + this.index) || this.isSun(this.today + this.index)) {
             for (let time = 10; time < 20; time++) {
-                if (this.isLoggedIn) {
-                    let numOfTeam = 0;
-                    for (let r of this.state.totalReserve) { //현재 신청한 팀 수 계산 ()
-                        if (r.day === this.dateOfMonth && r.time === time) {
-                            numOfTeam += 1;
-                        }
+                let numOfTeam = 0;
+                for (let r of this.state.totalReserve) { //현재 신청한 팀 수 계산 ()
+                    if (r.day === this.dateOfMonth && r.time === time) {
+                        numOfTeam += 1;
                     }
+                }
+                if (this.isLoggedIn) {
                     result.push(<div key={"time" + time} className="reInfo">
-                        {time + ":00 ~ " + time + ":50"}
                         <button className="reBtn" onClick={() => {
                             this.reinfo.setTime(time)
                             this.reinfo.setDay(this.dateOfMonth);
@@ -120,31 +117,27 @@ export class Main extends React.Component {
 
                                 },
                             });
-                        }}>신청</button>
-                        <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam // 현재 신청한 team 개수를 보여줌
-                            + "팀이 신청하였습니다."}</span>
+                        }}>{time + ":00 ~ " + time + ":50"}</button>
+                        <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
                     </div>)
                 }
                 else {
                     result.push(<div key={"time" + time} className="reInfo">
-                        {time + ":00 ~ " + time + ":50"}
+                        {time + ":00 ~ " + time + ":50"} <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
                     </div>)
                 }
             }
         }
         else { // 평일 TimeTable
             for (let time = 17; time < 21; time++) {
-                if (this.isLoggedIn) {
-                    let numOfTeam = 0;
+                let numOfTeam = 0;
                     for (let r of this.state.totalReserve) {
-                        console.log(r.day, this.dateOfMonth, r.time, time);
                         if (r.day === this.dateOfMonth && r.time === time) {
                             numOfTeam += 1;
-                            console.log(numOfTeam);
                         }
                     }
+                if (this.isLoggedIn) {
                     result.push(<div key={"time" + time} className="reInfo">
-                        {time + ":00 ~ " + time + ":50"}
                         <button className="reBtn" value={time} onClick={() => {
                             this.reinfo.setTime(time);
                             this.reinfo.setDay(this.dateOfMonth);
@@ -156,15 +149,13 @@ export class Main extends React.Component {
 
                                 },
                             });
-                        }}>신청</button>
-                        <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam
-                            + "팀이 신청하였습니다."}</span>
+                        }}>{time + ":00 ~ " + time + ":50"}</button>
+                        <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
                     </div>)
                 }
                 else {
                     result.push(<div key={"time" + time} className="reInfo">
-                        {time + ":00 ~ " + time + ":50"}
-
+                        {time + ":00 ~ " + time + ":50"} <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
                     </div>)
                 }
             }
