@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase/app"
 import "firebase/auth"
 import { useLocation } from "react-router-dom";
-import { addData, getData } from "../../database/firebase";
+import { addData, getData, addDataCreateDoc } from "../../database/firebase";
 import { User, Team, PlayTeam } from "../../database/data"
 import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
@@ -18,16 +18,14 @@ const applyReserve = (information) => {
 
     //팀 정보 구성
     let currentTeam = new Team(-1, null, -1, null, null);
-    let playCount = currentUser.playCount(); 
+    let playCount = currentUser.playCount; 
 
     //만약 신청한 팀이 있다면 팀을 구성한다.
     if(information.isTeam){
-        currentTeam = currentTeam.buildObject(information.teamInfo);
-        
         //팀이 있다면 playCount의 산정은 모든 멤버의 playCount 합의 평균
+        currentTeam = currentTeam.buildObject(information.teamInfo);
+    
     }
-
-
 
     //해당 예약 신청양식
     let playTeam = new PlayTeam(
@@ -39,8 +37,23 @@ const applyReserve = (information) => {
         0,
         playCount
     )
+    
+    //예약 DB에 등록
+    addDataCreateDoc("reserveList", playTeam)
+    .then((reserveRef) =>{
+        //유저 history에 등록해야되기 때문에 유저 파일을 불러옴
+        getData("userList", currentUser.userKey, currentUser)
+        .then((userData)=>{
+            console.log(reserveRef);
+            console.log(userData);
 
-    addData("reserveList", currentUser.id.toString(), playTeam);
+            userData.history.push(reserveRef.id);
+
+            addData("userList", userData.userKey, userData);
+
+            console.log("예약DB 작성 완료");
+        })
+    })
 
     console.log("====예약신청 버튼 클릭 종료====");
 }
