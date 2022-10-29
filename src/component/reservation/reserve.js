@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase/app"
 import "firebase/auth"
-import { useLocation } from "react-router-dom";
+import { isRouteErrorResponse, useLocation } from "react-router-dom";
 import { addData, getData, addDataCreateDoc } from "../../database/firebase";
 import { User, Team, ReserveTeam } from "../../database/data"
 import { ReserveInfo } from "../../database/ReserveInfo";
@@ -9,7 +9,7 @@ import "./reserve.css"
 import ReserveTeamList from "./reserveTeamList";
 
 
-const applyReserve = (information) => {
+const applyReserve = async (information) => {
     console.log("====예약신청 버튼 클릭 시작====");
     console.log(information);
 
@@ -18,68 +18,53 @@ const applyReserve = (information) => {
     currentUser = currentUser.buildObject(information.userInfo);
 
     
-    let playerArray = new Array().push(currentUser.userKey);
-    let playCount = currentUser.playCount; 
+    let playerArray = new Array();
+    playerArray.push("0(0)"+currentUser.userKey);
+    let playCount = 0; 
 
     //팀 정보 구성
     let currentTeam = new Team(-1, null, -1, null, null);
-
     let order = 0;
 
     //만약 신청한 팀이 있다면 팀을 구성한다.
     if(information.isTeam){
         currentTeam = currentTeam.buildObject(information.teamInfo);
-        
         playerArray = currentTeam.member;
-
-        //팀이 있다면 playCount의 산정은 모든 멤버의 playCount 합의 평균
-        for(let idx in playerArray){
-            let player = new User();
-            let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')')+1); 
-            getData("userList", playerKey, player)
-            .then((data) => {
-                //데이터를 불러올 수 있는 경우만
-                if(data){
-                    playCount += (data.playCount /playerArray.length);
-                }
-            })
-        }
+    }
+    
+    //playCount의 산정은 모든 멤버의 playCount 합의 평균
+    for(let idx in playerArray){
+        let player = new User();
+        //유저 key만 추출하는 부분
+        let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')')+1); 
+        const data = await getData("userList", playerKey, player);
+        playCount += data.playCount;
     }
 
+    playCount /= playerArray.length;
+    //해당 예약 신청양식
+    let reserveTeam = new ReserveTeam(
+        currentTeam.teamName, 
+        playerArray,    //playerArray
+        playCount,  
+        information.reserveInfo.state.date,
+        information.reserveInfo.state.time,
+        order
+    )
 
-    
-    //시간차를 두고 예약 DB에 등록
+    let reserveRef = await addDataCreateDoc("reserveList", reserveTeam);
 
-    setTimeout(() => {
-        console.log(`플레이 카운트 ${playCount}`);
-        //해당 예약 신청양식
-        let reserveTeam = new ReserveTeam(
-            currentTeam.teamName, 
-            playerArray,    //playerArray
-            playCount,  
-            information.reserveInfo.state.date,
-            information.reserveInfo.state.time,
-            order
-        )
-
-        addDataCreateDoc("reserveList", reserveTeam )
-        .then((reserveRef) =>{
-            //유저 history에 등록해야되기 때문에 유저 파일을 불러옴
-            getData("userList", currentUser.userKey, currentUser)
-            .then((userData)=>{
-                console.log(reserveRef);
-                console.log(userData);
-
-                userData.history.push(reserveRef.id);
-
-                addData("userList", userData.userKey, userData);
-
-                console.log("예약DB 작성 완료");
-            })
-        })
-
-        console.log("====예약신청 버튼 클릭 종료====");
-    }, 2000);
+    //playerArray에 있는 모든 유저에게 currentReserve 등록
+    for(let idx in playerArray){
+        let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')')+1); 
+        let userData = await getData("userList", playerKey, new User());
+        userData.currentReserve = reserveRef.id;
+        await addData("userList", userData.userKey, userData);
+    }
+    console.log("예약DB 작성 완료");
+    console.log("====예약신청 버튼 클릭 종료====");
+    alert("예약 완료");
+    return;
 }
 
 

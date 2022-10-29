@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { ForFirebase, User } from "../database/data";
+import { mergeSort } from "../algorithm/algorithm";
 
 const firebaseConfig = require("../token.json");
 
@@ -115,6 +116,18 @@ async function getDocs(collection){
         console.log("Error getting documents: ", error);
     });
 }
+
+async function getDocsByOrder(collection, compare){
+  return db.collection(collection)
+    .get()
+    .then((querySnapshot) => {
+        return mergeSort(querySnapshot.docs, compare);
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+}
+
 
 async function checkDocConflict(collection, document){ //컬렉션의 문서명이 원래 있는지 체크
   return db.collection(collection)
