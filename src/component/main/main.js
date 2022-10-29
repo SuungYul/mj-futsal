@@ -48,7 +48,7 @@ export class Main extends React.Component {
 
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
         this.button.current.click()
     }
 
