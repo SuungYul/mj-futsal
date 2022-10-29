@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import "./Main.css";
 import MyReserve from './MyReserve';
 import { ReserveInfo } from '../../database/ReserveInfo';
-import { getDocs, getDocsByOrderKey, getReserveOrder } from '../../database/firebase';
+import { getDocs, db, fieldUpdateConvertor, getData } from '../../database/firebase';
+import { User } from "../../database/data"
 const week = ['일', '월', '화', '수', '목', '금', '토'];
 
 
@@ -47,7 +48,7 @@ export class Main extends React.Component {
 
     }
 
-    componentDidMount= () => {
+    componentDidMount = () => {
         this.button.current.click()
     }
 
@@ -108,15 +109,31 @@ export class Main extends React.Component {
                 if (this.isLoggedIn) {
                     result.push(<div key={"time" + time} className="reInfo">
                         <button className="reBtn" onClick={() => {
-                            this.reinfo.setTime(time)
-                            this.reinfo.setDay(this.dateOfMonth);
-                            navigate("/reserve", {
-                                state: {
-                                    time: this.reinfo.time,
-                                    date: this.reinfo.day
+                            if (this.userInfo.currentReserve != null) {
+                                if (window.confirm("현재 예약이 되어있습니다. 예약을 변경하시겠습니까?")) {
+                                    this.editReserve();
+                                    this.reinfo.setTime(time)
+                                    this.reinfo.setDay(this.dateOfMonth);
+                                    navigate("/reserve", {
+                                        state: {
+                                            time: this.reinfo.time,
+                                            date: this.reinfo.day
 
-                                },
-                            });
+                                        },
+                                    });
+                                }
+                            }
+                            else{
+                                this.reinfo.setTime(time)
+                                this.reinfo.setDay(this.dateOfMonth);
+                                navigate("/reserve", {
+                                    state: {
+                                        time: this.reinfo.time,
+                                        date: this.reinfo.day
+
+                                    },
+                                });
+                            }
                         }}>{time + ":00 ~ " + time + ":50"}</button>
                         <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
                     </div>)
@@ -131,24 +148,40 @@ export class Main extends React.Component {
         else { // 평일 TimeTable
             for (let time = 17; time < 21; time++) {
                 let numOfTeam = 0;
-                    for (let r of this.state.totalReserve) {
-                        if (r.day === this.dateOfMonth && r.time === time) {
-                            numOfTeam += 1;
-                        }
+                for (let r of this.state.totalReserve) {
+                    if (r.day === this.dateOfMonth && r.time === time) {
+                        numOfTeam += 1;
                     }
+                }
                 if (this.isLoggedIn) {
                     result.push(<div key={"time" + time} className="reInfo">
                         <button className="reBtn" value={time} onClick={() => {
-                            this.reinfo.setTime(time);
-                            this.reinfo.setDay(this.dateOfMonth);
-                            console.log(this.reinfo.time);
-                            navigate("/reserve", {
-                                state: {
-                                    time: this.reinfo.time,
-                                    date: this.reinfo.day
+                            if (this.userInfo.currentReserve != null) {
+                                if (window.confirm("현재 예약이 되어있습니다. 예약을 변경하시겠습니까?")) {
+                                    this.editReserve();
+                                    this.reinfo.setTime(time);
+                                    this.reinfo.setDay(this.dateOfMonth);
+                                    console.log(this.reinfo.time);
+                                    navigate("/reserve", {
+                                        state: {
+                                            time: this.reinfo.time,
+                                            date: this.reinfo.day
 
-                                },
-                            });
+                                        },
+                                    });
+                                }
+                            }
+                            else{
+                                this.reinfo.setTime(time)
+                                this.reinfo.setDay(this.dateOfMonth);
+                                navigate("/reserve", {
+                                    state: {
+                                        time: this.reinfo.time,
+                                        date: this.reinfo.day
+
+                                    },
+                                });
+                            }
                         }}>{time + ":00 ~ " + time + ":50"}</button>
                         <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
                     </div>)
@@ -162,6 +195,60 @@ export class Main extends React.Component {
         }
         return <div id="timeTable">{result}</div>
     }
+
+    async editReserve() {
+        const userInfo = this.userInfo
+        // const teamInfo = this.teamInfo
+
+        let docs = await db.collection("reserveList").doc(userInfo.currentReserve).get();
+        if (!docs.exists) alert("해당 예약이 존재하지 않습니다 관리자에게 문의해주세요");
+
+        let reserveData = docs.data();
+
+        //개인 신청
+        if (reserveData.teamInfo == -1) {
+            reserveData.playerArray = reserveData.playerArray.filter(
+                (element) => element !== `${userInfo.name}(${userInfo.userID})${userInfo.userKey}`
+            );
+
+            console.log(reserveData.playerArray);
+
+            //만약 길이가 0인 경우
+            if (reserveData.playerArray.length == 0) {
+                let result = await db.collection("reserveList").doc(userInfo.currentReserve).delete();
+            }
+            else {
+                //다시 플레이카운트 산출
+                let playCount = 0;
+                for (let idx in reserveData.playerArray) {
+                    let player = new User();
+                    //유저 key만 추출하는 부분
+                    let playerKey = reserveData.playerArray[idx].substring(reserveData.playerArray[idx].indexOf(')') + 1);
+                    let data = await getData("userList", playerKey, player);
+                    playCount += data.playCount;
+                }
+
+                reserveData.playCount = playCount /= reserveData.playerArray.length;
+                await fieldUpdateConvertor("reserveList", docs.id, reserveData);
+            }
+
+        }
+        //팀 신청
+        else {
+            for (let idx in reserveData.playerArray) {
+                let player = new User();
+                //유저 key만 추출하는 부분
+                let playerKey = reserveData.playerArray[idx].substring(reserveData.playerArray[idx].indexOf(')') + 1);
+                let data = await getData("userList", playerKey, player);
+                data.currentReserve = null;
+                await db.collection("userList").doc(playerKey).update({ currentReserve: null });
+            }
+            let result = await db.collection("reserveList").doc(userInfo.currentReserve).delete();
+        }
+
+        await db.collection("userList").doc(userInfo.userKey).update({ currentReserve: null });
+    }
+
 
     render() {
         // console.log(this.state.totalReserve);
