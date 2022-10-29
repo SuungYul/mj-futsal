@@ -42,6 +42,32 @@ function addData(collection, document, data){
         console.log(`실패\n${error}`)
       });
 }
+
+/** 
+ * 파이어베이스 스토리지에 문서생성과 함께 데이터를 추가하는 함수
+ * @param {string} collection Firestore에 저장된 collection 이름
+ * @param {string} document Firestore에 위치한 document 이름
+ * @param {ForFirebase} data collection에 추가할 데이터
+ */
+ function addDataCreateDoc(collection, data){ 
+  return new Promise(function(resolve, reject){
+      const newDocRef = db.collection(collection).doc();
+      newDocRef
+      .withConverter(data.getConvertor)
+      .set(data)
+      .then((docRef)=>{
+        console.log(`성공적으로 작성했습니다 ${newDocRef}`);
+        resolve(newDocRef);
+      })
+      .catch((error)=>{
+        console.log(`실패\n${error}`)
+      });
+    }
+  )
+ }
+
+
+
 function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 업데이트
   db.collection(collection)
   .doc(document)
@@ -61,25 +87,23 @@ function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 
  * @param {string} filter value 의 조건 비교 문자열만 가능("==", ">", "<")
  */
 
+
 function getFilteredDocs(collection, key, filter, value ){
-  db.collection(collection).where(key, filter, value)
+    return db.collection(collection).where(key, filter, value)
     .get()
     .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc);
-            //console.log(doc.id, " => ", doc.data());
-        });
+      console.log(querySnapshot);
+        // return querySnapshot.forEach((doc) => {
+        //     // doc.data() is never undefined for query doc snapshots
+        //     console.log(doc);
+        //     //console.log(doc.id, " => ", doc.data());
+        // });
     })
     .catch((error) => {
         console.log("Error getting documents: ", error);
     });
 }
 
-function getFindDocs(collection, key, filter, value ){
-  return db.collection(collection).where(key, filter, value).get()
-
-}
 
 async function getDocs(collection){
   return db.collection(collection)
@@ -225,4 +249,4 @@ function badPointDecrement(collection, user, point){
 
 export const authService = firebase.auth();
 export {testFunction, addData, getData, deleteData, playCountIncrement, badPointIncrement, badPointDecrement,
-  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, getFindDocs};
+  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, addDataCreateDoc};

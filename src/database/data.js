@@ -87,7 +87,9 @@ import { forwardRef } from "react";
  * 임시적으로 User 클래스를 작성함
  */
 class User extends ForFirebase{
-    constructor(id, pw, name, team, userID, playCount, badPoint, userKey){
+    constructor(id, pw, name, team, userID, 
+                playCount, badPoint, userKey, history,
+                matchInfo){
         super();
         this.id = id;
         this.pw = pw;
@@ -97,45 +99,34 @@ class User extends ForFirebase{
         this.playCount = playCount;
         this.badPoint = badPoint;
         this.userKey = userKey;
+        this.history = history;
+        this.matchInfo = matchInfo;
     }
 };
 
 class Team extends ForFirebase{
-    constructor(id, pw, name, owner, clubCategory){
+    constructor(leader, member, teamName){
         super();
-        this.id = id;
-        this.pw = pw;
-        this.name = name;
-        this.owner = owner;
-        // this.users = users;
-        this.clubCategory = clubCategory
-        // this.users = new Arrays();
+        this.leader = leader;
+        this.member = member;
+        this.teamName = teamName;
     }
 };
 
-class PlayTeam extends ForFirebase{
-    constructor(id, teamInfo, day, timeSlotID){
+class ReserveTeam extends ForFirebase{
+    constructor(teamInfo, playerArray, playCount, day, time, order){
         super();
-        this.id = id;
+        this.playerArray = playerArray;
+        this.playCount = playCount;
         this.teamInfo = teamInfo;
         this.day = day;
-        this.timeSlotID = timeSlotID;
+        this.time = time;
+        this.order = order;
     }
 
     get hasTeam(){
         return this.teamInfo != -1? this.teamInfo: null;
-        
     }
 };
 
-
-class TimeSlot extends ForFirebase{
-    constructor(id, startTime, endTime){
-        super();
-        this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-};
-
-export {ForFirebase, User, Team, PlayTeam, TimeSlot};
+export {ForFirebase, User, Team, ReserveTeam};
