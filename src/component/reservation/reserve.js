@@ -120,17 +120,20 @@ const Reserve = ({ userInfo, teamInfo }) => {
     
     return (
         <div id="top_div">
-            <div className="frame">
-                <h1>풋살장 예약 신청</h1>
+            <div className="reserveFrame">
+                <div id="reserveTitle"><h1>풋살장 예약 신청</h1></div>
+                <div id="jb-division-line"></div>
                 {/* 현재 예약 정보는 예약 DB에서 긁어와야됨 */}
-                <div> 현재 예약 정보 </div>
-
-                {reserveInfo.state.date}일 {reserveInfo.state.time}시
-
+                <div id="dayhour">{reserveInfo.state.date}일 {reserveInfo.state.time}시</div>
+                <div id="jb-division-line"></div>
                 <div>
                     {/* {props.day} | {props.time} */}
                 </div>
-                <div>
+                <br />
+                <br />
+                <br />
+
+                <div className="choice">
                     <input
                         type="radio"
                         id="play_other"
@@ -139,7 +142,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         onChange={radioActive}>
                     </input>
                     <label htmlFor="play_other">다른 팀과 같이 찰래요</label>
-                    |
+                    
                     <input
                         type="radio"
                         id="play_team"
@@ -148,7 +151,8 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         onChange={radioActive}>
                     </input>
                     <label htmlFor="play_team">우리끼리만 찰래요</label>
-                    <br />
+                </div>
+                <div className="choice">
                     <input
                         type="radio"
                         id="individual"
@@ -159,7 +163,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         onChange={clickRB}
                     >
                     </input>
-                    <label htmlFor="individual">개인</label> |
+                    <label htmlFor="individual">개인</label> 
                     <input
                         type="radio"
                         id="team"
@@ -172,13 +176,16 @@ const Reserve = ({ userInfo, teamInfo }) => {
                     >
                     </input>
                     <label htmlFor="team">팀</label>
-                    <article className={(isTeam === true) ? "art_team" : "art_indi"}>
-                    <h2>팀 명단 작성</h2>
-                    {/* 팀 DB 구현되면 작성 */}
-                    <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo}/>
-                </article>
                 </div>
-                <ReserveButton information={
+                
+                <div className="teamlist">   
+                    <article className={(isTeam === true) ? "art_team" : "art_indi"}>
+                        <h2>팀 명단 작성</h2>
+                        {/* 팀 DB 구현되면 작성 */}
+                        <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo}/>
+                    </article>
+                </div>
+                <ReserveButton id="Rbutton" information={
                     {   isTeam: isTeam, 
                         reserveInfo: reserveInfo,
                         userInfo: userInfo, 

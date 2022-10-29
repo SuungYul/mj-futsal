@@ -58,11 +58,9 @@ const MyPage = ({ userInfo, teamInfo }) => {
     return (
         init ?
             <div className="MyPage">
-                <div className="frame">
-                    <h2 id="title">My Page</h2>
-                    <div>
-                        {isLeader ? <ManageTeamBtn /> : <><CreateTeamBtn /> <ApplyTeamBtn /></>}
-                    </div>
+            <div id="mypageFrame">
+                    <div id="myPageTitle"><h2>마이페이지</h2></div>
+                    
                     <table >
                         <tr>
                             <th id="name1">이름</th>
@@ -93,12 +91,25 @@ const MyPage = ({ userInfo, teamInfo }) => {
                             <td></td>
                         </tr>
                         <tr>
-                            <th>과거 신청내역</th>
-                            <td></td>
+                            <th rowspan="3">과거 신청내역</th>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr>
+
+
+
+                        </tr>
+                        <tr>
+
                         </tr>
 
+
+
                     </table>
-                    <div><button id="tomainbutton" onClick={tomain}>메인으로</button></div>
+                    <div id="managebutton">
+                        {isLeader ? <ManageTeamBtn /> : <><CreateTeamBtn /> <ApplyTeamBtn /></>}
+                    </div>
+                    
                     <div>
                         <button id="quitbutton" onClick={() => {
                             withdraw_user();
@@ -106,9 +117,10 @@ const MyPage = ({ userInfo, teamInfo }) => {
                             tomain();
                         }}>회원탈퇴</button>
                     </div>
-                </div>
+            </div>        
             </div>
             : ""
+        
     )
 }
 export default MyPage

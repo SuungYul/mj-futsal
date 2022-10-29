@@ -5,6 +5,7 @@ import User from "../../database/User";
 import { useState, useEffect } from "react";
 import ToMain from "../ToMain";
 import ManageTeamBtn from "../button/manageTeamBtn";
+import "./createTeam.css";
 const CreateTeam = ({userInfo}) =>{ //팀 개설 컴포넌트(유저 DB를 부모 컴포넌트에서 받아옴)
     const user = firebase.auth().currentUser; //유저 정보 미리 받아와서 필요한 정보 컴포넌트내에 저장
     const createTeam = (e) =>{ //팀 개설 클릭시 받아온 정보 바탕으로 DB에 팀추가(동시에 필드에 팀 정보 추가, Member컬렉션에 팀장 정보 추가(member로써))
@@ -38,9 +39,11 @@ const CreateTeam = ({userInfo}) =>{ //팀 개설 컴포넌트(유저 DB를 부�
         } )
     }
     return <form>
-        <ToMain/>
-        <div> 팀 이름 <input type="text" id="teamName" maxLength="20"/></div>
-        <button type="submit" id="teamName" onClick ={createTeam} >팀 신청하기</button>
+        <div id="createTeambox">
+            <div id="title"><h2>팀 만들기</h2></div>
+            <input type="text" className="inputbox" id="teamName" maxLength="20" placeholder="팀 이름"/>
+            <button type="submit" className="createbutton" id="teamName" onClick ={createTeam} >생성</button>
+        </div>
     </form>
 }
 
