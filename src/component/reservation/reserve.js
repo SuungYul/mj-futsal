@@ -17,26 +17,26 @@ const applyReserve = async (information) => {
     let currentUser = new User()
     currentUser = currentUser.buildObject(information.userInfo);
 
-    
+
     let playerArray = new Array();
-    playerArray.push("0(0)"+currentUser.userKey);
-    let playCount = 0; 
+    playerArray.push("0(0)" + currentUser.userKey);
+    let playCount = 0;
 
     //팀 정보 구성
     let currentTeam = new Team(-1, null, -1, null, null);
     let order = 0;
 
     //만약 신청한 팀이 있다면 팀을 구성한다.
-    if(information.isTeam){
+    if (information.isTeam) {
         currentTeam = currentTeam.buildObject(information.teamInfo);
         playerArray = currentTeam.member;
     }
-    
+
     //playCount의 산정은 모든 멤버의 playCount 합의 평균
-    for(let idx in playerArray){
+    for (let idx in playerArray) {
         let player = new User();
         //유저 key만 추출하는 부분
-        let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')')+1); 
+        let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')') + 1);
         const data = await getData("userList", playerKey, player);
         playCount += data.playCount;
     }
@@ -44,9 +44,9 @@ const applyReserve = async (information) => {
     playCount /= playerArray.length;
     //해당 예약 신청양식
     let reserveTeam = new ReserveTeam(
-        currentTeam.teamName, 
+        currentTeam.teamName,
         playerArray,    //playerArray
-        playCount,  
+        playCount,
         information.reserveInfo.state.date,
         information.reserveInfo.state.time,
         order
@@ -55,8 +55,8 @@ const applyReserve = async (information) => {
     let reserveRef = await addDataCreateDoc("reserveList", reserveTeam);
 
     //playerArray에 있는 모든 유저에게 currentReserve 등록
-    for(let idx in playerArray){
-        let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')')+1); 
+    for (let idx in playerArray) {
+        let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')') + 1);
         let userData = await getData("userList", playerKey, new User());
         userData.currentReserve = reserveRef.id;
         await addData("userList", userData.userKey, userData);
@@ -68,9 +68,9 @@ const applyReserve = async (information) => {
 }
 
 
-const ReserveButton = (information) =>{
-    return(
-        <button onClick={()=>{applyReserve(information.information)}}>
+const ReserveButton = (information) => {
+    return (
+        <button onClick={() => { applyReserve(information.information) }}>
             예약 신청
         </button>
     )
@@ -78,7 +78,7 @@ const ReserveButton = (information) =>{
 
 
 const Reserve = ({ userInfo, teamInfo }) => {
-    
+
     const reserveInfo = useLocation();
     const [isTeam, teamCheck] = useState(false);
     const [radio_click, setRadio] = useState(true);
@@ -102,7 +102,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
         // setRadio()
     }
     const result = []
-    
+
     return (
         <div id="top_div">
             <div className="frame">
@@ -158,22 +158,24 @@ const Reserve = ({ userInfo, teamInfo }) => {
                     </input>
                     <label htmlFor="team">팀</label>
                     <article className={(isTeam === true) ? "art_team" : "art_indi"}>
-                    <h2>팀 명단 작성</h2>
-                    {/* 팀 DB 구현되면 작성 */}
-                    <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo}/>
-                </article>
+                        <h2>팀 명단 작성</h2>
+                        {/* 팀 DB 구현되면 작성 */}
+                        {teamInfo && <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} />}
+                    </article>
                 </div>
                 <ReserveButton information={
-                    {   isTeam: isTeam, 
+                    {
+                        isTeam: isTeam,
                         reserveInfo: reserveInfo,
-                        userInfo: userInfo, 
-                        teamInfo: teamInfo}
-                }/>
+                        userInfo: userInfo,
+                        teamInfo: teamInfo
+                    }
+                } />
             </div>
             <div>
-                
+
             </div>
-            
+
         </div>
     );
 }

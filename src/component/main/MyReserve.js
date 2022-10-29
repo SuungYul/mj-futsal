@@ -17,14 +17,22 @@ const MyReserve = ({ userInfo, isLoggedIn }) => {
     playTeamPromise.then((doc) => {
         setTime(doc.time)
         setDay(doc.day)
-        setMyTeam(doc.teamInfo)
+        setMyTeam(doc.teamInfo === -1 ? "개인팀" : doc.teamInfo)
     })
 
     showReserveTeam(day, time).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             // doc.data().orderBy("playCount");
+
             if (!playArray.includes(doc.data().teamInfo)) {
-                setArray([...playArray, doc.data().teamInfo])
+                if (doc.data().teamInfo === -1) {
+                    if (!playArray.includes("개인팀")) {
+                        setArray([...playArray, "개인팀"])
+                    }
+                }
+                else {
+                    setArray([...playArray, doc.data().teamInfo])
+                }
             }
         })
     })
@@ -56,7 +64,7 @@ function showReserveTeam(day, time) {
         firebase.firestore().collection("reserveList")
             .where("day", "==", Number(day))
             .where("time", "==", Number(time))
-            .orderBy("playCount", "asc")
+            .orderBy("playCount", "desc")
             .get()
             .then((querySnapshot) => {
                 resolve(querySnapshot)
