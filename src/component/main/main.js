@@ -17,7 +17,7 @@ export default function (props) {
 
 export class Main extends React.Component {
     constructor(props) {
-        const totalReservePromise = getDocs("playTeamList");
+        const totalReservePromise = getDocs("reserveList");
         console.log("추가");
         totalReservePromise.then((querySnapshot) => {  //모든 playTeamList DB 가져오기 
             querySnapshot.forEach((doc) => {
@@ -176,7 +176,7 @@ export class Main extends React.Component {
             buttons.push(this.getButton(i, j));
         }
         return <div id="container">
-            <h2 id="title">풋살장 예약 현황</h2>
+            <h2 id="reservetitle">풋살장 예약 현황</h2>
             <div className="weekContainer">
                 {buttons}
             </div>

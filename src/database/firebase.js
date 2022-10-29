@@ -42,6 +42,32 @@ function addData(collection, document, data){
         console.log(`실패\n${error}`)
       });
 }
+
+/** 
+ * 파이어베이스 스토리지에 문서생성과 함께 데이터를 추가하는 함수
+ * @param {string} collection Firestore에 저장된 collection 이름
+ * @param {string} document Firestore에 위치한 document 이름
+ * @param {ForFirebase} data collection에 추가할 데이터
+ */
+ function addDataCreateDoc(collection, data){ 
+  return new Promise(function(resolve, reject){
+      const newDocRef = db.collection(collection).doc();
+      newDocRef
+      .withConverter(data.getConvertor)
+      .set(data)
+      .then((docRef)=>{
+        console.log(`성공적으로 작성했습니다 ${newDocRef}`);
+        resolve(newDocRef);
+      })
+      .catch((error)=>{
+        console.log(`실패\n${error}`)
+      });
+    }
+  )
+ }
+
+
+
 function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 업데이트
   db.collection(collection)
   .doc(document)
@@ -195,7 +221,31 @@ function playCountDecrement(collection, user){
   });
 };
 
+function badPointIncrement(collection, user, point){
+  return new Promise((resolve, reject) => {
+      let userRef = db.collection(collection).doc(user);
+
+      userRef.update({
+        badPoint: firebase.firestore.FieldValue.increment(point)
+      });
+
+      resolve(true);
+  });
+};
+
+
+function badPointDecrement(collection, user, point){
+  return new Promise((resolve, reject) => {
+      let userRef = db.collection(collection).doc(user);
+      userRef.update({
+        badPoint: firebase.firestore.FieldValue.increment(-1*point)
+      });
+
+      resolve(true);
+  });
+};
+
 
 export const authService = firebase.auth();
-export {testFunction, addData, getData, deleteData, playCountIncrement, 
-  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict};
+export {testFunction, addData, getData, deleteData, playCountIncrement, badPointIncrement, badPointDecrement,
+  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, addDataCreateDoc};
