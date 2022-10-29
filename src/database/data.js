@@ -113,18 +113,15 @@ class Team extends ForFirebase{
     }
 };
 
-class PlayTeam extends ForFirebase{
-    constructor(id, teamInfo, playerArray, playCount, day, timeSlotID){
+class ReserveTeam extends ForFirebase{
+    constructor(teamInfo, playerArray, playCount, day, time){
         super();
-        this.id = id;
         this.playerArray = playerArray;
         this.playCount = playCount;
         this.teamInfo = teamInfo;
         this.day = day;
-        this.timeSlotID = timeSlotID;
-        this.applicant = applicant;
-        this.order = order
-        this.playCount = playCount;
+        this.time = time;
+        this.order = order;
     }
 
     get hasTeam(){
@@ -132,14 +129,4 @@ class PlayTeam extends ForFirebase{
     }
 };
 
-
-class TimeSlot extends ForFirebase{
-    constructor(id, startTime, endTime){
-        super();
-        this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-};
-
-export {ForFirebase, User, Team, PlayTeam, TimeSlot};
+export {ForFirebase, User, Team, ReserveTeam};
