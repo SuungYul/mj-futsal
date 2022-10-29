@@ -30,6 +30,18 @@ const applyReserve = async (information) => {
     if(information.isTeam){
         currentTeam = currentTeam.buildObject(information.teamInfo);
         playerArray = currentTeam.member;
+
+        let teamCheck = await db.collection("reserveList")
+                                .where("teamInfo", "==", currentTeam.teamName)
+                                .where("day", "==", information.reserveInfo.state.date)
+                                .where("time", "==", information.reserveInfo.state.time)
+                                .get();
+
+        //이미 팀이 예약되어있을 경우
+        if(teamCheck.empty == false){
+            alert("이미 예약이 완료되어있습니다.");
+            return;
+        }
     }
     else{ //팀이 없는 경우
         let indvReserveDoc = await db.collection("reserveList")
@@ -40,6 +52,11 @@ const applyReserve = async (information) => {
 
         if(indvReserveDoc.empty == false){
             let reserveTeam = indvReserveDoc.docs[0].data();
+            //이미 예약한 경우
+            if(reserveTeam.playerArray.includes(playerArray[0])){
+                alert("이미 예약이 완료되어있습니다.");
+                return;
+            }
             reserveTeam.playerArray.push(playerArray[0]);
             for(let idx in reserveTeam.playerArray){
                 let player = new User();
