@@ -12,7 +12,6 @@ import ApplyTeam from "./component/team/applyTeam";
 import CreateTeam from "./component/team/createTeam";
 import Header from "./Header";
 import Reserve from "./component/reservation/reserve";
-import Reserve2 from "./component/reservation/reserve2";
 import ManageTeam from "./component/team/manageTeam";
 
 const App = () => {
@@ -32,6 +31,7 @@ const App = () => {
           setUserInfo(doc);
           console.log("유저 정보 세팅 완료");
           if(doc.team =="waiting..." || doc.team == ""){ //소속팀이 없거나 대기상태면 소속 팀 정보 불러오지 않음
+            setTeamInfo(true);
             console.log("waiting")
             return;
           }
@@ -64,7 +64,7 @@ const App = () => {
           <Route path="/signUp" element={<Sign />} />
           <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
           <Route path="/reserve" element={userInfo && teamInfo && <Reserve userInfo={userInfo} teamInfo={teamInfo} />} />
-          <Route path="/my-page" element={userInfo && teamInfo && <MyPage userInfo={userInfo} teamInfo={teamInfo}/>} />
+          <Route path="/my-page" element={userInfo  && teamList && <MyPage userInfo={userInfo} teamInfo={teamInfo}/>} />
           <Route path="/apply-team" element={userInfo && teamList && <ApplyTeam teamList={teamList} userInfo={userInfo} />} />
           <Route path="/create-team" element={userInfo && <CreateTeam userInfo={userInfo} />} />
           <Route path="/manage-team" element={userInfo && <ManageTeam userInfo={userInfo} />} />

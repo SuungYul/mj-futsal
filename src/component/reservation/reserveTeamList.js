@@ -1,11 +1,11 @@
-import { PlayTeam } from "../../database/data";
+import { ReserveTeam } from "../../database/data";
 
 const ReserveTeamList = ({teamInfo, userInfo, reserveInfo}) =>{
     
     console.log(teamInfo, userInfo, reserveInfo);
     //id, teamInfo, playerArray, playCount, day, timeSlotID
     const addPlayer = (tm) =>{   
-        const newPT = new PlayTeam(null, );
+        const newPT = new ReserveTeam(null, );
         
     }
     return ( //팀DB 수신 완료 시 대기자 명단으로 li 태그 동적 생성
