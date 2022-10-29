@@ -116,6 +116,7 @@ function getFilteredDocs(collection, key, filter, value ){
     });
 }
 
+
 async function getDocs(collection){
   return db.collection(collection)
     .get()
