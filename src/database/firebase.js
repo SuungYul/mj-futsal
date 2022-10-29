@@ -127,6 +127,46 @@ async function getDocsByOrder(collection, compare){
     });
 }
 
+async function getDocsByOrderKey(collection, key, reverse = false){
+  return db.collection(collection)
+  .get()
+  .then((querySnapshot) => {
+      let result = new Array();
+      querySnapshot.docs.forEach((doc)=>{
+        result.push(doc.data());
+      })
+
+      return mergeSort(result, (x, y) => {
+        if(reverse) return x[key] > y[key];
+        return x[key] < y[key];
+      });
+  })
+  .catch((error) => {
+      console.log("Error getting documents: ", error);
+  });
+}
+
+async function getReserveOrder(collection, day, time, key, reverse = false){
+  return db.collection(collection)
+  .where("day", "==", day)
+  .where("time", "==", time)
+  .get()
+  .then((querySnapshot) => {
+      let result = new Array();
+      querySnapshot.docs.forEach((doc)=>{
+        result.push(doc.data());
+      })
+
+      return mergeSort(result, (x, y) => {
+        if(reverse) return x[key] > y[key];
+        return x[key] < y[key];
+      });
+  })
+  .catch((error) => {
+      console.log("Error getting documents: ", error);
+  });
+}
+
 
 async function checkDocConflict(collection, document){ //컬렉션의 문서명이 원래 있는지 체크
   return db.collection(collection)
@@ -261,4 +301,5 @@ function badPointDecrement(collection, user, point){
 
 export const authService = firebase.auth();
 export {testFunction, addData, getData, deleteData, playCountIncrement, badPointIncrement, badPointDecrement,
-  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, addDataCreateDoc};
+  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, addDataCreateDoc, 
+  getDocsByOrder, getDocsByOrderKey, getReserveOrder };
