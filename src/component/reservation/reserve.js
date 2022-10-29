@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase/app"
 import "firebase/auth"
-import { useLocation } from "react-router-dom";
+import { isRouteErrorResponse, useLocation } from "react-router-dom";
 import { addData, getData, addDataCreateDoc } from "../../database/firebase";
 import { User, Team, ReserveTeam } from "../../database/data"
 import { ReserveInfo } from "../../database/ReserveInfo";
@@ -18,12 +18,12 @@ const applyReserve = async (information) => {
     currentUser = currentUser.buildObject(information.userInfo);
 
     
-    let playerArray = new Array().push(currentUser.userKey);
+    let playerArray = new Array();
+    playerArray.push("0(0)"+currentUser.userKey);
     let playCount = 0; 
 
     //팀 정보 구성
     let currentTeam = new Team(-1, null, -1, null, null);
-
     let order = 0;
 
     //만약 신청한 팀이 있다면 팀을 구성한다.
@@ -35,6 +35,7 @@ const applyReserve = async (information) => {
     //playCount의 산정은 모든 멤버의 playCount 합의 평균
     for(let idx in playerArray){
         let player = new User();
+        //유저 key만 추출하는 부분
         let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')')+1); 
         const data = await getData("userList", playerKey, player);
         playCount += data.playCount;
@@ -52,13 +53,18 @@ const applyReserve = async (information) => {
     )
 
     let reserveRef = await addDataCreateDoc("reserveList", reserveTeam);
-    let userData = await getData("userList", currentUser.userKey, currentUser);
 
-    userData.matchInfo = reserveRef.id;
-    
-    await addData("userList", userData.userKey, userData);
+    //playerArray에 있는 모든 유저에게 currentReserve 등록
+    for(let idx in playerArray){
+        let playerKey = playerArray[idx].substring(playerArray[idx].indexOf(')')+1); 
+        let userData = await getData("userList", playerKey, new User());
+        userData.currentReserve = reserveRef.id;
+        await addData("userList", userData.userKey, userData);
+    }
     console.log("예약DB 작성 완료");
     console.log("====예약신청 버튼 클릭 종료====");
+    alert("예약 완료");
+    return;
 }
 
 
