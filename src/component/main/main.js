@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import "./Main.css";
 import MyReserve from './MyReserve';
 import { ReserveInfo } from '../../database/ReserveInfo';
-import { getDocs } from '../../database/firebase';
+import { getDocs, getDocsByOrderKey, getReserveOrder } from '../../database/firebase';
 const week = ['일', '월', '화', '수', '목', '금', '토'];
 
 
@@ -18,16 +18,16 @@ export default function (props) {
 
 export class Main extends React.Component {
     constructor(props) {
+        super(props);
         const totalReservePromise = getDocs("reserveList");
         console.log("추가");
         totalReservePromise.then((querySnapshot) => {  //모든 playTeamList DB 가져오기 
             querySnapshot.forEach((doc) => {
                 this.state.totalReserve.push(doc.data());
-                // doc.data() is never undefined for query doc snapshots
             });
         })
         //this.forceUpdate();
-        super(props);
+
         this.isLoggedIn = props.isLoggedIn;
         this.userInfo = props.userInfo;
         this.now = new Date();
@@ -36,6 +36,7 @@ export class Main extends React.Component {
         this.today = this.now.getDay();
         this.index = 0;
         this.reinfo = new ReserveInfo();
+        this.button = React.createRef()
         if (isleapYear(this.now.getFullYear()))
             this.maxMonthDay = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
         else {
@@ -44,7 +45,13 @@ export class Main extends React.Component {
         this.state = {
             totalReserve: []   //playTeamList를 담는 배열 
         }
+
     }
+
+    componentDidUpdate() {
+        this.button.current.click()
+    }
+
     isSat(whatday) {
         return whatday % 7 === 6 ? true : false;
     }
@@ -54,7 +61,6 @@ export class Main extends React.Component {
     }
 
     onClicked(dateOfWeek) {
-        // const { setDay } = this.props;
         this.dateOfMonth = dateOfWeek;
         if (this.dateOfMonth - this.startDate < -7) {
             this.index = this.dateOfMonth - this.startDate + this.maxMonthDay[this.now.getMonth()];
@@ -82,7 +88,7 @@ export class Main extends React.Component {
         const selected = this.dateOfMonth === dateOfWeek ? 'selected' : '';
         return (
             <div key={"date" + day}>
-                <button className={"day" + dateOfWeek + " " + selected} onClick={() => this.onClicked(dateOfWeek)}>
+                <button ref={selected === 'selected' ? this.button : ""} className={"day" + dateOfWeek + " " + selected} onClick={() => this.onClicked(dateOfWeek)}>
                     <p>{dateOfWeek}</p>
                     <span id={this.calDay(day)}>{week[(this.today + day) % 7]}</span>
                 </button>
@@ -92,17 +98,14 @@ export class Main extends React.Component {
     getTimeTable() {
         const result = [];
         const { navigate } = this.props;
-        // const { setTime } = this.props;
-        // 주말 TimeTable
+
         if (this.isSat(this.today + this.index) || this.isSun(this.today + this.index)) {
             for (let time = 10; time < 20; time++) {
                 if (this.isLoggedIn) {
                     let numOfTeam = 0;
                     for (let r of this.state.totalReserve) { //현재 신청한 팀 수 계산 ()
-                        //  console.log(r.day, this.dateOfMonth, r.time, time); 
                         if (r.day === this.dateOfMonth && r.time === time) {
                             numOfTeam += 1;
-                            // console.log(numOfTeam);
                         }
                     }
                     result.push(<div key={"time" + time} className="reInfo">
