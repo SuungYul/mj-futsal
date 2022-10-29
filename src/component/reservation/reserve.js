@@ -22,9 +22,8 @@ const applyReserve = (information) => {
 
     //만약 신청한 팀이 있다면 팀을 구성한다.
     if(information.isTeam){
-        //팀이 있다면 playCount의 산정은 모든 멤버의 playCount 합의 평균
         currentTeam = currentTeam.buildObject(information.teamInfo);
-    
+        //팀이 있다면 playCount의 산정은 모든 멤버의 playCount 합의 평균
     }
 
     //해당 예약 신청양식
@@ -47,7 +46,7 @@ const applyReserve = (information) => {
             console.log(reserveRef);
             console.log(userData);
 
-            userData.history.push(reserveRef.id);
+            userData.matchInfo = reserveRef.id;
 
             addData("userList", userData.userKey, userData);
 

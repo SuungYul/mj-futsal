@@ -14,7 +14,7 @@ const Sign = () =>{
         const signUpEmail = document.getElementById('signUpEmail').value;
         const signUpPassword = document.getElementById('signUpPassword').value;
         const userID = document.getElementById('userID').value;
-        let newUser = new User(signUpEmail, signUpPassword, userName, "", userID, 0, 0, null, new Array());
+        let newUser = new User(signUpEmail, signUpPassword, userName, "", userID, 0, 0, null, new Array(), null);
         firebase.auth().createUserWithEmailAndPassword(signUpEmail, signUpPassword)
             .then((userCredential) => {
                 console.log(userCredential)
