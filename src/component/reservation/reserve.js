@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase/app"
 import "firebase/auth"
 import { isRouteErrorResponse, useLocation } from "react-router-dom";
-import { addData, getData, addDataCreateDoc } from "../../database/firebase";
+import { addData, getData, addDataCreateDoc, db, fieldUpdateConvertor } from "../../database/firebase";
 import { User, Team, ReserveTeam } from "../../database/data"
 import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
@@ -30,6 +30,33 @@ const applyReserve = async (information) => {
     if(information.isTeam){
         currentTeam = currentTeam.buildObject(information.teamInfo);
         playerArray = currentTeam.member;
+    }
+    else{ //팀이 없는 경우
+        let indvReserveDoc = await db.collection("reserveList")
+                        .where("teamInfo", "==", -1)
+                        .where("day", "==", information.reserveInfo.state.date)
+                        .where("time", "==", information.reserveInfo.state.time)
+                        .get();
+
+        if(indvReserveDoc.empty == false){
+            let reserveTeam = indvReserveDoc.docs[0].data();
+            reserveTeam.playerArray.push(playerArray[0]);
+            for(let idx in reserveTeam.playerArray){
+                let player = new User();
+                //유저 key만 추출하는 부분
+                let playerKey = reserveTeam.playerArray[idx].substring(reserveTeam.playerArray[idx].indexOf(')')+1); 
+                const data = await getData("userList", playerKey, player);
+                playCount += data.playCount;
+            }
+
+            reserveTeam.playCount = playCount /= reserveTeam.playerArray.length;
+            await fieldUpdateConvertor("reserveList", indvReserveDoc.docs[0].id, reserveTeam);
+            console.log("예약DB 작성 완료");
+            console.log("====예약신청 버튼 클릭 종료====");
+            alert("예약 완료");
+            return;
+        }
+
     }
     
     //playCount의 산정은 모든 멤버의 playCount 합의 평균
