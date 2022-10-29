@@ -144,3 +144,23 @@ td{
     width: 700px;
 
 }
+#cancelButton{
+    width: 120px;
+    outline: none;
+    border-radius: 30px;
+    border: 1px solid red;
+    background-color: white;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    transition: 0.25s;
+    margin-right: 10px;
+
+}
+#cancelButton:hover{
+    background-color: rgb(255, 255, 255);
+    color: red;
+    cursor: pointer;
+    transition: 0.3s;
+}
