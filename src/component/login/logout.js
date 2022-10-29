@@ -6,9 +6,11 @@ import "../button/button.css"
 const Logout = () => {
     const navigate = useNavigate();
     const logout = () => {
-        firebase.auth().signOut();
-        console.log("로그아웃");
-        navigate("/");
+        firebase.auth().signOut().then(() =>{
+            console.log("로그아웃");
+            navigate("/login");
+            //navigate("/");
+        })
     }
     return <button id="logoutbutton"
         style={{ float: "right" }}
