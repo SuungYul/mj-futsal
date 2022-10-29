@@ -27,7 +27,7 @@ export class Main extends React.Component {
             });
         })
         //this.forceUpdate();
-        
+
         this.isLoggedIn = props.isLoggedIn;
         this.userInfo = props.userInfo;
         this.now = new Date();
