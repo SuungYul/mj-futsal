@@ -19,7 +19,7 @@ const applyReserve = async (information) => {
 
 
     let playerArray = new Array();
-    playerArray.push("0(0)" + currentUser.userKey);
+    playerArray.push(`${currentUser.name}(${currentUser.userID})${currentUser.userKey}`);
     let playCount = 0;
 
     //팀 정보 구성
@@ -57,6 +57,8 @@ const applyReserve = async (information) => {
                 alert("이미 예약이 완료되어있습니다.");
                 return;
             }
+
+            //playCount 산출
             reserveTeam.playerArray.push(playerArray[0]);
             for(let idx in reserveTeam.playerArray){
                 let player = new User();
@@ -65,6 +67,12 @@ const applyReserve = async (information) => {
                 const data = await getData("userList", playerKey, player);
                 playCount += data.playCount;
             }
+
+            //current Reserve 등록 과정
+            let playerKey = playerArray[0].substring(playerArray[0].indexOf(')') + 1);
+            let userData = await getData("userList", playerKey, new User());
+            userData.currentReserve = indvReserveDoc.docs[0].id;
+            await addData("userList", userData.userKey, userData);
 
             reserveTeam.playCount = playCount /= reserveTeam.playerArray.length;
             await fieldUpdateConvertor("reserveList", indvReserveDoc.docs[0].id, reserveTeam);
