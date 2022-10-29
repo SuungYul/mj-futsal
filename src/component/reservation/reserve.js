@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase/app"
 import "firebase/auth"
 import { isRouteErrorResponse, useLocation } from "react-router-dom";
-import { addData, getData, addDataCreateDoc } from "../../database/firebase";
+import { addData, getData, addDataCreateDoc, db, fieldUpdateConvertor } from "../../database/firebase";
 import { User, Team, ReserveTeam } from "../../database/data"
 import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
@@ -19,7 +19,7 @@ const applyReserve = async (information) => {
 
 
     let playerArray = new Array();
-    playerArray.push("0(0)" + currentUser.userKey);
+    playerArray.push(`${currentUser.name}(${currentUser.userID})${currentUser.userKey}`);
     let playCount = 0;
 
     //팀 정보 구성
@@ -30,6 +30,58 @@ const applyReserve = async (information) => {
     if (information.isTeam) {
         currentTeam = currentTeam.buildObject(information.teamInfo);
         playerArray = currentTeam.member;
+
+        let teamCheck = await db.collection("reserveList")
+                                .where("teamInfo", "==", currentTeam.teamName)
+                                .where("day", "==", information.reserveInfo.state.date)
+                                .where("time", "==", information.reserveInfo.state.time)
+                                .get();
+
+        //이미 팀이 예약되어있을 경우
+        if(teamCheck.empty == false){
+            alert("이미 예약이 완료되어있습니다.");
+            return;
+        }
+    }
+    else{ //팀이 없는 경우
+        let indvReserveDoc = await db.collection("reserveList")
+                        .where("teamInfo", "==", -1)
+                        .where("day", "==", information.reserveInfo.state.date)
+                        .where("time", "==", information.reserveInfo.state.time)
+                        .get();
+
+        if(indvReserveDoc.empty == false){
+            let reserveTeam = indvReserveDoc.docs[0].data();
+            //이미 예약한 경우
+            if(reserveTeam.playerArray.includes(playerArray[0])){
+                alert("이미 예약이 완료되어있습니다.");
+                return;
+            }
+
+            //playCount 산출
+            reserveTeam.playerArray.push(playerArray[0]);
+            for(let idx in reserveTeam.playerArray){
+                let player = new User();
+                //유저 key만 추출하는 부분
+                let playerKey = reserveTeam.playerArray[idx].substring(reserveTeam.playerArray[idx].indexOf(')')+1); 
+                const data = await getData("userList", playerKey, player);
+                playCount += data.playCount;
+            }
+
+            //current Reserve 등록 과정
+            let playerKey = playerArray[0].substring(playerArray[0].indexOf(')') + 1);
+            let userData = await getData("userList", playerKey, new User());
+            userData.currentReserve = indvReserveDoc.docs[0].id;
+            await addData("userList", userData.userKey, userData);
+
+            reserveTeam.playCount = playCount /= reserveTeam.playerArray.length;
+            await fieldUpdateConvertor("reserveList", indvReserveDoc.docs[0].id, reserveTeam);
+            console.log("예약DB 작성 완료");
+            console.log("====예약신청 버튼 클릭 종료====");
+            alert("예약 완료");
+            return;
+        }
+
     }
 
     //playCount의 산정은 모든 멤버의 playCount 합의 평균

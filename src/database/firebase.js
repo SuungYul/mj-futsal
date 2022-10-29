@@ -7,7 +7,7 @@ const firebaseConfig = require("../token.json");
 
 //파이어베이스 초기화
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+export const db = firebase.firestore();
 
 /** 
  * 파이어베이스 연결 테스트를 위한 함수
@@ -67,7 +67,18 @@ function addData(collection, document, data){
   )
  }
 
-
+ function fieldUpdateConvertor(collection, document, updateObj){ //문서내에 필드를 업데이트
+  db.collection(collection)
+  .doc(document)
+  .withConverter(updateObj.getConvertor)
+  .update(updateObj)
+  .then(() =>{
+    console.log("성공적으로 업데이트 하였습니다.")
+  })
+  .catch((error) => {
+    console.error("Error updating document: ", error);
+  })
+}
 
 function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 업데이트
   db.collection(collection)
@@ -303,4 +314,4 @@ function badPointDecrement(collection, user, point){
 export const authService = firebase.auth();
 export {testFunction, addData, getData, deleteData, playCountIncrement, badPointIncrement, badPointDecrement,
   getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, addDataCreateDoc, 
-  getDocsByOrder, getDocsByOrderKey, getReserveOrder };
+  getDocsByOrder, getDocsByOrderKey, getReserveOrder, fieldUpdateConvertor };
