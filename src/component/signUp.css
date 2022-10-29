@@ -1,6 +1,7 @@
 /* 전체 틀 박스 */
 .signup{
     width: 600px;
+
     background-color: white;
     border-radius: 20px;
     display: flex;
@@ -9,10 +10,11 @@
     margin: 0 auto;
     margin-top: 80px;
     margin-bottom: 80px;
-    margin-left: 650px;
+
 }
-#title{
-    color: black;
+/* 제목 */
+#signupTitle{
+    background-color: pink;
     text-align: center;
     letter-spacing: 1.5px;
     margin-top: 60px;
