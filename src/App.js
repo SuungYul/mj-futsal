@@ -12,13 +12,14 @@ import ApplyTeam from "./component/team/applyTeam";
 import CreateTeam from "./component/team/createTeam";
 import Header from "./Header";
 import Reserve from "./component/reservation/reserve";
+import Reserve2 from "./component/reservation/reserve2";
 import ManageTeam from "./component/team/manageTeam";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태
   const [init, setInit] = useState(false)     //인증 응답 상태
   const [userInfo, setUserInfo] = useState();  //유저 정보
-  const [teamInfo, setTeamInfo] = useState(); //소속 팀 정보
+  const [teamInfo, setTeamInfo] = useState(null); //소속 팀 정보
   const [teamList, setTeamList] = useState([]); //팀 리스트
 
   useEffect(() => {
@@ -28,12 +29,16 @@ const App = () => {
         const teamListPromise = getDocs("teamList");
         setIsLoggedIn(true);
         userPromise.then((doc) => { //유저 정보 가져오기
-          const teamInfoPromise = getData("teamList", doc.team, "string");
+          setUserInfo(doc);
+          console.log("유저 정보 세팅 완료");
+          if(doc.team =="waiting..." || doc.team == ""){ //소속팀이 없거나 대기상태면 소속 팀 정보 불러오지 않음
+            console.log("waiting")
+            return;
+          }
+          const teamInfoPromise = getData("teamList", doc.team, "string"); //소속 팀 정보 가져오기
           teamInfoPromise.then((team) =>{
               setTeamInfo(team);
           })
-          setUserInfo(doc);
-          console.log("유저 정보 세팅 완료");
         })
         teamListPromise.then((docs) => {
           console.log(docs);
@@ -59,7 +64,7 @@ const App = () => {
           <Route path="/signUp" element={<Sign />} />
           <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
           <Route path="/reserve" element={userInfo && teamInfo && <Reserve userInfo={userInfo} teamInfo={teamInfo} />} />
-          <Route path="/my-page" element={userInfo && <MyPage userInfo={userInfo} />} />
+          <Route path="/my-page" element={userInfo && teamInfo && <MyPage userInfo={userInfo} teamInfo={teamInfo}/>} />
           <Route path="/apply-team" element={userInfo && teamList && <ApplyTeam teamList={teamList} userInfo={userInfo} />} />
           <Route path="/create-team" element={userInfo && <CreateTeam userInfo={userInfo} />} />
           <Route path="/manage-team" element={userInfo && <ManageTeam userInfo={userInfo} />} />

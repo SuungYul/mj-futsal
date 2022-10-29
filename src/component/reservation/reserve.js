@@ -150,7 +150,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                     <article className={(isTeam === true) ? "art_team" : "art_indi"}>
                     <h2>팀 명단 작성</h2>
                     {/* 팀 DB 구현되면 작성 */}
-                    <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo}/>
+                    <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} reserveInfo={reserveInfo}/>
                 </article>
                 </div>
                 <ReserveButton information={
