@@ -27,7 +27,7 @@ const applyReserve = (information) => {
     }
 
     //해당 예약 신청양식
-    let reserveTeam = new reserveTeam(
+    let playTeam = new PlayTeam(
         0, 
         currentTeam.teamName, 
         information.reserveInfo.state.date,
@@ -38,7 +38,7 @@ const applyReserve = (information) => {
     )
     
     //예약 DB에 등록
-    addDataCreateDoc("reserveList", reserveTeam)
+    addDataCreateDoc("reserveList", playTeam)
     .then((reserveRef) =>{
         //유저 history에 등록해야되기 때문에 유저 파일을 불러옴
         getData("userList", currentUser.userKey, currentUser)
@@ -46,7 +46,7 @@ const applyReserve = (information) => {
             console.log(reserveRef);
             console.log(userData);
 
-            userData.matchInfo = reserveRef.id;
+            userData.history.push(reserveRef.id);
 
             addData("userList", userData.userKey, userData);
 
@@ -150,7 +150,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                     <article className={(isTeam === true) ? "art_team" : "art_indi"}>
                     <h2>팀 명단 작성</h2>
                     {/* 팀 DB 구현되면 작성 */}
-                    <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} reserveInfo={reserveInfo}/>
+                    <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo}/>
                 </article>
                 </div>
                 <ReserveButton information={
