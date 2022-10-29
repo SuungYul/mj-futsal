@@ -5,7 +5,7 @@ import { getData, getDocs } from "./database/firebase";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Login from "./component/login/login.js";
-import Main from "./component/main/Main.js";
+import Main from "./component/main/main.js";
 import MyPage from "./component/myPage/myPage";
 import Sign from "./component/signUp/signUp.js";
 import ApplyTeam from "./component/team/applyTeam";

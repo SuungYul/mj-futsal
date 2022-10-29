@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Main.css";
 import MyReserve from './MyReserve';
-import { ReserveInfo } from '../../database/ReserveInfo';
-import { getDocs } from '../../database/firebase';
+import { ReserveInfo } from '../../database/ReserveInfo'; 
+import { getDocs, getDocsByOrderKey, getReserveOrder } from '../../database/firebase';
 const week = ['일', '월', '화', '수', '목', '금', '토'];
 
 
@@ -44,6 +44,7 @@ export class Main extends React.Component {
         this.state = {
             totalReserve: []   //playTeamList를 담는 배열 
         }
+
     }
     isSat(whatday) {
         return whatday % 7 === 6 ? true : false;
@@ -98,9 +99,8 @@ export class Main extends React.Component {
             for (let time = 10; time < 20; time++) {
                 if (this.isLoggedIn) {
                     let numOfTeam = 0;
-                    for (let r of this.state.totalReserve) { //현재 신청한 팀 수 계산 ()
-                        //  console.log(r.day, this.dateOfMonth, r.time, time); 
-                        if (r.day === this.dateOfMonth && r.time === time) {
+                    for(let r of this.state.totalReserve){ //현재 신청한 팀 수 계산 ()
+                        if(r.day === this.dateOfMonth && r.time === time){
                             numOfTeam += 1;
                             // console.log(numOfTeam);
                         }

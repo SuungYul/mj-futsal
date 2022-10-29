@@ -10,17 +10,19 @@ const MyReserve = ({ userInfo, isLoggedIn }) => {
     const play_key = userInfo.currentReserve
     const [day, setDay] = useState()
     const [time, setTime] = useState()
+    const [myTeam, setMyTeam] = useState()
     const [playArray, setArray] = useState([])
     const playTeamPromise = getData("reserveList", play_key, "string")
     // console.log(play_key);
     playTeamPromise.then((doc) => {
         setTime(doc.time)
         setDay(doc.day)
+        setMyTeam(doc.teamInfo)
     })
 
     showReserveTeam(day, time).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-           // doc.data().orderBy("playCount");
+            // doc.data().orderBy("playCount");
             if (!playArray.includes(doc.data().teamInfo)) {
                 setArray([...playArray, doc.data().teamInfo])
             }
@@ -34,12 +36,13 @@ const MyReserve = ({ userInfo, isLoggedIn }) => {
             {isLogIn ?
                 <div id="matchInfo">
                     <h2 id='myreserveTitle'>나의 신청 현황</h2>
-                    <p>{day}일 {time}시</p>
+                    <p>신청 내역 {day}일 {time}시</p>
+                    <p>신청 팀</p>
+                    <ol>
+                        {playArray.map((value, index) => <li key={"player" + index}>{value}</li>)}
+                    </ol>
                     <div>
-                        {playArray.map((value, index) => <p key={"player" + index}>{index + 1 + " " + value}</p>)}
-                    </div>
-                    <div>
-                        본인이 신청한 예상 순위
+                        예상 순위 : {playArray.indexOf(myTeam) + 1} 순위
                     </div>
                 </div> : ""}
         </div>
@@ -53,7 +56,7 @@ function showReserveTeam(day, time) {
         firebase.firestore().collection("reserveList")
             .where("day", "==", Number(day))
             .where("time", "==", Number(time))
-            .orderBy("playCount")
+            .orderBy("playCount", "asc")
             .get()
             .then((querySnapshot) => {
                 resolve(querySnapshot)
