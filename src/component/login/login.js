@@ -19,6 +19,7 @@ const Login = () =>{
                 const user = userCredential.user;
                 console.log("메인 이동");
                 navigate("/");
+                // window.location.replace('/')
             })
             .catch((error) => { //로그인 실패 시, 실패 메세지 
                 alert('로그인 실패');

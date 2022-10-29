@@ -9,6 +9,7 @@ const Logout = () => {
         firebase.auth().signOut();
         console.log("로그아웃");
         navigate("/");
+        window.location.replace('/')
     }
     return <button id="logoutbutton"
         style={{ float: "right" }}

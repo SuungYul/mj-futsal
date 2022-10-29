@@ -7,7 +7,7 @@ import "./Main.css"
 const MyReserve = ({ userInfo, isLoggedIn }) => {
 
     const isLogIn = isLoggedIn
-    const play_key = userInfo.playKey
+    const play_key = userInfo.currentReserve
     const [day, setDay] = useState()
     const [time, setTime] = useState()
     const [playArray, setArray] = useState([])
@@ -20,12 +20,15 @@ const MyReserve = ({ userInfo, isLoggedIn }) => {
 
     showReserveTeam(day, time).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+           // doc.data().orderBy("playCount");
             if (!playArray.includes(doc.data().teamInfo)) {
                 setArray([...playArray, doc.data().teamInfo])
             }
         })
     })
-
+    if (!play_key) {
+        return
+    }
     return (
         <div>
             {isLogIn ?
@@ -50,6 +53,7 @@ function showReserveTeam(day, time) {
         firebase.firestore().collection("reserveList")
             .where("day", "==", Number(day))
             .where("time", "==", Number(time))
+            .orderBy("playCount")
             .get()
             .then((querySnapshot) => {
                 resolve(querySnapshot)
