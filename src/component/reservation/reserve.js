@@ -27,7 +27,7 @@ const applyReserve = (information) => {
     }
 
     //해당 예약 신청양식
-    let playTeam = new PlayTeam(
+    let reserveTeam = new reserveTeam(
         0, 
         currentTeam.teamName, 
         information.reserveInfo.state.date,
@@ -38,7 +38,7 @@ const applyReserve = (information) => {
     )
     
     //예약 DB에 등록
-    addDataCreateDoc("playTeamList", playTeam)
+    addDataCreateDoc("reserveList", reserveTeam)
     .then((reserveRef) =>{
         //유저 history에 등록해야되기 때문에 유저 파일을 불러옴
         getData("userList", currentUser.userKey, currentUser)

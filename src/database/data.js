@@ -113,7 +113,7 @@ class Team extends ForFirebase{
     }
 };
 
-class PlayTeam extends ForFirebase{
+class ReserveTeam extends ForFirebase{
     constructor(id, teamInfo, day, timeSlotID, applicant, order, playCount){
         super();
         this.id = id;
@@ -131,6 +131,13 @@ class PlayTeam extends ForFirebase{
     }
 };
 
+class MatchInfo extends ForFirebase{
+    constructor(reserveTeam1, reserveTeam2){
+        this.reserveTeam1 = reserveTeam1;
+        this.reserveTeam2 = reserveTeam2;
+    }
+};
+
 
 class TimeSlot extends ForFirebase{
     constructor(id, startTime, endTime){
@@ -141,4 +148,4 @@ class TimeSlot extends ForFirebase{
     }
 };
 
-export {ForFirebase, User, Team, PlayTeam, TimeSlot};
+export {ForFirebase, User, Team, ReserveTeam, TimeSlot, MatchInfo};
