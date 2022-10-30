@@ -114,7 +114,7 @@ class Team extends ForFirebase{
 };
 
 class ReserveTeam extends ForFirebase{
-    constructor(teamInfo, playerArray, playCount, day, time, order){
+    constructor(teamInfo, playerArray, playCount, day, time, order, withOther=false){
         super();
         this.playerArray = playerArray;
         this.playCount = playCount;
@@ -122,11 +122,32 @@ class ReserveTeam extends ForFirebase{
         this.day = day;
         this.time = time;
         this.order = order;
+        this.withOther = withOther
     }
-
+    get countArray(){
+        return this.playerArray.length;
+    }
     get hasTeam(){
         return this.teamInfo != -1? this.teamInfo: null;
     }
 };
 
-export {ForFirebase, User, Team, ReserveTeam};
+class MatchInfo extends ForFirebase{
+    constructor(team1, team2 , allPlayerArray, day, time, matchKey){
+        super();
+        this.allPlayerArray = allPlayerArray;
+        this.team1 = team1;
+        this.team2 = team2;
+        this.day = day;
+        this.time = time;
+        this.matchKey = matchKey;
+    }
+    /**
+     * @param {any} key
+     */
+    setKey(key){
+        this.matchKey = key;
+    }
+};
+
+export {ForFirebase, User, Team, ReserveTeam, MatchInfo};

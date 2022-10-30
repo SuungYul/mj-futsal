@@ -69,6 +69,8 @@ export class Main extends React.Component {
             this.index = this.dateOfMonth - this.startDate;
         }
         this.reinfo.setDay(this.index + this.today);
+        this.table =  this.getTimeTable();
+        //console.log(this.table);
         this.forceUpdate();
     }
 
@@ -162,7 +164,6 @@ export class Main extends React.Component {
                                     this.editReserve();
                                     this.reinfo.setTime(time);
                                     this.reinfo.setDay(this.dateOfMonth);
-                                    console.log(this.reinfo.time);
                                     navigate("/reserve", {
                                         state: {
                                             time: this.reinfo.time,
@@ -213,7 +214,6 @@ export class Main extends React.Component {
                 (element) => element !== `${userInfo.name}(${userInfo.userID})${userInfo.userKey}`
             );
 
-            console.log(reserveData.playerArray);
 
             //만약 길이가 0인 경우
             if (reserveData.playerArray.length == 0) {

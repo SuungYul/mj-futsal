@@ -82,12 +82,15 @@ td{
     border: 1px solid lightgray;
     color: rgb(252, 5, 5);
     background-color: white;
-    font-size: 20px;
+    font-size: 23px;
     font-weight: bold;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
     letter-spacing: 1.2px;
     transition: 0.25s;
-    margin-left: 600px;
+    margin: 0 auto;
+    display: flex;
+    line-height: 60px;
+    padding-left: 50px;
 }
 #quitbutton:hover{
     color: rgb(252, 5, 5);
@@ -118,7 +121,8 @@ td{
     cursor: pointer;
     transition: 0.25s;
 }
-/* 팀 관리 버튼 */
+
+/* 팀 관리 버튼
 #managebutton {
     width: 400px;
     height: 50px;
@@ -132,6 +136,7 @@ td{
     transition: 0.25s;
 
 }
+ */
 
 #past {
     font-size: 20px;
@@ -146,8 +151,10 @@ td{
     width: 700px;
 
 }
+/* 예약 취소 버튼 */
 #cancelButton{
     width: 120px;
+    height: 40px;
     outline: none;
     border-radius: 30px;
     border: 1px solid red;
@@ -157,7 +164,7 @@ td{
     font-weight: bold;
     letter-spacing: 1.2px;
     transition: 0.25s;
-    margin-right: 10px;
+    margin-left: 10px;
 
 }
 #cancelButton:hover{
@@ -165,4 +172,31 @@ td{
     color: red;
     cursor: pointer;
     transition: 0.3s;
+}
+/* 평가 버튼 */
+#reviewBtn{
+    width: 120px;
+    height: 40px;
+    outline: none;
+    border-radius: 30px;
+    border: 1px solid rgb(0, 120, 175);
+    background-color: white;
+    color: rgb(0, 120, 175);
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    transition: 0.25s;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+#reviewBtn:hover{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 120, 175)black;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#pastTd{
+    width: 700px;
 }

@@ -8,6 +8,20 @@ import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
 import ReserveTeamList from "./reserveTeamList";
 
+let teamArray = new Array();
+const includeCheck = (player) => {
+    return teamArray.includes(player);
+}
+
+const pushTeamArray = (player) => {
+    teamArray.push(player);
+    console.log(teamArray);
+}
+
+const deleteTeamArray = (player) => {
+    teamArray = teamArray.filter((p) => p !== player);
+    console.log(teamArray);
+}
 
 const applyReserve = async (information) => {
     console.log("====예약신청 버튼 클릭 시작====");
@@ -29,7 +43,7 @@ const applyReserve = async (information) => {
     //만약 신청한 팀이 있다면 팀을 구성한다.
     if (information.isTeam) {
         currentTeam = currentTeam.buildObject(information.teamInfo);
-        playerArray = currentTeam.member;
+        playerArray = teamArray;
 
         let teamCheck = await db.collection("reserveList")
             .where("teamInfo", "==", currentTeam.teamName)
@@ -83,6 +97,10 @@ const applyReserve = async (information) => {
         }
 
     }
+    if(playerArray.length < 12 || 16 < playerArray.length ){
+        alert("팀의 예약인원은 최소 12명이상이거나 최대 16명이하 입니다");
+        return;
+    }
 
     //playCount의 산정은 모든 멤버의 playCount 합의 평균
     for (let idx in playerArray) {
@@ -101,7 +119,8 @@ const applyReserve = async (information) => {
         playCount,
         information.reserveInfo.state.date,
         information.reserveInfo.state.time,
-        order
+        order,
+        information.withOther
     )
 
     let reserveRef = await addDataCreateDoc("reserveList", reserveTeam);
@@ -133,6 +152,7 @@ const ReserveButton = (information) => {
 const Reserve = ({ userInfo, teamInfo }) => {
 
     const reserveInfo = useLocation();
+    const [withOther, setWithOther] = useState(false);
     const [isTeam, teamCheck] = useState(false);
     const [radio_click, setRadio] = useState(true);
     const clickRB = (e) => {
@@ -147,10 +167,12 @@ const Reserve = ({ userInfo, teamInfo }) => {
         if (event.target.id === "play_other") {
             setRadio(false)
             teamCheck(false)
+            setWithOther(true);
         }
         if (event.target.id === "play_team") {
             setRadio(true)
             teamCheck(true)
+            setWithOther(false);
         }
         // setRadio()
     }
@@ -228,7 +250,8 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         isTeam: isTeam,
                         reserveInfo: reserveInfo,
                         userInfo: userInfo,
-                        teamInfo: teamInfo
+                        teamInfo: teamInfo,
+                        withOther: withOther
                     }
                 } />
             </div>

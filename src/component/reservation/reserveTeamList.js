@@ -1,6 +1,7 @@
 import { ReserveTeam } from "../../database/data";
+import { pushTeamArray, deleteTeamArray } from "../reservation/reserve";
 
-const ReserveTeamList = ({ teamInfo, userInfo, reserveInfo }) => {
+const ReserveTeamList = ({ teamInfo, userInfo, reserveInfo, pushFunc, deleteFunc, includeCheck}) => {
 
     console.log(teamInfo, userInfo, reserveInfo);
     //id, teamInfo, playerArray, playCount, day, timeSlotID
@@ -16,15 +17,20 @@ const ReserveTeamList = ({ teamInfo, userInfo, reserveInfo }) => {
         <ul>
             {
                 teamInfo.member.map((teamMember, index) => {
-                    console.log();
-                    return <li key={index}>{teamMember.substring(0, teamMember.indexOf(')') + 1)} <button onClick={(e) => {
-                        addPlayer(teamMember);
-                    }} value={teamMember} key={"1" + index}>선택</button>
+                    return <li key={index}>{teamMember.substring(0, teamMember.indexOf(')') + 1)} 
+                    <input type="checkbox"  onChange={(e) => {
+                        if(!e.target.checked){
+                            deleteFunc(teamMember);
+                            return;
+                        }
+                        pushFunc(teamMember);
+                    }}/>
                     </li>
                 })}
         </ul>
     )
 
 }
+
 
 export default ReserveTeamList
