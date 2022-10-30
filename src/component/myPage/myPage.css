@@ -12,6 +12,7 @@ body{
     flex-direction: column;
     display: flex;
     margin-top: 60px;
+    margin-bottom: 100px;
 }
 /* 제목 */
 #myPageTitle{
