@@ -60,8 +60,9 @@ export class Main extends React.Component {
         else {
             this.index = this.dateOfMonth - this.startDate;
         }
-        console.log("dateOfMonth",this.dateOfMonth);
         this.reinfo.setDay(this.index + this.today);
+        this.table =  this.getTimeTable();
+        //console.log(this.table);
         this.forceUpdate();
     }
 
@@ -97,10 +98,8 @@ export class Main extends React.Component {
                 if (this.isLoggedIn) {
                     let numOfTeam = 0;
                     for(let r of this.state.totalReserve){ //현재 신청한 팀 수 계산 ()
-                         console.log(r.day, this.dateOfMonth, r.time, time); 
                         if(r.day === this.dateOfMonth && r.time === time){
                             numOfTeam += 1;
-                            console.log(numOfTeam);
                         }
                     }
                     result.push(<div key={"time" + time} className="reInfo">
@@ -166,7 +165,6 @@ export class Main extends React.Component {
     }
 
     render() {
-        console.log(this.state.totalReserve);
         let buttons = [];
         for (let i = 0; i < 7; i++) {
             let j = this.startDate + i
@@ -180,7 +178,8 @@ export class Main extends React.Component {
             <div className="weekContainer">
                 {buttons}
             </div>
-            {this.getTimeTable()}
+            { this.table}
         </div>;
+        
     }
 }

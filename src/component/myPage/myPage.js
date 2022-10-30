@@ -43,7 +43,6 @@ const MyPage = ({ userInfo, teamInfo }) => {
         }
     }
     useEffect(() => {
-        console.log("teamInfo", teamInfo);
         if (userInfo.team != "" && userInfo.team != "waiting...") {
             const leaderKey = teamInfo.leader.substr(teamInfo.leader.indexOf(')') + 1);
             if (userInfo.userKey === leaderKey) {

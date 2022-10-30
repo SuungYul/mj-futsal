@@ -12,8 +12,8 @@ import ApplyTeam from "./component/team/applyTeam";
 import CreateTeam from "./component/team/createTeam";
 import Header from "./Header";
 import Reserve from "./component/reservation/reserve";
-import Reserve2 from "./component/reservation/reserve2";
 import ManageTeam from "./component/team/manageTeam";
+import { confirmMatch } from "./component/match/matchConfirm";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태
@@ -23,7 +23,9 @@ const App = () => {
   const [teamList, setTeamList] = useState([]); //팀 리스트
 
   useEffect(() => {
+    confirmMatch();
     firebase.auth().onAuthStateChanged((user) => {
+      
       if (user) {
         const userPromise = getData("userList", user.uid, "string");
         const teamListPromise = getDocs("teamList");
@@ -32,16 +34,17 @@ const App = () => {
           setUserInfo(doc);
           console.log("유저 정보 세팅 완료");
           if(doc.team =="waiting..." || doc.team == ""){ //소속팀이 없거나 대기상태면 소속 팀 정보 불러오지 않음
+            setTeamInfo(true);
             console.log("waiting")
             return;
           }
           const teamInfoPromise = getData("teamList", doc.team, "string"); //소속 팀 정보 가져오기
           teamInfoPromise.then((team) =>{
+              console.log("팀 가져옴");
               setTeamInfo(team);
           })
         })
         teamListPromise.then((docs) => {
-          console.log(docs);
           const teamNames = docs.map((doc) => { //docs 순회하며 name값 추출
             return doc = doc.id;
           })
@@ -53,7 +56,27 @@ const App = () => {
         setIsLoggedIn(false);
       }
       setInit(true);
+
+      // const schedule = require('node-schedule');
+ 
+      // const j = schedule.scheduleJob('10 * * * *', function(){
+      //     console.log('매 10초에 실행');
+      // });
+      const schedule = require('node-schedule');
+      const rule = new schedule.RecurrenceRule();
+      rule.second = 5;
+      const date = new Date(2022, 10, 29, 20, 30, 0);
+      const j = schedule.scheduleJob( date , function() {
+
+        console.log("그때 실행");
+      });
+      // 
+      // console.log(schedule);
+      // const job = schedule.scheduleJob(date, function(){
+      //   console.log('The world is going to end today.');
+      // });
     })
+    
   }, [])
   return (
     init ? // 인증상태가 확정 될 시 렌더링 시작    ,정보가 필요한 컴포넌트는 정보가 불러와지면 렌더링
@@ -62,7 +85,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<Sign />} />
-          <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
+          <Route path="/" element={(!isLoggedIn||userInfo) && <Main isLoggedIn={isLoggedIn} userInfo={userInfo}/>} />
           <Route path="/reserve" element={userInfo && teamInfo && <Reserve userInfo={userInfo} teamInfo={teamInfo} />} />
           <Route path="/my-page" element={userInfo && teamInfo && <MyPage userInfo={userInfo} teamInfo={teamInfo}/>} />
           <Route path="/apply-team" element={userInfo && teamList && <ApplyTeam teamList={teamList} userInfo={userInfo} />} />
