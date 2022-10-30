@@ -4,6 +4,7 @@ import "firebase/auth";
 import {addData, deleteData} from"../../database/firebase.js"
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { User } from "../../database/data";
+import "./signUp.css"
 
 //회원가입 컴포넌트
 const Sign = () =>{ 
