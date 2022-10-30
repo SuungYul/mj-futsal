@@ -120,7 +120,7 @@ const ShowPastReserve = ({ userInfo }) => {
                 return;
             }
             temp_day.push(doc.day)
-            temp_key.push(doc.matchKey)
+            temp_key.push(userInfo.history[i])
             temp_time.push(doc.time)
             if (i === userInfo.history.length - 1) {
                 console.log(temp_day, 'last');

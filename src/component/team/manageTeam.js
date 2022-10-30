@@ -14,7 +14,7 @@ const ManageTeam = ({ userInfo }) => {
             setTeamInfo(teamDB);
             console.log(teamDB.waitingList);
             if (teamDB.waitingList === undefined || teamDB.waitingList.length === 0) {
-                alert("대기자가 없습니다")
+                alert("대기자 0명")
                 window.location.replace("/my-page")
                 return;
             }
