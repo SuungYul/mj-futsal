@@ -8,6 +8,20 @@ import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
 import ReserveTeamList from "./reserveTeamList";
 
+let teamArray = new Array();
+const includeCheck = (player) => {
+    return teamArray.includes(player);
+}
+
+const pushTeamArray = (player) => {
+    teamArray.push(player);
+    console.log(teamArray);
+}
+
+const deleteTeamArray = (player) => {
+    teamArray = teamArray.filter((p) => p !== player);
+    console.log(teamArray);
+}
 
 const applyReserve = async (information) => {
     console.log("====예약신청 버튼 클릭 시작====");
@@ -29,7 +43,7 @@ const applyReserve = async (information) => {
     //만약 신청한 팀이 있다면 팀을 구성한다.
     if (information.isTeam) {
         currentTeam = currentTeam.buildObject(information.teamInfo);
-        playerArray = currentTeam.member;
+        playerArray = teamArray;
 
         let teamCheck = await db.collection("reserveList")
                                 .where("teamInfo", "==", currentTeam.teamName)
@@ -82,6 +96,10 @@ const applyReserve = async (information) => {
             return;
         }
 
+    }
+    if(playerArray.length < 12 || 16 < playerArray.length ){
+        alert("팀의 예약인원은 최소 12명이상이거나 최대 16명이하 입니다");
+        return;
     }
 
     //playCount의 산정은 모든 멤버의 playCount 합의 평균
@@ -215,8 +233,8 @@ const Reserve = ({ userInfo, teamInfo }) => {
                     <label htmlFor="team">팀</label>
                     <article className={(isTeam === true) ? "art_team" : "art_indi"}>
                         <h2>팀 명단 작성</h2>
-                        {/* 팀 DB 구현되면 작성 */}
-                        {teamInfo && <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} />}
+                        {teamInfo && <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} pushFunc={pushTeamArray} deleteFunc={deleteTeamArray}
+                        includeCheck={includeCheck}/>}
                     </article>
                 </div>
                 <ReserveButton information={
