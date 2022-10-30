@@ -151,8 +151,8 @@ const applyReserve = async (information) => {
 
 const ReserveButton = (information) => {
     return (
-        <button onClick={() => { applyReserve(information.information) }}>
-            예약 신청
+        <button id="resrvButton" onClick={() => { applyReserve(information.information) }}>
+            예약하기
         </button>
     )
 }
@@ -249,9 +249,9 @@ const Reserve = ({ userInfo, teamInfo }) => {
 
                 <div className="teamlist">
                     <article className={(isTeam === true) ? "art_team" : "art_indi"}>
-                        <h2>팀 명단 작성</h2>
-                        {teamInfo && <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} pushFunc={pushTeamArray} deleteFunc={deleteTeamArray}
-                        includeCheck={includeCheck}/>}
+                        <div id="teamlistTitle"><h2>팀 명단 작성</h2></div>
+                        {/* 팀 DB 구현되면 작성 */}
+                        <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} />
                     </article>
                 </div>
                 <ReserveButton id="Rbutton" information={

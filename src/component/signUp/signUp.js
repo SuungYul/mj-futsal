@@ -40,7 +40,7 @@ const Sign = () =>{
     return <form>
     <div className="whole">
         <div className="signup">
-            <h1 id="title">회원가입</h1>
+            <div id="signupTitle"><h2>회원가입</h2></div>
             <div className="signup_input">
                 <h3>Email</h3><input type="email" id="signUpEmail" placeholder="Email"/>
                 <h3>Password</h3><input type="password" id="signUpPassword" placeholder="Password"/> 

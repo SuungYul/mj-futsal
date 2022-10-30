@@ -93,10 +93,10 @@ const ReviewReserve = ({ matchKey }) => {
     console.log(matchKey);
     const navigate = useNavigate()
     return (
-        <button onClick={() => {
+        <button id="reviewBtn" onClick={() => {
             <Review/>
             navigate("/review",{state: matchKey})
-        }}>평가</button>
+        }}>평가하기</button>
     )
 }
 
@@ -136,7 +136,7 @@ const ShowPastReserve = ({ userInfo }) => {
     // }, [])
     console.log(temp_day);
     return <>{day.map((day, index) => {
-        return <tr><td key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></td></tr>
+        return <p id="pastTd" key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></p>
     })}</>
 }
 
@@ -235,25 +235,13 @@ const MyPage = ({ userInfo, teamInfo }) => {
                             <td>{currentInfo}<CancelReserve userInfo={userInfo} teamInfo={teamInfo} /></td>
                         </tr>
                         <tr>
-                            <th rowSpan="3">과거 신청내역</th>
-                            <tr><ShowPastReserve userInfo={userInfo} /></tr>
+                            <th>과거 신청내역</th>
+                            <td><ShowPastReserve userInfo={userInfo} /></td>
                         </tr>
-                        <tr>
-
-
-
-                        </tr>
-                        <tr>
-
-                        </tr>
-
-
-
                     </table>
                     <div id="managebutton">
                         {isLeader ? <ManageTeamBtn /> : <><CreateTeamBtn /> <ApplyTeamBtn /></>}
                     </div>
-
                     <div>
                         <button id="quitbutton" onClick={() => {
                             withdraw_user();

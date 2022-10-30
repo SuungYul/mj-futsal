@@ -2,7 +2,7 @@ import { badPointIncrement, getData } from "../../database/firebase"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import { ImStarFull } from "react-icons/im";
-
+import "./review.css"
 const Review = () => {
     const { state } = useLocation() // state= matchKey
     console.log(state);
@@ -78,13 +78,15 @@ const Review = () => {
 
     return (
         init ?
-            <div>
+            <div id="reviewFrame">
                 <h1>평가</h1>
-                <ol>{result}</ol>
-                <label for="text">건의사항</label>
+                <div id="memList">
+                    <ol>{result}</ol>
+                </div>
+                <h3 for="text">건의사항</h3>
                 <input type="text" id="text"></input>
-                <input type="submit" onClick={()=>{
-                    alert("제출했습니다")
+                <input id="sbmBtn" type="submit" onClick={()=>{
+                    alert("제출되었습니다.")
                     window.location.replace("/my-page")
                 }}></input>
             </div>
