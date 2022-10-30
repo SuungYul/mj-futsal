@@ -33,10 +33,8 @@ const App = () => {
         setIsLoggedIn(true);
         userPromise.then((doc) => { //유저 정보 가져오기
           setUserInfo(doc);
-          console.log("유저 정보 세팅 완료");
           if (doc.team == "waiting..." || doc.team == "") { //소속팀이 없거나 대기상태면 소속 팀 정보 불러오지 않음
             setTeamInfo(true);
-            console.log("waiting")
             return;
           }
           const teamInfoPromise = getData("teamList", doc.team, "string"); //소속 팀 정보 가져오기
@@ -50,7 +48,6 @@ const App = () => {
           })
           //console.log(teamNames);
           setTeamList(teamNames);
-          console.log("팀 리스트 세팅 완료");
         })
       } else {
         setIsLoggedIn(false);

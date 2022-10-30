@@ -10,6 +10,7 @@ import "./myPage.css"
 import ManageTeamBtn from "../button/manageTeamBtn"
 import { addData, getData, addDataCreateDoc, db, fieldUpdateConvertor } from "../../database/firebase"
 import { User, Team, ReserveTeam } from "../../database/data"
+import Review from "./review"
 
 const cancelReserve = async (info) => {
     let userInfo = info.userInfo;
@@ -88,6 +89,48 @@ const CancelReserve = (userInfo, teamInfo) => {
     );
 }
 
+const ReviewReserve = ({matchKey}) => {
+    return (
+        <button onClick={() => { <Review matchKey={matchKey} /> }}>평가</button>
+    )
+}
+
+const ShowPastReserve = ({ userInfo }) => {
+    const [result, setArr] = useState([])
+    const [day, setDay] = useState([])
+    const [time, setTime] = useState([])
+    const [matchKey, setKey] = useState([])
+    const [init, setInit] = useState(false)
+
+    useEffect(() => {
+        console.log(userInfo.history);
+        for (let i = 0; i < userInfo.history.length; i++) {
+            console.log(userInfo.history[i])
+            const ReservePromise = getData("matchInfo", userInfo.history[i], "string")
+            ReservePromise.then((doc) => {
+                // console.log(doc.matchKey);
+                if (userInfo.history[i] != doc.matchKey) {
+                    alert("유저 history key != matchKey")
+                    return;
+                }
+                setDay([...day, doc.day])
+                setTime([...time, doc.time])
+                setKey([...matchKey, doc.matchKey])
+                if (i === userInfo.history.length - 1) {
+                    console.log("ss");
+                    setInit(true);
+                }
+            })
+
+        }
+    }, [])
+    //setArr([...result, <td>{day + "일 " + time + "시 매치 정보 "}</td>])
+    return init ? <>{day.map((day, index) => {
+        return <td key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></td>
+    })}</>
+        : init
+}
+
 const MyPage = ({ userInfo, teamInfo }) => {
     const [isLeader, setIsLeader] = useState();
     const [init, setInit] = useState(false)     //인증 응답 상태
@@ -107,13 +150,13 @@ const MyPage = ({ userInfo, teamInfo }) => {
         setUserbadpt(doc.badPoint)
         setUserplaycnt(doc.playCount)
     })
-
-    const reserveDB = getData("reserveList",userInfo.currentReserve,"string")
-    reserveDB.then((doc)=>{
-        setDay(doc.day)
-        setTime(doc.time)
-    })
-
+    if (userInfo.currentReserve != null) {
+        const reserveDB = getData("reserveList", userInfo.currentReserve, "string")
+        reserveDB.then((doc) => {
+            setDay(doc.day)
+            setTime(doc.time)
+        })
+    }
     const currentInfo = userInfo.currentReserve === null ? "현재 예약 정보가 없습니다" : day + "일 " + time + "시" + " (명지대 자연캠퍼스 풋살장) "
 
     let badPoint_grade = "😄";
@@ -178,8 +221,8 @@ const MyPage = ({ userInfo, teamInfo }) => {
                             <td>{currentInfo}<CancelReserve userInfo={userInfo} teamInfo={teamInfo} /></td>
                         </tr>
                         <tr>
-                            <th rowspan="3">과거 신청내역</th>
-                            <td colspan="3"></td>
+                            <th rowSpan="3">과거 신청내역</th>
+                            <tr><ShowPastReserve userInfo={userInfo} /></tr>
                         </tr>
                         <tr>
 

@@ -39,9 +39,7 @@ async function confirmMatch(){
         const reserveAtTimes = new Array(numOfBlock);
         const matchInfoList = new Array(numOfBlock);
 
-        console.log(reserveList); 
         reserveList = reserveList.filter((r, index) => { //개인 인원이 안되면 없애기 +(개인 자르는 것도 해야댐)
-            console.log(r);
             if (r.teamInfo === -1 && r.countArray < 6){
                 return false;
             }
@@ -66,8 +64,6 @@ async function confirmMatch(){
                 if(reserveAtTimes[i] === 1 && reserveAtTimes[i][0] >= 12){  //1팀 단일 팀 매치
                     console.log();
                 }
-                console.log("컨티뉴");
-                console.log(i);
                 continue;
             }
             const selectedTeam1 = (reserveAtTimes[i][0]);
@@ -75,8 +71,6 @@ async function confirmMatch(){
             const allPlayerArray = selectedTeam1.playerArray.concat(selectedTeam2.playerArray);
             matchInfoList[i] = new MatchInfo(selectedTeam1.teamInfo, selectedTeam2.teamInfo, allPlayerArray,
                 selectedTeam1.day, selectedTeam1.time, 0);
-            console.log(matchInfoList);
-            console.log(matchInfoList[i]);
             addDataCreateDoc("matchInfo", matchInfoList[i]).then( (docRef) =>{ //자동key값을 받아오면 userList에 갱신
                 // console.log(docRef.id);
                  matchInfoList[i].setKey(docRef.id);
@@ -88,7 +82,6 @@ async function confirmMatch(){
                  }
             });
         }
-        console.log(matchInfoList);
         // for(let i = 0; i<12; i++){
         //     addData("userList", i.toString(), new User(0, 0, "wuseong", '', 6019223+i, 2,1,i,'',"asd") )
         // }

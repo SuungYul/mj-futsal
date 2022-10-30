@@ -114,7 +114,7 @@ class Team extends ForFirebase{
 };
 
 class ReserveTeam extends ForFirebase{
-    constructor(teamInfo, playerArray, playCount, day, time, order){
+    constructor(teamInfo, playerArray, playCount, day, time, order, withOther=false){
         super();
         this.playerArray = playerArray;
         this.playCount = playCount;
@@ -122,6 +122,7 @@ class ReserveTeam extends ForFirebase{
         this.day = day;
         this.time = time;
         this.order = order;
+        this.withOther = withOther
     }
     get countArray(){
         return this.playerArray.length;
