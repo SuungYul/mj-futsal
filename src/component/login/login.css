@@ -24,14 +24,15 @@ body{
 */
 .login{
     width: 600px;
-    height: 830px;
+    height: 800px;
     background-color: white;
     border-radius: 30px;
     outline: none;
     margin: 0 auto;
     flex-direction: column;
     display: flex;
-    margin-left: 650px;
+    margin-top: 50px;
+
 }
 #title_2{
     display : flex;

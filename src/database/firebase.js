@@ -1,12 +1,13 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { ForFirebase, User } from "../database/data";
+import { mergeSort } from "../algorithm/algorithm";
 
 const firebaseConfig = require("../token.json");
 
 //파이어베이스 초기화
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+export const db = firebase.firestore();
 
 /** 
  * 파이어베이스 연결 테스트를 위한 함수
@@ -65,7 +66,18 @@ function addData(collection, document, data){
   )
  }
 
-
+ function fieldUpdateConvertor(collection, document, updateObj){ //문서내에 필드를 업데이트
+  db.collection(collection)
+  .doc(document)
+  .withConverter(updateObj.getConvertor)
+  .update(updateObj)
+  .then(() =>{
+    console.log("성공적으로 업데이트 하였습니다.")
+  })
+  .catch((error) => {
+    console.error("Error updating document: ", error);
+  })
+}
 
 function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 업데이트
   db.collection(collection)
@@ -99,6 +111,7 @@ async function getFilteredDocs(collection, key, filter, value ){
     });
 }
 
+
 async function getDocs(collection){
   return db.collection(collection)
     .get()
@@ -109,6 +122,58 @@ async function getDocs(collection){
         console.log("Error getting documents: ", error);
     });
 }
+
+async function getDocsByOrder(collection, compare){
+  return db.collection(collection)
+    .get()
+    .then((querySnapshot) => {
+        return mergeSort(querySnapshot.docs, compare);
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+}
+
+async function getDocsByOrderKey(collection, key, reverse = false){
+  return db.collection(collection)
+  .get()
+  .then((querySnapshot) => {
+      let result = new Array();
+      querySnapshot.docs.forEach((doc)=>{
+        result.push(doc.data());
+      })
+
+      return mergeSort(result, (x, y) => {
+        if(reverse) return x[key] > y[key];
+        return x[key] < y[key];
+      });
+  })
+  .catch((error) => {
+      console.log("Error getting documents: ", error);
+  });
+}
+
+async function getReserveOrder(collection, day, time, key, reverse = false){
+  return db.collection(collection)
+  .where("day", "==", day)
+  .where("time", "==", time)
+  .get()
+  .then((querySnapshot) => {
+      let result = new Array();
+      querySnapshot.docs.forEach((doc)=>{
+        result.push(doc.data());
+      })
+
+      return mergeSort(result, (x, y) => {
+        if(reverse) return x[key] > y[key];
+        return x[key] < y[key];
+      });
+  })
+  .catch((error) => {
+      console.log("Error getting documents: ", error);
+  });
+}
+
 
 async function checkDocConflict(collection, document){ //컬렉션의 문서명이 원래 있는지 체크
   return db.collection(collection)
@@ -243,4 +308,5 @@ function badPointDecrement(collection, user, point){
 
 export const authService = firebase.auth();
 export {testFunction, addData, getData, deleteData, playCountIncrement, badPointIncrement, badPointDecrement,
-  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, addDataCreateDoc};
+  getFilteredDocs, playCountDecrement, getDocs, fieldUpdate, checkDocConflict, addDataCreateDoc, 
+  getDocsByOrder, getDocsByOrderKey, getReserveOrder, fieldUpdateConvertor };

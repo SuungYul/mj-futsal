@@ -10,7 +10,7 @@ import "./signUp.css"
 const Sign = () =>{ 
     return <form>
         <div className="signup">
-            <h1 id="title">회원가입</h1>
+            <div id="signupTitle"><h2>회원가입</h2></div>
             <div className="signup_input">
                 <h3>Email</h3><input type="email" id="signUpEmail" placeholder="Email"/>
                 <h3>Password</h3><input type="password" id="signUpPassword" placeholder="Password"/> 
@@ -64,6 +64,8 @@ function withdraw_user (){
             deleteData("userList",user.uid);
             user.delete().then(function() { 
 				console.log("user 정보 삭제")
+                alert("회원탈퇴가 되었습니다");
+                window.location.replace("/")
 			})
             .catch((error) => {
                 alert("에러 발생", error)
