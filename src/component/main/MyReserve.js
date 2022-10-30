@@ -12,13 +12,19 @@ const MyReserve = ({ userInfo, isLoggedIn }) => {
     const [time, setTime] = useState()
     const [myTeam, setMyTeam] = useState()
     const [playArray, setArray] = useState([])
-    const playTeamPromise = getData("reserveList", play_key, "string")
+    
     // console.log(play_key);
-    playTeamPromise.then((doc) => {
-        setTime(doc.time)
-        setDay(doc.day)
-        setMyTeam(doc.teamInfo === -1 ? "개인팀" : doc.teamInfo)
-    })
+    useEffect( ()=>{
+        if (play_key){
+            const playTeamPromise = getData("reserveList", play_key, "string")
+            playTeamPromise.then((doc) => {
+                setTime(doc.time)
+                setDay(doc.day)
+                setMyTeam(doc.teamInfo === -1 ? "개인팀" : doc.teamInfo)
+            })
+        }
+
+    }, [])
 
     showReserveTeam(day, time).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {

@@ -4,7 +4,9 @@
  * @param {CallableFunction} [compare] 정렬할 데이터 기준 {기본값은 오름차순 정렬}
  */
 
-export function mergeSort(data, compare=(x, y) => { return x < y; }){
+
+
+ function mergeSort(data, compare=(x, y) => { return x < y; }){
     //data를 훼손하지 않기 위해 깊은 복사를 시행함
     //parse-stringify는 느리기 때문에 변경해줄 필요가 있음
     let result = JSON.parse(JSON.stringify(data));

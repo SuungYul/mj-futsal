@@ -101,18 +101,7 @@ const MyPage = ({ userInfo, teamInfo }) => {
     const [time, setTime] = useState()
     const [userbadpt, setUserbadpt] = useState(); //비매너 점수
     const [userplaycnt, setUserplaycnt] = useState(); //풋살장 이용횟수
-    const userPromise = getData("userList", user.uid, "string");
-
-    userPromise.then((doc) => {
-        setUserbadpt(doc.badPoint)
-        setUserplaycnt(doc.playCount)
-    })
-
-    const reserveDB = getData("reserveList",userInfo.currentReserve,"string")
-    reserveDB.then((doc)=>{
-        setDay(doc.day)
-        setTime(doc.time)
-    })
+    
 
     const currentInfo = userInfo.currentReserve === null ? "현재 예약 정보가 없습니다" : day + "일 " + time + "시" + " (명지대 자연캠퍼스 풋살장) "
 
@@ -131,6 +120,15 @@ const MyPage = ({ userInfo, teamInfo }) => {
         }
     }
     useEffect(() => {
+        if(userInfo.currentReserve !== null ){
+            const reserveDB = getData("reserveList",userInfo.currentReserve,"string");
+            reserveDB.then((doc)=>{
+                setDay(doc.day)
+                setTime(doc.time)
+            })
+        }
+        setUserbadpt(userInfo.badPoint)
+        setUserplaycnt(userInfo.playCount)
         if (userInfo.team != "" && userInfo.team != "waiting...") {
             const leaderKey = teamInfo.leader.substr(teamInfo.leader.indexOf(')') + 1);
             if (userInfo.userKey === leaderKey) {
@@ -178,8 +176,8 @@ const MyPage = ({ userInfo, teamInfo }) => {
                             <td>{currentInfo}<CancelReserve userInfo={userInfo} teamInfo={teamInfo} /></td>
                         </tr>
                         <tr>
-                            <th rowspan="3">과거 신청내역</th>
-                            <td colspan="3"></td>
+                            <th rowSpan="3">과거 신청내역</th>
+                            <td colSpan="3"></td>
                         </tr>
                         <tr>
 
