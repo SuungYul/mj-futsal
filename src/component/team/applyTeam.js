@@ -32,7 +32,7 @@ const ApplyTeam = ({ userInfo, teamList }) => {
             alert("신청 대기중 입니다.")
             return;
         }
-        fieldUpdate("teamList", selectedTeam, { waitingList: firebase.firestore.FieldValue.arrayUnion(userInfo.name + "(" + userInfo.userID + ")" + userInfo.userKey) });
+        fieldUpdate("teamList", selectedTeam, { waitingList: firebase.firestore.FieldValue.arrayUnion(userInfo.userKey) });
         fieldUpdate("userList", user.uid, { team: "waiting..." })
         alert("신청이 완료되었습니다")
         setTimeout(() => {

@@ -13,6 +13,7 @@ const ReserveTeamList = ({ teamInfo, userInfo, reserveInfo, pushFunc, deleteFunc
     if (teamInfo===true) {
         return;
     }
+
     return ( //팀DB 수신 완료 시 대기자 명단으로 li 태그 동적 생성
         <ul>
             {
