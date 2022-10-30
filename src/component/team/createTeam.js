@@ -3,7 +3,6 @@ import "firebase/auth";
 import { addData, getData, checkDocConflict,fieldUpdate } from "../../database/firebase";
 import User from "../../database/User";
 import { useState, useEffect } from "react";
-import ToMain from "../ToMain";
 import ManageTeamBtn from "../button/manageTeamBtn";
 import "./createTeam.css";
 const CreateTeam = ({userInfo}) =>{ //팀 개설 컴포넌트(유저 DB를 부모 컴포넌트에서 받아옴)

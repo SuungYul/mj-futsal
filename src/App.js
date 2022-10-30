@@ -15,6 +15,7 @@ import Reserve from "./component/reservation/reserve";
 import ManageTeam from "./component/team/manageTeam";
 import MyReserve from "./component/main/MyReserve";
 import { confirmMatch } from "./component/match/matchConfirm";
+import Review from "./component/myPage/review";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태
@@ -88,6 +89,7 @@ const App = () => {
           <Route path="/apply-team" element={userInfo && teamList && <ApplyTeam teamList={teamList} userInfo={userInfo} />} />
           <Route path="/create-team" element={userInfo && <CreateTeam userInfo={userInfo} />} />
           <Route path="/manage-team" element={userInfo && <ManageTeam userInfo={userInfo} />} />
+          <Route path="/review" element={<Review/>} />
         </Routes>
       </div>
       : "Initializing..."

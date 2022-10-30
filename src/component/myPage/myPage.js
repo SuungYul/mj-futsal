@@ -1,8 +1,8 @@
 import firebase from "firebase/app"
 import "firebase/auth"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { withdraw_user } from "../signUp"
+import { Link, Navigate, useNavigate } from "react-router-dom"
+import { withdraw_user } from "../signUp/signUp"
 import ApplyTeam from "../team/applyTeam"
 import CreateTeamBtn from "../button/createTeamBtn"
 import ApplyTeamBtn from "../button/applyTeamBtn"
@@ -84,14 +84,19 @@ const cancelReserve = async (info) => {
 
 
 const CancelReserve = (userInfo, teamInfo) => {
-    return(
-        <button id="cancelButton" onClick={()=>{cancelReserve(userInfo, teamInfo)}}>예약 취소</button>
+    return (
+        <button id="cancelButton" onClick={() => { cancelReserve(userInfo, teamInfo) }}>예약 취소</button>
     );
 }
 
-const ReviewReserve = ({matchKey}) => {
+const ReviewReserve = ({ matchKey }) => {
+    console.log(matchKey);
+    const navigate = useNavigate()
     return (
-        <button onClick={() => { <Review matchKey={matchKey} /> }}>평가</button>
+        <button onClick={() => {
+            <Review/>
+            navigate("/review",{state: matchKey})
+        }}>평가</button>
     )
 }
 
@@ -102,34 +107,43 @@ const ShowPastReserve = ({ userInfo }) => {
     const [matchKey, setKey] = useState([])
     const [init, setInit] = useState(false)
 
-    useEffect(() => {
-        console.log(userInfo.history);
-        for (let i = 0; i < userInfo.history.length; i++) {
-            console.log(userInfo.history[i])
-            const ReservePromise = getData("matchInfo", userInfo.history[i], "string")
-            ReservePromise.then((doc) => {
-                // console.log(doc.matchKey);
-                if (userInfo.history[i] != doc.matchKey) {
-                    alert("유저 history key != matchKey")
-                    return;
-                }
-                setDay([...day, doc.day])
-                setTime([...time, doc.time])
-                setKey([...matchKey, doc.matchKey])
-                if (i === userInfo.history.length - 1) {
-                    console.log("ss");
-                    setInit(true);
-                }
-            })
+    // useEffect(() => {
+    let temp_day = []
+    let temp_time = []
+    let temp_key = []
+    console.log("=====" + userInfo.history);
+    for (let i = 0; i < userInfo.history.length && init === false; i++) {
+        const ReservePromise = getData("matchInfo", userInfo.history[i], "string")
+        ReservePromise.then((doc) => {
+            if (userInfo.history[i] != doc.matchKey) {
+                alert("유저 history key != matchKey")
+                return;
+            }
+            temp_day.push(doc.day)
+            temp_key.push(doc.matchKey)
+            temp_time.push(doc.time)
+            if (i === userInfo.history.length - 1) {
+                console.log(temp_day, 'last');
+                setDay(temp_day)
+                setTime(temp_time)
+                setKey(temp_key)
+                setInit(true)
+            }
+        })
 
-        }
-    }, [])
-    //setArr([...result, <td>{day + "일 " + time + "시 매치 정보 "}</td>])
-    return init ? <>{day.map((day, index) => {
-        return <td key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></td>
+    }
+
+    // }, [])
+    console.log(temp_day);
+    return <>{day.map((day, index) => {
+        return <tr><td key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></td></tr>
     })}</>
-        : init
 }
+
+
+
+
+
 
 const MyPage = ({ userInfo, teamInfo }) => {
     const [isLeader, setIsLeader] = useState();
@@ -218,7 +232,7 @@ const MyPage = ({ userInfo, teamInfo }) => {
                         </tr>
                         <tr>
                             <th>현재 신청내역</th>
-                            <td><CancelReserve userInfo={userInfo} teamInfo={teamInfo}/></td>
+                            <td>{currentInfo}<CancelReserve userInfo={userInfo} teamInfo={teamInfo} /></td>
                         </tr>
                         <tr>
                             <th rowSpan="3">과거 신청내역</th>
