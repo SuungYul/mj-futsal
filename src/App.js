@@ -13,8 +13,9 @@ import CreateTeam from "./component/team/createTeam";
 import Header from "./Header";
 import Reserve from "./component/reservation/reserve";
 import ManageTeam from "./component/team/manageTeam";
-import { confirmMatch } from "./component/match/matchConfirm";
 import MyReserve from "./component/main/MyReserve";
+import { confirmMatch } from "./component/match/matchConfirm";
+import Review from "./component/myPage/review";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); //로그인 상태
@@ -24,7 +25,7 @@ const App = () => {
   const [teamList, setTeamList] = useState([]); //팀 리스트
 
   useEffect(() => {
-    confirmMatch();
+    // confirmMatch();
     firebase.auth().onAuthStateChanged((user) => {
       
       if (user) {
@@ -33,10 +34,8 @@ const App = () => {
         setIsLoggedIn(true);
         userPromise.then((doc) => { //유저 정보 가져오기
           setUserInfo(doc);
-          console.log("유저 정보 세팅 완료");
           if (doc.team == "waiting..." || doc.team == "") { //소속팀이 없거나 대기상태면 소속 팀 정보 불러오지 않음
             setTeamInfo(true);
-            console.log("waiting")
             return;
           }
           const teamInfoPromise = getData("teamList", doc.team, "string"); //소속 팀 정보 가져오기
@@ -50,7 +49,6 @@ const App = () => {
           })
           //console.log(teamNames);
           setTeamList(teamNames);
-          console.log("팀 리스트 세팅 완료");
         })
       } else {
         setIsLoggedIn(false);
@@ -91,6 +89,7 @@ const App = () => {
           <Route path="/apply-team" element={userInfo && teamList && <ApplyTeam teamList={teamList} userInfo={userInfo} />} />
           <Route path="/create-team" element={userInfo && <CreateTeam userInfo={userInfo} />} />
           <Route path="/manage-team" element={userInfo && <ManageTeam userInfo={userInfo} />} />
+          <Route path="/review" element={<Review/>} />
         </Routes>
       </div>
       : "Initializing..."

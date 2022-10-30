@@ -1,8 +1,8 @@
 import firebase from "firebase/app"
 import "firebase/auth"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { withdraw_user } from "../signUp"
+import { Link, Navigate, useNavigate } from "react-router-dom"
+import { withdraw_user } from "../signUp/signUp"
 import ApplyTeam from "../team/applyTeam"
 import CreateTeamBtn from "../button/createTeamBtn"
 import ApplyTeamBtn from "../button/applyTeamBtn"
@@ -10,6 +10,7 @@ import "./myPage.css"
 import ManageTeamBtn from "../button/manageTeamBtn"
 import { addData, getData, addDataCreateDoc, db, fieldUpdateConvertor } from "../../database/firebase"
 import { User, Team, ReserveTeam } from "../../database/data"
+import Review from "./review"
 
 const cancelReserve = async (info) => {
     let userInfo = info.userInfo;
@@ -84,9 +85,65 @@ const cancelReserve = async (info) => {
 
 const CancelReserve = (userInfo, teamInfo) => {
     return (
-        <button onClick={() => { cancelReserve(userInfo, teamInfo) }}>예약 취소</button>
+        <button id="cancelButton" onClick={() => { cancelReserve(userInfo, teamInfo) }}>예약 취소</button>
     );
 }
+
+const ReviewReserve = ({ matchKey }) => {
+    console.log(matchKey);
+    const navigate = useNavigate()
+    return (
+        <button id="reviewBtn" onClick={() => {
+            <Review/>
+            navigate("/review",{state: matchKey})
+        }}>평가하기</button>
+    )
+}
+
+const ShowPastReserve = ({ userInfo }) => {
+    const [result, setArr] = useState([])
+    const [day, setDay] = useState([])
+    const [time, setTime] = useState([])
+    const [matchKey, setKey] = useState([])
+    const [init, setInit] = useState(false)
+
+    // useEffect(() => {
+    let temp_day = []
+    let temp_time = []
+    let temp_key = []
+    console.log("=====" + userInfo.history);
+    for (let i = 0; i < userInfo.history.length && init === false; i++) {
+        const ReservePromise = getData("matchInfo", userInfo.history[i], "string")
+        ReservePromise.then((doc) => {
+            if (userInfo.history[i] != doc.matchKey) {
+                alert("유저 history key != matchKey")
+                return;
+            }
+            temp_day.push(doc.day)
+            temp_key.push(doc.matchKey)
+            temp_time.push(doc.time)
+            if (i === userInfo.history.length - 1) {
+                console.log(temp_day, 'last');
+                setDay(temp_day)
+                setTime(temp_time)
+                setKey(temp_key)
+                setInit(true)
+            }
+        })
+
+    }
+
+    // }, [])
+    console.log(temp_day);
+    return <>{day.map((day, index) => {
+        return <p id="pastTd" key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></p>
+    })}</>
+}
+
+
+
+
+
 
 const MyPage = ({ userInfo, teamInfo }) => {
     const [isLeader, setIsLeader] = useState();
@@ -101,8 +158,19 @@ const MyPage = ({ userInfo, teamInfo }) => {
     const [time, setTime] = useState()
     const [userbadpt, setUserbadpt] = useState(); //비매너 점수
     const [userplaycnt, setUserplaycnt] = useState(); //풋살장 이용횟수
-    
+    const userPromise = getData("userList", user.uid, "string");
 
+    userPromise.then((doc) => {
+        setUserbadpt(doc.badPoint)
+        setUserplaycnt(doc.playCount)
+    })
+    if (userInfo.currentReserve != null) {
+        const reserveDB = getData("reserveList", userInfo.currentReserve, "string")
+        reserveDB.then((doc) => {
+            setDay(doc.day)
+            setTime(doc.time)
+        })
+    }
     const currentInfo = userInfo.currentReserve === null ? "현재 예약 정보가 없습니다" : day + "일 " + time + "시" + " (명지대 자연캠퍼스 풋살장) "
 
     let badPoint_grade = "😄";
@@ -120,15 +188,6 @@ const MyPage = ({ userInfo, teamInfo }) => {
         }
     }
     useEffect(() => {
-        if(userInfo.currentReserve !== null ){
-            const reserveDB = getData("reserveList",userInfo.currentReserve,"string");
-            reserveDB.then((doc)=>{
-                setDay(doc.day)
-                setTime(doc.time)
-            })
-        }
-        setUserbadpt(userInfo.badPoint)
-        setUserplaycnt(userInfo.playCount)
         if (userInfo.team != "" && userInfo.team != "waiting...") {
             const leaderKey = teamInfo.leader.substr(teamInfo.leader.indexOf(')') + 1);
             if (userInfo.userKey === leaderKey) {
@@ -176,25 +235,13 @@ const MyPage = ({ userInfo, teamInfo }) => {
                             <td>{currentInfo}<CancelReserve userInfo={userInfo} teamInfo={teamInfo} /></td>
                         </tr>
                         <tr>
-                            <th rowSpan="3">과거 신청내역</th>
-                            <td colSpan="3"></td>
+                            <th>과거 신청내역</th>
+                            <td><ShowPastReserve userInfo={userInfo} /></td>
                         </tr>
-                        <tr>
-
-
-
-                        </tr>
-                        <tr>
-
-                        </tr>
-
-
-
                     </table>
                     <div id="managebutton">
                         {isLeader ? <ManageTeamBtn /> : <><CreateTeamBtn /> <ApplyTeamBtn /></>}
                     </div>
-
                     <div>
                         <button id="quitbutton" onClick={() => {
                             withdraw_user();

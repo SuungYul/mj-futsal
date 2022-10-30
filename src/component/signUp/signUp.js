@@ -4,6 +4,7 @@ import "firebase/auth";
 import {addData, deleteData} from"../../database/firebase.js"
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { User } from "../../database/data";
+import "./signUp.css"
 
 //회원가입 컴포넌트
 const Sign = () =>{ 
@@ -39,7 +40,7 @@ const Sign = () =>{
     return <form>
     <div className="whole">
         <div className="signup">
-            <h1 id="title">회원가입</h1>
+            <div id="signupTitle"><h2>회원가입</h2></div>
             <div className="signup_input">
                 <h3>Email</h3><input type="email" id="signUpEmail" placeholder="Email"/>
                 <h3>Password</h3><input type="password" id="signUpPassword" placeholder="Password"/> 

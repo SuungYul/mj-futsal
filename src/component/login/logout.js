@@ -8,7 +8,7 @@ const Logout = () => {
     const logout = () => {
         firebase.auth().signOut();
         console.log("로그아웃");
-        navigate("/");
+        // navigate("/");
         window.location.replace('/')
     }
     return <button id="logoutbutton"

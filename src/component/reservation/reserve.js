@@ -43,7 +43,6 @@ const applyReserve = async (information) => {
     //만약 신청한 팀이 있다면 팀을 구성한다.
     if (information.isTeam) {
         //제한 사항
-        console.log(playerArray);
         if(information.withOther && (playerArray.length < 6 || 8 < playerArray.length)){
             alert("다른 팀과 함께 찰 때, 팀의 예약인원은 최소 6명이상이거나 최대 8명이하 입니다");
             return;

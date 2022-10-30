@@ -1,19 +1,21 @@
 /* 전체 틀 박스 */
 #createTeambox{
-    width: 600px;
-    height: 450px;
+    width: 500px;
+    height: 70%;
     background-color: white;
     border-radius: 30px;
     outline: none;
     margin: 0 auto;
     flex-direction: column;
     display: flex;
-    margin-left: 650px;
+    margin-left: 700px;
     margin-top: 100px;
 }
 /* 제목 */
-#title {
+#crtTitle {
+    margin-top: 100px;
     margin: 0 auto;
+    font-size: 35px;
 }
 /* 입력 칸 */
 .inputbox {
@@ -42,6 +44,7 @@
     margin: 0 auto;
     letter-spacing: 1.5px;
     transition: 0.25s;
+    margin-bottom: 65px;
 }
 .createbutton:hover{
     color: white;

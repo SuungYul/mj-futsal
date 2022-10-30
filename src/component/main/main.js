@@ -136,13 +136,14 @@ export class Main extends React.Component {
                                     },
                                 });
                             }
-                        }}>{time + ":00 ~ " + time + ":50"}</button>
-                        <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
+                        }}><span>예약하기</span><span>{time + ":00 ~ " + time + ":50"}</span></button>
+                        <span id="spanBox" key={time + " " + this.dateOfMonth}>{"현재 " + numOfTeam + "팀이 예약하였습니다."}</span>
                     </div>)
                 }
                 else {
                     result.push(<div key={"time" + time} className="reInfo">
-                        {time + ":00 ~ " + time + ":50"} <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
+                        <button className="reBtn">
+                        <span>예약하기</span><span>{time + ":00 ~ " + time + ":50"}</span></button><span id="spanBox" key={time + " " + this.dateOfMonth}>{"현재 " + numOfTeam + "팀이 신청하였습니다."}</span>
                     </div>)
                 }
             }
@@ -163,7 +164,6 @@ export class Main extends React.Component {
                                     this.editReserve();
                                     this.reinfo.setTime(time);
                                     this.reinfo.setDay(this.dateOfMonth);
-                                    console.log(this.reinfo.time);
                                     navigate("/reserve", {
                                         state: {
                                             time: this.reinfo.time,
@@ -184,13 +184,14 @@ export class Main extends React.Component {
                                     },
                                 });
                             }
-                        }}>{time + ":00 ~ " + time + ":50"}</button>
-                        <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
+                        }}><span>예약하기</span><span>{time + ":00 ~ " + time + ":50"}</span></button>
+                        <span id="spanBox" key={time + " " + this.dateOfMonth}>{"현재 " + numOfTeam + "팀이 예약하였습니다."}</span>
                     </div>)
                 }
                 else {
                     result.push(<div key={"time" + time} className="reInfo">
-                        {time + ":00 ~ " + time + ":50"} <span key={time + " " + this.dateOfMonth}>{"현재" + numOfTeam + "팀이 신청하였습니다."}</span>
+                        <button className="reBtn">
+                        <span>예약하기</span><span>{time + ":00 ~ " + time + ":50"}</span></button><span id="spanBox" key={time + " " + this.dateOfMonth}>{"현재 " + numOfTeam + "팀이 신청하였습니다."}</span>
                     </div>)
                 }
             }
@@ -213,7 +214,6 @@ export class Main extends React.Component {
                 (element) => element !== `${userInfo.name}(${userInfo.userID})${userInfo.userKey}`
             );
 
-            console.log(reserveData.playerArray);
 
             //만약 길이가 0인 경우
             if (reserveData.playerArray.length == 0) {

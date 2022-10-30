@@ -18,6 +18,6 @@ export class ReserveInfo extends ForFirebase {
     setTime(t) {
         this.time = t
     }
-    
+
 }
 

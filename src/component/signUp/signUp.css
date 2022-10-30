@@ -1,12 +1,13 @@
 /* 전체 틀 박스 */
 .signup{
     width: 600px;
-
+    height: 80%;
     background-color: white;
     border-radius: 20px;
     display: flex;
     align-items: center;
     flex-direction: column;
+    display: flex;
     margin: 0 auto;
     margin-top: 80px;
     margin-bottom: 80px;
@@ -14,10 +15,11 @@
 }
 /* 제목 */
 #signupTitle{
-    background-color: pink;
     text-align: center;
     letter-spacing: 1.5px;
-    margin-top: 60px;
+    margin-top: 0px;
+    font-size: 45px;
+
 }
 /* 입력 칸들을 담는 박스 */
 .signup_input{
@@ -25,7 +27,6 @@
     height: 500px;
     background-color: white;
     margin: 0 auto;
-    margin-top: 100px;
 }
 /* 입력 칸들 */
 .signup_input input{
