@@ -84,8 +84,8 @@ const cancelReserve = async (info) => {
 
 
 const CancelReserve = (userInfo, teamInfo) => {
-    return (
-        <button onClick={() => { cancelReserve(userInfo, teamInfo) }}>예약 취소</button>
+    return(
+        <button id="cancelButton" onClick={()=>{cancelReserve(userInfo, teamInfo)}}>예약 취소</button>
     );
 }
 
@@ -218,7 +218,7 @@ const MyPage = ({ userInfo, teamInfo }) => {
                         </tr>
                         <tr>
                             <th>현재 신청내역</th>
-                            <td>{currentInfo}<CancelReserve userInfo={userInfo} teamInfo={teamInfo} /></td>
+                            <td><CancelReserve userInfo={userInfo} teamInfo={teamInfo}/></td>
                         </tr>
                         <tr>
                             <th rowSpan="3">과거 신청내역</th>

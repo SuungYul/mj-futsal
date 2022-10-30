@@ -2,17 +2,21 @@
     width: 1500px;
     outline: none;
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: 60px;
     margin-left: 50px;
+
 }
+/* 예약 현황 박스 */
 #reserve_container{
-    border: solid 1px black;
-    border-radius: 30px;
+    border: solid 2px black;
+    border-radius: 0px;
     float: left;
     width: 50%;
-
+    border-style: solid none solid none;
+    margin-left: 500px;
+    margin-bottom: 40px;
 }
-
+/* 제목 */
 #reservetitle{
     font-size: 50px;
     text-align: center;
@@ -21,24 +25,26 @@
 
 .weekContainer > div > button {
     /* 월~일을 조회 아래 가운데 정렬 시킴 */
-    justify-content: center;
     text-align: center;
     border: none;
-    width: 40px;
+    width: 45px;
+    font-size: 20px;
     font-weight: bold;
     background: none;
     cursor: pointer;
-    margin-top: 130px;
+    margin-top: 140px;
+    margin-bottom: -20px;
+    border-radius: 40px;
 }
 
 /* 마우스 올렸을 때 색 변경 */
 .weekContainer > div > button:hover {
-    background-color:chartreuse;
+    background-color:white;
     /* border:  1px lightgray; */
 }
 
 .weekContainer .selected {
-    background-color:chartreuse;
+    background-color:white;
     /* border:  1px lightgray; */
 }
 
@@ -57,7 +63,7 @@
 }
 
 #timeTable{
-    padding: 50px;
+    padding: 60px;
     display: grid;
     /* grid-template-rows: repeat(100px); */
     /* grid-template-columns: 300px; */
@@ -68,7 +74,7 @@
     height: 50px;
     width: 400px;
 }
-
+/* MJ FutSal 로고 버튼 */
 #ToMainBtn{
     font-weight: bold;
     padding: 30px 0 0 40px;
@@ -81,17 +87,144 @@
     margin: 0 auto;
 }
 
-/* 나의 신청 현황 css */
+/* 나의 신청 현황 박스 */
 #matchInfo{
-    margin-left: 100px;
+    margin-left: 600px;
+    margin-bottom: 100px;
     padding: 10px;
-    border: solid 1px black;
-    border-radius: 30px;
-    float: left;
-    width: 30%;
+    border: solid 2px black;
+    border-style: none none solid none;
+    border-radius: 0px;
+    
+    width: 35%;
 }
-
+/* 신청 내역, 신청 팀, 예상 순위 제목 */
+.smallTitle {
+    font-size: 20px;
+    font-weight: bold;
+    width: 30%;
+    margin-left: 140px;
+    margin-bottom: 10px;
+}
+/* 신청 내역, 예상 순위 내용 */
+.myReserveCont{
+    width: 238px;
+    height: 50px;
+    font-size: 23px;
+    line-height: 50px;
+    border-radius: 0px;
+    background-color: transparent;
+    padding: 0px 20px;
+    border: 2px solid black;
+    margin-left: 120px;
+    margin-bottom: 30px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+/* 신청 팀 내용 */
+#reserveTeamCont{
+    width: 183px;
+    font-size: 25px;
+    line-height: 45px;
+    border-radius: 0px;
+    background-color: transparent;
+    padding: 40px;
+    border: 2px solid black;
+    margin-left: 120px;
+    margin-top: 0px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding-left: 55px;
+}
 #myreserveTitle{
     font-size: 30px;
     text-align: center;
+}
+/*시간대 신청 버튼 */
+/*
+.reBtn{
+    width: 250px;
+    height: 60px;
+    font-size: 20px;
+    margin-left: 80px;
+    margin-top: 5px;
+}
+*/
+.reBtn{
+    margin-left: 55px;
+    margin-top: -25px;
+    background-color: transparent;
+    font-size: 25px;
+    font-weight: bold;
+    border:none;
+    width: 200px;
+    height: 60px;
+    line-height: 55px;
+    -webkit-perspective: 230px;
+    perspective: 230px;
+  }
+  .reBtn span {
+    display: block;
+    position: absolute;
+    width: 200px;
+    height: 60px;
+    border: 2px solid black;
+    margin:0;
+    text-align: center;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+  }
+  .reBtn span:nth-child(1) {
+
+    -webkit-transform: rotateX(92.3deg);
+    -moz-transform: rotateX(92.3deg);
+    transform: rotateX(92.3deg);
+
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+    
+  }
+  .reBtn span:nth-child(2) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
+    
+  }
+  .reBtn:hover span:nth-child(1) {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    cursor: pointer;
+    color:rgb(219, 0, 0)
+  }
+  .reBtn:hover span:nth-child(2) {
+    background: transparent;
+    color: transparent;
+    border: black;
+    -webkit-transform: rotateX(-92.3deg);
+    -moz-transform: rotateX(-92.3deg);
+    transform: rotateX(-92.3deg);
+    cursor: pointer;
+  }
+.reInfo {
+    width: 600px;
+    height: 70px;
+    margin: 0 auto;
+    margin-top: 10px;
+    display: flex;
+}
+/* 현재 --팀이 신청하였습니다 span */
+#spanBox {
+    width: 300px;
+    padding-top: 20px;
+    font-weight: bold;
+    margin-left: 30px;
+    font-size: 22px;
 }

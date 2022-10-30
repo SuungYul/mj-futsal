@@ -177,7 +177,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
         // setRadio()
     }
     const result = []
-
+    
     return (
         <div id="top_div">
             <div className="reserveFrame">

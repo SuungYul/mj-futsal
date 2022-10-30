@@ -43,14 +43,17 @@ const MyReserve = ({ userInfo, isLoggedIn }) => {
         <div>
             {isLogIn ?
                 <div id="matchInfo">
-                    <h2 id='myreserveTitle'>나의 신청 현황</h2>
-                    <p>신청 내역 {day}일 {time}시</p>
-                    <p>신청 팀</p>
-                    <ol>
-                        {playArray.map((value, index) => <li key={"player" + index}>{value}</li>)}
-                    </ol>
+                    <div id='myreserveTitle'><h2>나의 신청 현황</h2></div>
                     <div>
-                        예상 순위 : {playArray.indexOf(myTeam) + 1} 순위
+                        <div className="smallTitle">신청 내역</div><div className="myReserveCont">{day}일 {time}시</div>
+                        
+                        <div className="smallTitle">신청 팀</div>
+                        
+                            <ol id="reserveTeamCont">
+                                {playArray.map((value, index) => <li key={"player" + index}>{value}</li>)}
+                            </ol>
+                        
+                        <div className="smallTitle">예상 순위</div><div className="myReserveCont">{playArray.indexOf(myTeam) + 1} 순위</div>
                     </div>
                 </div> : ""}
         </div>
