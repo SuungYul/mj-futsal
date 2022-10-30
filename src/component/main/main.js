@@ -69,6 +69,8 @@ export class Main extends React.Component {
             this.index = this.dateOfMonth - this.startDate;
         }
         this.reinfo.setDay(this.index + this.today);
+        this.table =  this.getTimeTable();
+        //console.log(this.table);
         this.forceUpdate();
     }
 

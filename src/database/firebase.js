@@ -43,7 +43,6 @@ function addData(collection, document, data){
         console.log(`실패\n${error}`)
       });
 }
-
 /** 
  * 파이어베이스 스토리지에 문서생성과 함께 데이터를 추가하는 함수
  * @param {string} collection Firestore에 저장된 collection 이름
@@ -100,16 +99,12 @@ function fieldUpdate(collection, document, updateObj){ //문서내에 필드를 
  */
 
 
-function getFilteredDocs(collection, key, filter, value ){
+async function getFilteredDocs(collection, key, filter, value ){
     return db.collection(collection).where(key, filter, value)
     .get()
     .then((querySnapshot) => {
       console.log(querySnapshot);
-        // return querySnapshot.forEach((doc) => {
-        //     // doc.data() is never undefined for query doc snapshots
-        //     console.log(doc);
-        //     //console.log(doc.id, " => ", doc.data());
-        // });
+        return querySnapshot.docs;
     })
     .catch((error) => {
         console.log("Error getting documents: ", error);
