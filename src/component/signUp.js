@@ -64,6 +64,8 @@ function withdraw_user (){
             deleteData("userList",user.uid);
             user.delete().then(function() { 
 				console.log("user 정보 삭제")
+                alert("회원탈퇴가 되었습니다");
+                window.location.replace("/")
 			})
             .catch((error) => {
                 alert("에러 발생", error)
