@@ -5,3 +5,53 @@ ul{
 li>button{
     margin:0 5px;
 }
+/* 대기자 명단 틀 박스 */
+#watingBox{
+    width: 500px;
+    height: 600px;
+    background-color: white;
+    border-radius: 30px;
+    outline: none;
+    margin: 0 auto;
+    flex-direction: column;
+    display: flex;
+    margin-top: 50px;
+}
+/* 팀 가입 대기자 명단 */
+#watingUl{
+    text-align: center;
+    list-style: none;
+    font-size: 22px;
+}
+/* 수락 거부 버튼 */
+.decideButton{
+    width: 80px;
+    height: 40px;
+    outline: none;
+    border-radius: 15px;
+    border: 1px solid lightgray;
+    color: black;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+    letter-spacing: 1.2px;
+    margin-left: 20px;
+    transition: 0.25s;
+}
+.decideButton:hover{
+    color: black;
+    transform: scale(1.1);
+    cursor: pointer;
+    transition: 0.25s;
+}
+/* 제목 */
+#watingMem{
+    text-align: center;
+    font-size: 45px;
+}
+/* 수락 거부 버튼 감싸는 span */
+#btnFrame{
+    display: inline-block;
+    width: 220px;
+}

@@ -43,18 +43,19 @@ const applyReserve = async (information) => {
     //만약 신청한 팀이 있다면 팀을 구성한다.
     if (information.isTeam) {
         //제한 사항
-        if(information.withOther && (playerArray.length < 6 || 8 < playerArray.length)){
+        console.log(information.withOther,playerArray.length)
+        
+        currentTeam = currentTeam.buildObject(information.teamInfo);
+        playerArray = teamArray;
+        if (information.withOther && (playerArray.length < 6 || 8 < playerArray.length)) {
             alert("다른 팀과 함께 찰 때, 팀의 예약인원은 최소 6명이상이거나 최대 8명이하 입니다");
             return;
         }
-    
-        if(!information.withOther && (playerArray.length < 12 || 16 < playerArray.length)){
+
+        if (!information.withOther && (playerArray.length < 12 || 16 < playerArray.length)) {
             alert("같은 팀으로 구성되었을 때, 팀의 예약인원은 최소 12명이상이거나 최대 16명이하 입니다");
             return;
         }
-
-        currentTeam = currentTeam.buildObject(information.teamInfo);
-        playerArray = teamArray;
 
         let teamCheck = await db.collection("reserveList")
             .where("teamInfo", "==", currentTeam.teamName)
@@ -144,7 +145,9 @@ const applyReserve = async (information) => {
     console.log("예약DB 작성 완료");
     console.log("====예약신청 버튼 클릭 종료====");
     alert("예약 완료");
-    window.location.replace("/")
+    setTimeout(() => {
+        window.location.replace("/")
+    }, 300)
     return;
 }
 
@@ -186,13 +189,12 @@ const Reserve = ({ userInfo, teamInfo }) => {
         // setRadio()
     }
     const result = []
-    
+
     return (
         <div id="top_div">
             <div className="reserveFrame">
                 <div id="reserveTitle"><h1>풋살장 예약 신청</h1></div>
                 <div id="jb-division-line"></div>
-                {/* 현재 예약 정보는 예약 DB에서 긁어와야됨 */}
                 <div id="dayhour">{reserveInfo.state.date}일 {reserveInfo.state.time}시</div>
                 <div id="jb-division-line"></div>
                 <div>
@@ -251,7 +253,8 @@ const Reserve = ({ userInfo, teamInfo }) => {
                     <article className={(isTeam === true) ? "art_team" : "art_indi"}>
                         <div id="teamlistTitle"><h2>팀 명단 작성</h2></div>
                         {/* 팀 DB 구현되면 작성 */}
-                        <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} />
+                        {teamInfo && <ReserveTeamList userInfo={userInfo} teamInfo={teamInfo} pushFunc={pushTeamArray} deleteFunc={deleteTeamArray}
+                        includeCheck={includeCheck}/>}
                     </article>
                 </div>
                 <ReserveButton id="Rbutton" information={

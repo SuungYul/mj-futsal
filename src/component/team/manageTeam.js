@@ -47,21 +47,24 @@ const ManageTeam = ({ userInfo }) => {
         userUpdate(key, "");
         setUpdate(!update);
     }
-    return init ? //팀DB 수신 완료 시 대기자 명단으로 li 태그 동적 생성
-        <ul>
-            {
+     return init? //팀DB 수신 완료 시 대기자 명단으로 li 태그 동적 생성
+            <div id="watingBox">
+                <h2 id="watingMem">팀 가입 대기자</h2>
+                <ul id="watingUl"> 
+                {
                 waitingArray.map((waiting, index) => {
                     console.log(waiting);
-                    return <li key={index}>{waiting.substring(0, waiting.indexOf(')') + 1)} <button onClick={(e) => {
+                    return <li key={index}>{waiting.substring(0,waiting.indexOf(')')+1)} <span id="btnFrame"><button className="decideButton" onClick={(e) =>{
                         accept(waiting);
-                    }} value={waiting} key={"1" + index}>수락</button>
-                        <button onClick={(e) => {
-                            refuse(waiting);
-                        }} value={waiting} key={"2" + index}>거부</button></li>
+                    }} value={waiting} key={"1"+index}>수락</button>
+                        <button className="decideButton" onClick={(e) =>{
+                                refuse(waiting);
+                        }} value={waiting} key={"2"+index}>거부</button></span></li>
                 })}
-        </ul>
-        :
-        <div>"대기자 불러오는 중."</div>
+                </ul>
+            </div>
+            :
+            <div>"대기자 불러오는 중."</div>
 
 }
 export default ManageTeam
