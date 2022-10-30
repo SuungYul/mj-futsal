@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import { useState, useEffect } from "react";
 import "firebase/auth";
 import { addData, fieldUpdate } from "../../database/firebase";
+import "./applyTeam.css"
 
 const ApplyTeam = ({ userInfo, teamList }) => {
     const user = firebase.auth().currentUser;
@@ -41,13 +42,14 @@ const ApplyTeam = ({ userInfo, teamList }) => {
 
     }
     return <>
-        <select value={selectedTeam} onChange={teamChange}>{    //팀 선택 html 동적으로 만들기
-            teamList.map((teamName, index) => {
-                return <option key={index} value={teamName}>{teamName}</option>
-            })}
-        </select>
-        <button onClick={applyTeam}>팀 신청</button>
-
+        <div id="applyBox">
+            <select id="selectBox" value={selectedTeam} onChange={teamChange}>{    //팀 선택 html 동적으로 만들기
+                teamList.map((teamName, index) => {
+                    return <option key={index} value={teamName}>{teamName}</option>
+                })}
+            </select>
+            <button id="btnbtn" onClick={applyTeam}>팀 신청</button>
+        </div>
     </>
 }
 

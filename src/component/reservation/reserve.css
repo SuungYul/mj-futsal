@@ -112,11 +112,16 @@
 /* 팀 명단 작성 박스 */
 .teamlist {
     margin: 0 auto;
-    background-color: pink;
-    margin-bottom: 50px;
+    border: 1px solid lightgray;
+    border-radius: 15px;
+    background-color: white;
+    margin-bottom: 40px;
+    display: flex;
+    width: 300px;
+    height: 70%;
 }
 #teamlistTitle{
-    padding-left: 45px;
+    padding-left: 80px;
 }
 /* 예약 신청 버튼 */
 #resrvButton {
@@ -140,4 +145,16 @@
     transform: scale(1.2);
     cursor: pointer;
     transition: 0.25s;
+}
+#writeTeamMem{
+    list-style: none;
+    margin-left: 15px;
+    font-size: 22px;
+}
+#chBox{
+    cursor: pointer;
+    width: 22px;
+	height: 22px;
+    display: inline-block;
+    border: 1px solid lightgray;
 }
