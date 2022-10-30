@@ -101,7 +101,8 @@ const applyReserve = async (information) => {
         playCount,
         information.reserveInfo.state.date,
         information.reserveInfo.state.time,
-        order
+        order,
+        information.withOther
     )
 
     let reserveRef = await addDataCreateDoc("reserveList", reserveTeam);
@@ -132,6 +133,7 @@ const ReserveButton = (information) => {
 const Reserve = ({ userInfo, teamInfo }) => {
 
     const reserveInfo = useLocation();
+    const [withOther, setWithOther] = useState(false);
     const [isTeam, teamCheck] = useState(false);
     const [radio_click, setRadio] = useState(true);
     const clickRB = (e) => {
@@ -146,10 +148,12 @@ const Reserve = ({ userInfo, teamInfo }) => {
         if (event.target.id === "play_other") {
             setRadio(false)
             teamCheck(false)
+            setWithOther(true);
         }
         if (event.target.id === "play_team") {
             setRadio(true)
             teamCheck(true)
+            setWithOther(false);
         }
         // setRadio()
     }
@@ -220,7 +224,8 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         isTeam: isTeam,
                         reserveInfo: reserveInfo,
                         userInfo: userInfo,
-                        teamInfo: teamInfo
+                        teamInfo: teamInfo,
+                        withOther: withOther
                     }
                 } />
             </div>
