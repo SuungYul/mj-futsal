@@ -42,6 +42,17 @@ const applyReserve = async (information) => {
 
     //만약 신청한 팀이 있다면 팀을 구성한다.
     if (information.isTeam) {
+        //제한 사항
+        if(information.withOther && (playerArray.length < 6 || 8 < playerArray.length)){
+            alert("다른 팀과 함께 찰 때, 팀의 예약인원은 최소 6명이상이거나 최대 8명이하 입니다");
+            return;
+        }
+    
+        if(!information.withOther && (playerArray.length < 12 || 16 < playerArray.length)){
+            alert("같은 팀으로 구성되었을 때, 팀의 예약인원은 최소 12명이상이거나 최대 16명이하 입니다");
+            return;
+        }
+
         currentTeam = currentTeam.buildObject(information.teamInfo);
         playerArray = teamArray;
 
@@ -97,10 +108,8 @@ const applyReserve = async (information) => {
         }
 
     }
-    if(playerArray.length < 12 || 16 < playerArray.length ){
-        alert("팀의 예약인원은 최소 12명이상이거나 최대 16명이하 입니다");
-        return;
-    }
+
+
 
     //playCount의 산정은 모든 멤버의 playCount 합의 평균
     for (let idx in playerArray) {
