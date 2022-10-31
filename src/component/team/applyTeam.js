@@ -38,7 +38,7 @@ const ApplyTeam = ({ userInfo, teamList }) => {
         alert("신청이 완료되었습니다")
         setTimeout(() => {
             window.location.replace("/my-page")
-        }, 300)
+        }, 500)
 
     }
     return <>
