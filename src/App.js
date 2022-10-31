@@ -25,7 +25,7 @@ const App = () => {
   const [teamList, setTeamList] = useState([]); //팀 리스트
 
   useEffect(() => {
-    // confirmMatch();
+    //confirmMatch();
     firebase.auth().onAuthStateChanged((user) => {
       
       if (user) {
@@ -62,16 +62,11 @@ const App = () => {
       // });
       const schedule = require('node-schedule');
       const rule = new schedule.RecurrenceRule();
-      rule.second = 5;
-      const date = new Date(2022, 10, 29, 20, 30, 0);
-      const j = schedule.scheduleJob( date , function() {
-
-        console.log("그때 실행");
-      });
-      // 
-      // console.log(schedule);
-      // const job = schedule.scheduleJob(date, function(){
-      //   console.log('The world is going to end today.');
+      // const jobWeekDay = schedule.scheduleJob({hour: 15, minute: 0, dayOfWeek: [1, 2, 3, 4, 5]}, function(){
+      //     confirmMatch();
+      // });
+      // const jobWeekend = schedule.scheduleJob({hour: 0, minute: 0, dayOfWeek: [0,6]}, function(){
+      //     confirmMatch();
       // });
     })
     

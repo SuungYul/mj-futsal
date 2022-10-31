@@ -17,6 +17,8 @@ const CreateTeam = ({ userInfo }) => { //팀 개설 컴포넌트(유저 DB를 �
         const TeamName = document.getElementById('teamName').value;
         const conflictPromise = checkDocConflict("teamList", TeamName); //충돌 확인 프로미스
 
+        
+
         if (checkBelongTo() === true) { //소속된 팀이 있으면 경고
             alert("이미 소속이 있습니다.");
             return;
@@ -33,7 +35,7 @@ const CreateTeam = ({ userInfo }) => { //팀 개설 컴포넌트(유저 DB를 �
                 });
                 alert("팀 개설에 성공하였습니다")
                 fieldUpdate("userList", user.uid, { team: TeamName }); //팀 개설자의 DB에 팀 반영
-                fieldUpdate("teamList", TeamName, { member: firebase.firestore.FieldValue.arrayUnion(userInfo.userKey) });//팀 DB에 개설자 Member로 추가
+                fieldUpdate("teamList", TeamName, { member: firebase.firestore.FieldValue.arrayUnion(userInfo.name + "(" + userInfo.userID + ")" + userInfo.userKey) });//팀 DB에 개설자 Member로 추가
                 setTimeout(() => {
                     window.location.replace("/my-page")
                 }, 500);

@@ -1,4 +1,4 @@
-import { getFilteredDocs, fieldUpdate, addDataCreateDoc, addData, getData } from "../../database/firebase";
+import { getFilteredDocs, fieldUpdate, addDataCreateDoc, addData, getData, deleteData } from "../../database/firebase";
 import {ReserveTeam, MatchInfo, User} from "../../database/data"
 import firebase from "firebase/app";
 
@@ -22,13 +22,14 @@ async function getReserveList(){
         //this.state.totalReserve.push(doc.data());
         querySnapshot.forEach( (doc) =>{
             const rt = doc.data();
-            reserveList.push(new ReserveTeam(rt.teamInfo, rt.playerArray, rt.playCount, rt.day, rt.time, rt.order, rt.withOther));
+            console.log(rt);
+            reserveList.push(new ReserveTeam(rt.teamInfo, rt.playerArray, rt.playCount, rt.day, rt.time, rt.order, rt.withOther, rt.rKey));
+            console.log(rt.playerArray);
         })    
     })
 }
 
 async function confirmMatch(){
-    getData("userList",)
     getReserveList();
     setTimeout(async () => { //데이터 받아오면 실행
         let numOfBlock;
@@ -58,6 +59,9 @@ async function confirmMatch(){
                     //모든 player 키 값주고, 유저데이터 불러와 유저 만든 뒤, playCount로 정렬, 6명씩 잘라서 팀 만들어 넣어주기 
                     console.log(reserveAtTimes[i][j].playerArray)
                     const keyArray = reserveAtTimes[i][j].playerArray;
+                    keyArray = keyArray.map( (item, index) =>{
+                        return item.substr(item.indexOf(')') + 1); //유저키만 따오기
+                    } )
                     const playerArray = new Array();
                     const tempTime = reserveAtTimes[i][0].time;
                     const tempDay = reserveAtTimes[i][0].day;
@@ -101,29 +105,35 @@ async function confirmMatch(){
                 }) 
             }
             for (let i = 0; i < numOfBlock; i++) {   //시간대별로 두팀을 선정 하여 matchinfo 생성 하여 matchInfo DB에 저장
-                if(i === 8){
-                    console.log(reserveAtTimes[i]);
-                    console.log(reserveAtTimes[i].length);
-                }
                 if (reserveAtTimes[i].length < 2){   // 1팀 이하일 경우
                     if(reserveAtTimes[i].length === 1 && reserveAtTimes[i][0].withOther){  //1팀 단일 팀 매치
                         console.log(reserveAtTimes[i]);
-                        matchInfoList[i] = new MatchInfo(reserveAtTimes[i][0].teamInfo, null, reserveAtTimes[i][0].playerArray,
+                        const keyArray = reserveAtTimes[i][0].playerArray;
+                        keyArray = keyArray.map( (item, index) =>{
+                            return item.substr(item.indexOf(')') + 1); //유저키만 따오기
+                        } )
+                        matchInfoList[i] = new MatchInfo(reserveAtTimes[i][0].teamInfo, null, keyArray,
                         reserveAtTimes[i][0].day, reserveAtTimes[i][0].time);
                         console.log(matchInfoList[i]);
                         addDataCreateDoc("matchInfo", matchInfoList[i]).then( (docRef) =>{ //자동key값을 받아오면 userList에 갱신
                             const mPlayerKeys = matchInfoList[i].allPlayerArray;
-                            for(let j = 0; j<10; j++){ //j -> playkeys
-                                fieldUpdate("userList", j.toString(),{currentReserve: ""} ) //currentReserve 초기화
-                                fieldUpdate("userList", j.toString(), {history: firebase.firestore.FieldValue.arrayUnion(docRef)} )
+                            for(let j = 0; j < mPlayerKeys.length; j++){ //j -> playkeys
+                                fieldUpdate("userList", mPlayerKeys[j].toString(),{currentReserve: ""} ) //currentReserve 초기화
+                                fieldUpdate("userList", mPlayerKeys[j].toString(), {history: firebase.firestore.FieldValue.arrayUnion(docRef)} )
                             }
                         });
                     }
                     continue; //매칭인데 1팀이하면 pass
                 } 
                 else{ //2팀 이상일 경우
-                    const selectedTeam1 = (reserveAtTimes[i][0]); //count가 적은 reserveTeam 2팀 저장
-                    const selectedTeam2 = (reserveAtTimes[i][1]);  
+                    const selectedTeam1 = reserveAtTimes[i][0]; //count가 적은 reserveTeam 2팀 저장
+                    const selectedTeam2 = reserveAtTimes[i][1];  
+                    selectedTeam1.playerArray = selectedTeam1.playerArray.map( (item, index) =>{
+                        return item.substr(item.indexOf(')') + 1); //유저키만 따오기
+                    } )
+                    selectedTeam2.playerArray = selectedTeam2.playerArray.map( (item, index) =>{
+                        return item.substr(item.indexOf(')') + 1); //유저키만 따오기
+                    } )
                     console.log(selectedTeam1, selectedTeam2);
                     if (!selectedTeam1.withOther){ //1순위가 우리끼리만 차는 경우
                         console.log(1);
@@ -147,6 +157,7 @@ async function confirmMatch(){
                         const allPlayerArray = selectedTeam1.playerArray.concat(selectedTeam2.playerArray);
                         matchInfoList[i] = new MatchInfo(selectedTeam1.teamInfo, selectedTeam2.teamInfo, allPlayerArray,
                         selectedTeam1.day, selectedTeam1.time);
+                        console.log(matchInfoList[i]);
                     }
                     console.log('ss');
                     addDataCreateDoc("matchInfo", matchInfoList[i]).then( (docRef) =>{ //자동key값을 받아오면 userList에 갱신
@@ -156,8 +167,14 @@ async function confirmMatch(){
                             fieldUpdate("userList", mPlayerKeys[j].toString(), {history: firebase.firestore.FieldValue.arrayUnion(docRef.id)} )
                         }
                     });
+
                 }
             }
+            // for(rtl of reserveAtTimes){
+            //     for(rt of rtl){
+            //         deleteData("reserveTeam",  )
+            //     }
+            // }
         }, 5000);
     }, 2000);
     //평일 이면 reserveTeam 저장 4개

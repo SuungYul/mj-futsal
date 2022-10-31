@@ -115,12 +115,9 @@ const ShowPastReserve = ({ userInfo }) => {
     for (let i = 0; i < userInfo.history.length && init === false; i++) {
         const ReservePromise = getData("matchInfo", userInfo.history[i], "string")
         ReservePromise.then((doc) => {
-            if (userInfo.history[i] != doc.matchKey) {
-                alert("유저 history key != matchKey")
-                return;
-            }
+           
             temp_day.push(doc.day)
-            temp_key.push(doc.matchKey)
+            temp_key.push(userInfo.history[i])
             temp_time.push(doc.time)
             if (i === userInfo.history.length - 1) {
                 console.log(temp_day, 'last');

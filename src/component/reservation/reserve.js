@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase/app"
 import "firebase/auth"
 import { isRouteErrorResponse, useLocation } from "react-router-dom";
-import { addData, getData, addDataCreateDoc, db, fieldUpdateConvertor } from "../../database/firebase";
+import { addData, getData, addDataCreateDoc, db, fieldUpdateConvertor, fieldUpdate } from "../../database/firebase";
 import { User, Team, ReserveTeam } from "../../database/data"
 import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
@@ -103,6 +103,7 @@ const applyReserve = async (information) => {
             await addData("userList", userData.userKey, userData);
 
             reserveTeam.playCount = playCount /= reserveTeam.playerArray.length;
+            reserveTeam.rKey = null;
             await fieldUpdateConvertor("reserveList", indvReserveDoc.docs[0].id, reserveTeam);
             console.log("예약DB 작성 완료");
             console.log("====예약신청 버튼 클릭 종료====");
@@ -132,10 +133,13 @@ const applyReserve = async (information) => {
         information.reserveInfo.state.date,
         information.reserveInfo.state.time,
         order,
-        information.withOther
+        information.withOther,
+        null
     )
 
-    let reserveRef = await addDataCreateDoc("reserveList", reserveTeam);
+    let reserveRef = await addDataCreateDoc("reserveList", reserveTeam).then( (ref)=>{
+        fieldUpdate("reserveList", ref.id, {rKey:ref.id} );
+    })
 
     //playerArray에 있는 모든 유저에게 currentReserve 등록
     for (let idx in playerArray) {
