@@ -115,11 +115,20 @@ const ShowPastReserve = ({ userInfo }) => {
     for (let i = 0; i < userInfo.history.length && init === false; i++) {
         const ReservePromise = getData("matchInfo", userInfo.history[i], "string")
         ReservePromise.then((doc) => {
+           
             temp_day.push(doc.day)
             temp_key.push(userInfo.history[i])
             temp_time.push(doc.time)
             if (i === userInfo.history.length - 1) {
                 console.log(temp_day, 'last');
+                if(i >= 3){
+                    temp_day = temp_day.slice(i-2,i+1);
+                    temp_key = temp_key.slice(i-2,i+1);
+                    temp_time = temp_time.slice(i-2,i+1);
+                }
+                temp_day.reverse();
+                temp_key.reverse();
+                temp_time.reverse();
                 setDay(temp_day)
                 setTime(temp_time)
                 setKey(temp_key)
@@ -132,7 +141,7 @@ const ShowPastReserve = ({ userInfo }) => {
     // }, [])
     console.log(temp_day);
     return <>{day.map((day, index) => {
-        return <tr><td id="pastTd" key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></td></tr>
+        return <tr><td id="pastTd" key={day}>{day + "일 " + time[index] + "시 매치"}<ReviewReserve matchKey={matchKey[index]} /></td></tr>
     })}</>
 }
 
