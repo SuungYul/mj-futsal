@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import { ImStarFull } from "react-icons/im";
 import "./review.css"
+
 const Review = () => {
     const { state } = useLocation() // state= matchKey
     console.log(state);
@@ -17,6 +18,7 @@ const Review = () => {
     const matchPromise = getData("matchInfo", state, "string")
     const navigate = useNavigate();
     const array = [0, 1, 2, 3, 4]
+
     useEffect(() => {
         matchPromise.then((doc) => {
             setMatch(doc)
@@ -55,10 +57,7 @@ const Review = () => {
         }
         setClicked(clickStates);
     };
-
-
-
-
+    
     const result = []
     for (let i = 0; i < userInfo.length; i++) {
         result.push(
@@ -71,7 +70,7 @@ const Review = () => {
                         handleStarClick(el)
                         badPointIncrement("userList", userInfo[i].userKey, (100 - score * 20))
                     }}
-                    className={clicked[el] && 'YellowStar'}
+                    className={clicked[el] && 'yellowStar'}
                     size="35"
                 />)),
         )
@@ -81,12 +80,12 @@ const Review = () => {
     return (
         init ?
             <div id="reviewFrame">
-                <h1>평가</h1>
-                <div id="reviewTitle"><h3>팀원 평가하기</h3></div>
+                <div id="reviewTitle1"><h1>평가</h1></div>
+                <div id="reviewTitle2"><h3>팀원 평가하기</h3></div>
                 <div id="memList">
                     <ol>{result}</ol>
                 </div>
-                <h3>건의사항</h3>
+                <div id="feedback"><h3>건의사항</h3></div>
                 <input type="text" id="text" placeholder="건의사항이 있다면 적어주세요."></input>
                 <input id="sbmBtn" type="submit" onClick={()=>{
                     alert("제출되었습니다.")

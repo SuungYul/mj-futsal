@@ -1,7 +1,7 @@
 /* 전체 틀 박스 */
 #reviewFrame{
     width: 600px;
-    height: 70%;
+    height: 80%;
     background-color: white;
     border-radius: 30px;
     outline: none;
@@ -9,6 +9,7 @@
     flex-direction: column;
     display: flex;
     margin-top: 70px;
+    margin-bottom: 70px;
 }
 /* 팀원 평가 div */
 #memList {
@@ -58,19 +59,21 @@
     cursor: pointer;
     transition: 0.25s;
 }
-#reviewTitle{
+#reviewTitle1{
+    margin: 0 auto;
+    font-size: 30px;
+    margin-bottom: -25px;
+}
+#reviewTitle2{
     margin: 0 auto;
 }
-#userLi{
+#feedback{
+    margin: 0 auto;
 }
-
 #starIcon{
     color: lightgray;
     cursor: pointer;
 }
 #starIcon:hover{
-    color: rgba(255, 251, 0, 0.966);
-}
-.YellowStar{
     color: rgba(255, 251, 0, 0.966);
 }
