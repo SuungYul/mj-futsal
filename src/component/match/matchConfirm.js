@@ -163,7 +163,7 @@ async function confirmMatch(){
                     addDataCreateDoc("matchInfo", matchInfoList[i]).then( (docRef) =>{ //자동key값을 받아오면 userList에 갱신
                         const mPlayerKeys = matchInfoList[i].allPlayerArray;
                         for(let j = 0; j < mPlayerKeys.length; j++){ //j -> playkeys
-                            //fieldUpdate("userList", mPlayerKeys[j].toString(),{currentReserve: null} ) //currentReserve 초기화
+                            fieldUpdate("userList", mPlayerKeys[j].toString(),{currentReserve: null} ) //currentReserve 초기화
                             fieldUpdate("userList", mPlayerKeys[j].toString(), {history: firebase.firestore.FieldValue.arrayUnion(docRef.id)} )
                         }
                     });

@@ -17,6 +17,8 @@ const CreateTeam = ({ userInfo }) => { //팀 개설 컴포넌트(유저 DB를 �
         const TeamName = document.getElementById('teamName').value;
         const conflictPromise = checkDocConflict("teamList", TeamName); //충돌 확인 프로미스
 
+        
+
         if (checkBelongTo() === true) { //소속된 팀이 있으면 경고
             alert("이미 소속이 있습니다.");
             return;
@@ -28,7 +30,7 @@ const CreateTeam = ({ userInfo }) => { //팀 개설 컴포넌트(유저 DB를 �
             else {
                 addData("teamList", TeamName, { //teamList 컬렉션에 팀명, 리더 이름(학번),멤버 배열 추가
                     teamName: TeamName,
-                    leader: userInfo.name + "(" + userInfo.userID + ")" + userInfo.userKey,
+                    leader: userInfo.userKey,
                     member: []
                 });
                 alert("팀 개설에 성공하였습니다")

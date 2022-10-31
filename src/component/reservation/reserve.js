@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import firebase from "firebase/app"
 import "firebase/auth"
 import { isRouteErrorResponse, useLocation } from "react-router-dom";
-import { addData, getData, addDataCreateDoc, db, fieldUpdateConvertor } from "../../database/firebase";
+import { addData, getData, addDataCreateDoc, db, fieldUpdateConvertor, fieldUpdate } from "../../database/firebase";
 import { User, Team, ReserveTeam } from "../../database/data"
 import { ReserveInfo } from "../../database/ReserveInfo";
 import "./reserve.css"
@@ -41,6 +41,8 @@ const applyReserve = async (information) => {
     let order = 0;
 
     //만약 신청한 팀이 있다면 팀을 구성한다.
+    console.log(playerArray.length);
+    console.log(teamArray.length);
     if (information.isTeam) {
         //제한 사항
         console.log(information.withOther,playerArray.length)
@@ -58,38 +60,38 @@ const applyReserve = async (information) => {
         }
 
         let teamCheck = await db.collection("reserveList")
-            .where("teamInfo", "==", currentTeam.teamName)
-            .where("day", "==", information.reserveInfo.state.date)
-            .where("time", "==", information.reserveInfo.state.time)
-            .get();
+                                .where("teamInfo", "==", currentTeam.teamName)
+                                .where("day", "==", information.reserveInfo.state.date)
+                                .where("time", "==", information.reserveInfo.state.time)
+                                .get();
 
         //이미 팀이 예약되어있을 경우
-        if (teamCheck.empty == false) {
+        if(teamCheck.empty == false){
             alert("이미 예약이 완료되어있습니다.");
             return;
         }
     }
-    else { //팀이 없는 경우
+    else{ //팀이 없는 경우
         let indvReserveDoc = await db.collection("reserveList")
-            .where("teamInfo", "==", -1)
-            .where("day", "==", information.reserveInfo.state.date)
-            .where("time", "==", information.reserveInfo.state.time)
-            .get();
+                        .where("teamInfo", "==", -1)
+                        .where("day", "==", information.reserveInfo.state.date)
+                        .where("time", "==", information.reserveInfo.state.time)
+                        .get();
 
-        if (indvReserveDoc.empty == false) {
+        if(indvReserveDoc.empty == false){
             let reserveTeam = indvReserveDoc.docs[0].data();
             //이미 예약한 경우
-            if (reserveTeam.playerArray.includes(playerArray[0])) {
+            if(reserveTeam.playerArray.includes(playerArray[0])){
                 alert("이미 예약이 완료되어있습니다.");
                 return;
             }
 
             //playCount 산출
             reserveTeam.playerArray.push(playerArray[0]);
-            for (let idx in reserveTeam.playerArray) {
+            for(let idx in reserveTeam.playerArray){
                 let player = new User();
                 //유저 key만 추출하는 부분
-                let playerKey = reserveTeam.playerArray[idx].substring(reserveTeam.playerArray[idx].indexOf(')') + 1);
+                let playerKey = reserveTeam.playerArray[idx].substring(reserveTeam.playerArray[idx].indexOf(')')+1); 
                 const data = await getData("userList", playerKey, player);
                 playCount += data.playCount;
             }
@@ -101,6 +103,7 @@ const applyReserve = async (information) => {
             await addData("userList", userData.userKey, userData);
 
             reserveTeam.playCount = playCount /= reserveTeam.playerArray.length;
+            reserveTeam.rKey = null;
             await fieldUpdateConvertor("reserveList", indvReserveDoc.docs[0].id, reserveTeam);
             console.log("예약DB 작성 완료");
             console.log("====예약신청 버튼 클릭 종료====");
@@ -130,10 +133,13 @@ const applyReserve = async (information) => {
         information.reserveInfo.state.date,
         information.reserveInfo.state.time,
         order,
-        information.withOther
+        information.withOther,
+        null
     )
 
-    let reserveRef = await addDataCreateDoc("reserveList", reserveTeam);
+    let reserveRef = await addDataCreateDoc("reserveList", reserveTeam).then( (ref)=>{
+        fieldUpdate("reserveList", ref.id, {rKey:ref.id} );
+    })
 
     //playerArray에 있는 모든 유저에게 currentReserve 등록
     for (let idx in playerArray) {
@@ -154,8 +160,8 @@ const applyReserve = async (information) => {
 
 const ReserveButton = (information) => {
     return (
-        <button id="resrvButton" onClick={() => { applyReserve(information.information) }}>
-            예약하기
+        <button onClick={() => { applyReserve(information.information) }}>
+            예약 신청
         </button>
     )
 }
@@ -200,11 +206,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                 <div>
                     {/* {props.day} | {props.time} */}
                 </div>
-                <br />
-                <br />
-                <br />
-
-                <div className="choice">
+                <div>
                     <input
                         type="radio"
                         id="play_other"
@@ -213,7 +215,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         onChange={radioActive}>
                     </input>
                     <label htmlFor="play_other">다른 팀과 같이 찰래요</label>
-
+                    |
                     <input
                         type="radio"
                         id="play_team"
@@ -222,8 +224,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         onChange={radioActive}>
                     </input>
                     <label htmlFor="play_team">우리끼리만 찰래요</label>
-                </div>
-                <div className="choice">
+                    <br />
                     <input
                         type="radio"
                         id="individual"
@@ -234,7 +235,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         onChange={clickRB}
                     >
                     </input>
-                    <label htmlFor="individual">개인</label>
+                    <label htmlFor="individual">개인</label> |
                     <input
                         type="radio"
                         id="team"
@@ -247,9 +248,6 @@ const Reserve = ({ userInfo, teamInfo }) => {
                     >
                     </input>
                     <label htmlFor="team">팀</label>
-                </div>
-
-                <div className="teamlist">
                     <article className={(isTeam === true) ? "art_team" : "art_indi"}>
                         <div id="teamlistTitle"><h2>팀 명단 작성</h2></div>
                         {/* 팀 DB 구현되면 작성 */}
@@ -257,7 +255,7 @@ const Reserve = ({ userInfo, teamInfo }) => {
                         includeCheck={includeCheck}/>}
                     </article>
                 </div>
-                <ReserveButton id="Rbutton" information={
+                <ReserveButton information={
                     {
                         isTeam: isTeam,
                         reserveInfo: reserveInfo,

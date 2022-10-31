@@ -68,4 +68,3 @@ const ManageTeam = ({ userInfo }) => {
 
 }
 export default ManageTeam
-
