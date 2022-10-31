@@ -80,11 +80,12 @@ const Review = () => {
         init ?
             <div id="reviewFrame">
                 <h1>평가</h1>
+                <div id="reviewTitle"><h3>팀원 평가하기</h3></div>
                 <div id="memList">
                     <ol>{result}</ol>
                 </div>
                 <h3 for="text">건의사항</h3>
-                <input type="text" id="text"></input>
+                <input type="text" id="text" placeholder="건의사항이 있다면 적어주세요."></input>
                 <input id="sbmBtn" type="submit" onClick={()=>{
                     alert("제출되었습니다.")
                     window.location.replace("/my-page")

@@ -58,6 +58,6 @@
     cursor: pointer;
     transition: 0.25s;
 }
-h3 {
-    text-align: center;
+#reviewTitle{
+    margin: 0 auto;
 }
