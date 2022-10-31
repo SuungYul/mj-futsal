@@ -1,4 +1,4 @@
-import { getFilteredDocs, fieldUpdate, addDataCreateDoc, addData, getData } from "../../database/firebase";
+import { getFilteredDocs, fieldUpdate, addDataCreateDoc, addData, getData, deleteData } from "../../database/firebase";
 import {ReserveTeam, MatchInfo, User} from "../../database/data"
 import firebase from "firebase/app";
 
@@ -23,7 +23,7 @@ async function getReserveList(){
         querySnapshot.forEach( (doc) =>{
             const rt = doc.data();
             console.log(rt);
-            reserveList.push(new ReserveTeam(rt.teamInfo, rt.playerArray, rt.playCount, rt.day, rt.time, rt.order, rt.withOther));
+            reserveList.push(new ReserveTeam(rt.teamInfo, rt.playerArray, rt.playCount, rt.day, rt.time, rt.order, rt.withOther, rt.rKey));
             console.log(rt.playerArray);
         })    
     })
@@ -163,12 +163,18 @@ async function confirmMatch(){
                     addDataCreateDoc("matchInfo", matchInfoList[i]).then( (docRef) =>{ //자동key값을 받아오면 userList에 갱신
                         const mPlayerKeys = matchInfoList[i].allPlayerArray;
                         for(let j = 0; j < mPlayerKeys.length; j++){ //j -> playkeys
-                            fieldUpdate("userList", mPlayerKeys[j].toString(),{currentReserve: null} ) //currentReserve 초기화
+                            //fieldUpdate("userList", mPlayerKeys[j].toString(),{currentReserve: null} ) //currentReserve 초기화
                             fieldUpdate("userList", mPlayerKeys[j].toString(), {history: firebase.firestore.FieldValue.arrayUnion(docRef.id)} )
                         }
                     });
+
                 }
             }
+            // for(rtl of reserveAtTimes){
+            //     for(rt of rtl){
+            //         deleteData("reserveTeam",  )
+            //     }
+            // }
         }, 5000);
     }, 2000);
     //평일 이면 reserveTeam 저장 4개
