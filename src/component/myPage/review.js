@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import { ImStarFull } from "react-icons/im";
 import "./review.css"
+import styled from 'styled-components';
 const Review = () => {
     const { state } = useLocation() // state= matchKey
     console.log(state);
@@ -63,7 +64,7 @@ const Review = () => {
     for (let i = 0; i < userInfo.length; i++) {
         result.push(
             <li key={"list" + i}>{userInfo[i].name + " " + userInfo[i].userID}</li>,
-            array.map((el) => (
+            <Stars>{array.map((el) => (
                 <ImStarFull
                     key={el}
                     onClick={() => {
@@ -72,10 +73,13 @@ const Review = () => {
                     }}
                     className={clicked[el] && 'black'}
                     size="35"
-                />)),
+                />))}
+            </Stars>
         )
     }
     // result.push(<input type="" name="text"><label for="text"></label></input>)
+
+
 
     return (
         init ?
@@ -95,3 +99,21 @@ const Review = () => {
     )
 }
 export default Review
+
+const Stars = styled.div`
+  margin: 0 auto;
+
+  & svg {
+    color: #C4C4C4;
+    cursor: pointer;
+  }
+  :hover svg {
+    color: black;
+  }
+  & svg:hover ~ svg {
+    color: #C4C4C4;
+  }
+  .black {
+    color: black;
+  }
+`
