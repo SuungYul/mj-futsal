@@ -64,7 +64,8 @@ const ManageTeam = ({ userInfo }) => {
                 </ul>
             </div>
             :
-            <div>"대기자 불러오는 중."</div>
+            
+            <div id="watingMess"><h2>"대기자 불러오는 중."</h2></div>
 
 }
 export default ManageTeam

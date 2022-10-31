@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import { ImStarFull } from "react-icons/im";
 import "./review.css"
+import styled from "styled-components";
 
 const Review = () => {
     const { state } = useLocation() // state= matchKey
@@ -57,12 +58,12 @@ const Review = () => {
         }
         setClicked(clickStates);
     };
-    
+
     const result = []
     for (let i = 0; i < userInfo.length; i++) {
         result.push(
-            <li id="userLi" key={"list" + i}>{userInfo[i].name + " " + userInfo[i].userID}</li>,
-            array.map((el) => (
+            <li key={"list" + i}>{userInfo[i].name + " " + userInfo[i].userID}</li>,
+            <Stars>{array.map((el) => (
                 <ImStarFull
                     id="starIcon"
                     key={el}
@@ -70,12 +71,15 @@ const Review = () => {
                         handleStarClick(el)
                         badPointIncrement("userList", userInfo[i].userKey, (100 - score * 20))
                     }}
-                    className={clicked[el] && 'yellowStar'}
+                    className={clicked[el] && 'black'}
                     size="35"
-                />)),
+                />))}
+            </Stars >
         )
     }
     // result.push(<input type="" name="text"><label for="text"></label></input>)
+
+
 
     return (
         init ?
@@ -87,7 +91,7 @@ const Review = () => {
                 </div>
                 <div id="feedback"><h3>건의사항</h3></div>
                 <input type="text" id="text" placeholder="건의사항이 있다면 적어주세요."></input>
-                <input id="sbmBtn" type="submit" onClick={()=>{
+                <input id="sbmBtn" type="submit" onClick={() => {
                     alert("제출되었습니다.")
                     window.location.replace("/my-page")
                 }}></input>
@@ -96,3 +100,21 @@ const Review = () => {
     )
 }
 export default Review
+
+const Stars = styled.div`
+  margin: 0 auto;
+
+  & svg {
+    color: #C4C4C4;
+    cursor: pointer;
+  }
+  :hover svg {
+    color: black;
+  }
+  & svg:hover ~ svg {
+    color: #C4C4C4;
+  }
+  .black {
+    color: black;
+  }
+`

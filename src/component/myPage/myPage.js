@@ -132,7 +132,7 @@ const ShowPastReserve = ({ userInfo }) => {
     // }, [])
     console.log(temp_day);
     return <>{day.map((day, index) => {
-        return <tr><td id="pastTd" key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></td></tr>
+        return <tr><td id="pastTd" key={day}>{day + "일 " + time[index] + "시 "}<ReviewReserve matchKey={matchKey[index]} /></td></tr>
     })}</>
 }
 
