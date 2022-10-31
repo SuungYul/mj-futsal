@@ -94,8 +94,8 @@ const ReviewReserve = ({ matchKey }) => {
     const navigate = useNavigate()
     return (
         <button id="reviewBtn" onClick={() => {
-            <Review/>
-            navigate("/review",{state: matchKey})
+            <Review />
+            navigate("/review", { state: matchKey })
         }}>평가하기</button>
     )
 }
@@ -133,7 +133,7 @@ const ShowPastReserve = ({ userInfo }) => {
     // }, [])
     console.log(temp_day);
     return <>{day.map((day, index) => {
-        return <p id="pastTd" key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></p>
+        return <tr><td id="pastTd" key={day}>{day + "일 " + time[index] + "시 매치 정보 "}<ReviewReserve matchKey={matchKey[index]} /></td></tr>
     })}</>
 }
 
@@ -233,7 +233,7 @@ const MyPage = ({ userInfo, teamInfo }) => {
                         </tr>
                         <tr>
                             <th>과거 신청내역</th>
-                            <td><ShowPastReserve userInfo={userInfo} /></td>
+                            <tr><ShowPastReserve userInfo={userInfo} /></tr>
                         </tr>
                     </table>
                     <div id="managebutton">

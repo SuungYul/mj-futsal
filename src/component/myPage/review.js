@@ -68,6 +68,7 @@ const Review = () => {
                     key={el}
                     onClick={() => {
                         handleStarClick(el)
+                        badPointIncrement("userList", userInfo[i].userKey, (100 - score * 20))
                     }}
                     className={clicked[el] && 'black'}
                     size="35"
@@ -83,9 +84,9 @@ const Review = () => {
                 <div id="memList">
                     <ol>{result}</ol>
                 </div>
-                <h3 for="text">건의사항</h3>
+                <h3>건의사항</h3>
                 <input type="text" id="text"></input>
-                <input id="sbmBtn" type="submit" onClick={()=>{
+                <input id="sbmBtn" type="submit" onClick={() => {
                     alert("제출되었습니다.")
                     window.location.replace("/my-page")
                 }}></input>
