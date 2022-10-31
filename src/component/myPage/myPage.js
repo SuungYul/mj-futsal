@@ -121,6 +121,14 @@ const ShowPastReserve = ({ userInfo }) => {
             temp_time.push(doc.time)
             if (i === userInfo.history.length - 1) {
                 console.log(temp_day, 'last');
+                if(i >= 3){
+                    temp_day = temp_day.slice(i-2,i+1);
+                    temp_key = temp_key.slice(i-2,i+1);
+                    temp_time = temp_time.slice(i-2,i+1);
+                }
+                temp_day.reverse();
+                temp_key.reverse();
+                temp_time.reverse();
                 setDay(temp_day)
                 setTime(temp_time)
                 setKey(temp_key)
