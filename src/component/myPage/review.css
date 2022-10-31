@@ -61,3 +61,16 @@
 #reviewTitle{
     margin: 0 auto;
 }
+#userLi{
+}
+
+#starIcon{
+    color: lightgray;
+    cursor: pointer;
+}
+#starIcon:hover{
+    color: rgba(255, 251, 0, 0.966);
+}
+.YellowStar{
+    color: rgba(255, 251, 0, 0.966);
+}

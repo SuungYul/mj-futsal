@@ -62,14 +62,16 @@ const Review = () => {
     const result = []
     for (let i = 0; i < userInfo.length; i++) {
         result.push(
-            <li key={"list" + i}>{userInfo[i].name + " " + userInfo[i].userID}</li>,
+            <li id="userLi" key={"list" + i}>{userInfo[i].name + " " + userInfo[i].userID}</li>,
             array.map((el) => (
                 <ImStarFull
+                    id="starIcon"
                     key={el}
                     onClick={() => {
                         handleStarClick(el)
+                        badPointIncrement("userList", userInfo[i].userKey, (100 - score * 20))
                     }}
-                    className={clicked[el] && 'black'}
+                    className={clicked[el] && 'YellowStar'}
                     size="35"
                 />)),
         )
@@ -84,7 +86,7 @@ const Review = () => {
                 <div id="memList">
                     <ol>{result}</ol>
                 </div>
-                <h3 for="text">건의사항</h3>
+                <h3>건의사항</h3>
                 <input type="text" id="text" placeholder="건의사항이 있다면 적어주세요."></input>
                 <input id="sbmBtn" type="submit" onClick={()=>{
                     alert("제출되었습니다.")

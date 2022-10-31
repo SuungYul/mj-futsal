@@ -35,6 +35,10 @@ const ApplyTeam = ({ userInfo, teamList }) => {
         }
         fieldUpdate("teamList", selectedTeam, { waitingList: firebase.firestore.FieldValue.arrayUnion(userInfo.name + "(" + userInfo.userID + ")" + userInfo.userKey) });
         fieldUpdate("userList", user.uid, { team: "waiting..." })
+        alert("신청이 완료되었습니다")
+        setTimeout(() => {
+            window.location.replace("/my-page")
+        }, 500)
 
     }
     return <>

@@ -38,7 +38,9 @@ const Login = () =>{
                     <input type="password" id="signInPassword" placeholder="Password"/>
                     <button type="submit" id="signInButton" onClick ={signIn}>로그인</button>
                     <hr></hr>
-                    <button id="firstButton"><Link to="/signUp">회원가입</Link></button>
+                    <button id="firstButton" onClick={()=>{
+                        navigate("/signUp")
+                    }}>회원가입</button>
                     {/* <button onClick={() => }>회원가입 하러가기</button> */}
                 </div> 
         </div>

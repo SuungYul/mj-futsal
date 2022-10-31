@@ -99,7 +99,7 @@ body{
     transition: 0.25s;
 }
 #firstButton:hover{
-    color: white;
+   /* // color: white; */
     transform: scale(1.2);
     cursor: pointer;
     transition: 0.25s;
