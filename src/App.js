@@ -25,7 +25,7 @@ const App = () => {
   const [teamList, setTeamList] = useState([]); //팀 리스트
 
   useEffect(() => {
-    //confirmMatch();
+    // confirmMatch();
     firebase.auth().onAuthStateChanged((user) => {
       
       if (user) {

@@ -23,7 +23,7 @@ async function getReserveList(){
         querySnapshot.forEach( (doc) =>{
             const rt = doc.data();
             console.log(rt);
-            reserveList.push(new ReserveTeam(rt.teamInfo, rt.playerArray, rt.playCount, rt.day, rt.time, rt.order, rt.withOther, rt.rKey));
+            reserveList.push(new ReserveTeam(rt.teamInfo, rt.playerArray, rt.playCount, rt.day, rt.time, rt.order, rt.withOther));
             console.log(rt.playerArray);
         })    
     })
